@@ -13,8 +13,7 @@ class Docente(object):
     __fechaIngreso_Docente = None
 
 
-    """
-    * Constructor
+    """Constructor
     * @param dni_Docente, cod_Antiguedad, cod_ObraSocial, nombre_Docente, apellido_Docente, direccion_Docente, telefono_Docente, fechaIngreso
     * @return no devuelve nada
     """
@@ -164,4 +163,4 @@ class Docente(object):
     apellido_Docente    = property(fget = getApellido_Docente, fset = setApellido_Docente)
     direccion_Docente    = property(fget = getDireccion_Docente, fset = setDireccion_Docente)
     telefono_Docente    = property(fget = getTelefono_Docente, fset = setTelefono_Docente)
-    fechaIngreso    = property(fget = getFechaIngreso, fset = setFechaIngreso)    
+    fechaIngreso    = property(fget = getFechaIngreso, fset = setFechaIngreso)

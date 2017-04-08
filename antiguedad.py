@@ -7,8 +7,7 @@ class Antiguedad(object):
     __porc_Anti = None
 
 
-    """
-    * Constructor
+    """Constructor
     * @param cod_Antiguedad, porc_Anti
     * @return no devuelve nada
     """
@@ -16,8 +15,7 @@ class Antiguedad(object):
         self.__cod_Antiguedad = cod_Antiguedad
         self.__porc_Anti = porc_Anti
 
-    """
-     * Getter cod_Antiguedad.
+    """Getter cod_Antiguedad.
      * @param Ninguno.
      * @return devuelve el codigo de la antigüedad.
      */
@@ -25,8 +23,7 @@ class Antiguedad(object):
     def getCod_Antiguedad(self):
         return self.__cod_Antiguedad
 
-    """
-     * Getter porc_Anti
+    """Getter porc_Anti
      * @param Ninguno.
      * @return devuelve el porcentaje de la Obra Social.
      */
@@ -34,8 +31,7 @@ class Antiguedad(object):
     def getPorc_Anti(self):
         return self.__porc_Anti
 
-    """
-     * Setter cod_Antiguedad
+    """Setter cod_Antiguedad
      * @param cod_Antiguedad.
      * @return No devuelve nada.
      */
@@ -43,15 +39,13 @@ class Antiguedad(object):
     def setCod_Antiguedad(self, cod_Antiguedad):
         self.__cod_Antiguedad = cod_Antiguedad
 
-    """
-     * Setter porc_Anti
+    """Setter porc_Anti
      * @param porc_Anti
      * @return No devuelve nada.
      */
      """
     def setPorc_Anti(self,porc_Anti):
         self.__porc_Anti = porc_Anti
-
 
     cod_ObraSociala    = property(fget = getCod_ObraSocial, fset = setCod_ObraSocial)
     nombre_Obra = property(fget = getNombre_Obra, fset = setNombre_Obra)
