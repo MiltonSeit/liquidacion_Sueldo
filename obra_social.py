@@ -72,6 +72,6 @@ class Obra_Social(object):
     def setDescuento_Obra(self, descuento_Obra):
         self.__descuento_Obra = descuento_Obra
 
-    cod_ObraSociala    = property(fget = getCod_ObraSocial, fset = setCod_ObraSocial)
+    cod_ObraSocial    = property(fget = getCod_ObraSocial, fset = setCod_ObraSocial)
     nombre_Obra = property(fget = getNombre_Obra, fset = setNombre_Obra)
     descuento_Obra = property(fget = getDescuento_Obra, fset = setDescuento_Obra)
