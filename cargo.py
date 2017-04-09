@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #Definimos la clase Cargo
+class Cargo(object):
     __cod_Cargo = None
     __descripcion_Cargo = None
     __puntos_Cargo = None
@@ -65,4 +66,4 @@
 
     cod_Cargo = property(fget = getCod_Cargo, fset = setCod_Cargo)
     descripcion_Cargo = property(fget = getDescripcion_Cargo, fset = setDescripcion_Cargo)
-    puntos_Cargo = property(fget = getPuntos_Cargo, fset = setPuntos_Cargos) 
+    puntos_Cargo = property(fget = getPuntos_Cargo, fset = setPuntos_Cargos)
