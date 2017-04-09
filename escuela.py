@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-#Definimos la clase Cargo
+#Definimos la clase Escuela
 class Escuela(object):
     __cod_Escuela = None
     __cod_Zona = None
@@ -125,4 +125,3 @@ class Escuela(object):
     nombre_Escuela = property (fget = getNombre_Escuela, fset = nombre_Escuela)
     direccion_Escuela = property (fget = getDireccion_Escuela, fset =setDireccion_Escuela)
     telefono_Escuela = property (fget = getTelefono_Escuela, fset = telefono_Escuela)
-    
