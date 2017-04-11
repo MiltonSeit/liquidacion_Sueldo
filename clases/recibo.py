@@ -90,7 +90,7 @@ class Recibo(object):
 
     """Getter sueldo_Basico.
      * @param Ninguno.
-     * @return devuelve el sueldo básico del cliente.
+     * @return devuelve el sueldo básico del docente.
      */
     """
     def getSueldo_Basico(self):

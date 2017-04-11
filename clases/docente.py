@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+import tkMessageBox
+import MySQLdb
 #Definimos la clase Docente
 class Docente(object):
     __dni_Docente = None
@@ -159,8 +160,22 @@ class Docente(object):
     dni_Docente    = property(fget = getDni_Docente, fset = setDni_Docente)
     cod_Antiguedad   = property(fget = getCod_Antiguedad, fset = setCod_Antiguedad)
     cod_ObraSocial    = property(fget = getCod_ObraSocial, fset = setCod_ObraSocial)
-    nombre_Docente   = property(fget = getNombre_Docente, fset = setNombre_Docentel)
+    nombre_Docente   = property(fget = getNombre_Docente, fset = setNombre_Docente)
     apellido_Docente    = property(fget = getApellido_Docente, fset = setApellido_Docente)
     direccion_Docente    = property(fget = getDireccion_Docente, fset = setDireccion_Docente)
     telefono_Docente    = property(fget = getTelefono_Docente, fset = setTelefono_Docente)
     fechaIngreso    = property(fget = getFechaIngreso, fset = setFechaIngreso)
+
+    def altaDocente(self):
+        conn = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO Docente (dni_Docente,cod_Antiguedad, cod_ObraSocial, nombre_Docente, apellido_Docente, direccion_Docente, telefono_Docente, fechaIngreso)VALUES ('%s' , '%s', '%s', '%s', '%s', '%s', '%s', '%s') " % (self.getDni_Docente(), self.getCod_Antiguedad(), self.getCod_ObraSocial(), self.getNombre_Docente(), self.getApellido_Docente(), self.getDireccion_Docente(), self.getTelefono_Docente(), self.getFechaIngreso()))
+        try:
+            conn.commit()
+            conn.close()
+            tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getNombre_Docente() + " ' fue insertado con exito")
+        except:
+           print "Error: No se pudo guardar en la DB"
+
+    def mostrarDocente(self):
+        print self.getDni_Docente(), self.getCod_Antiguedad(), self.getCod_ObraSocial(), self.getNombre_Docente(), self.getApellido_Docente(), self.getDireccion_Docente(), self.getTelefono_Docente(), self.getFechaIngreso()
