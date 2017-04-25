@@ -166,6 +166,11 @@ class Docente(object):
     telefono_Docente    = property(fget = getTelefono_Docente, fset = setTelefono_Docente)
     fechaIngreso    = property(fget = getFechaIngreso, fset = setFechaIngreso)
 
+    """Funcion altaDocente
+     * @param ninguno.
+     * @return No devuelve nada. Agrega el docente.
+     */
+     """
     def altaDocente(self):
         conn = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
         cursor = conn.cursor()
@@ -177,5 +182,10 @@ class Docente(object):
         except:
            print "Error: No se pudo guardar en la DB"
 
+    """Funcion mostrarDocente
+     * @param ninguno.
+     * @return devuelve los datos del docente.
+     */
+     """
     def mostrarDocente(self):
         print self.getDni_Docente(), self.getCod_Antiguedad(), self.getCod_ObraSocial(), self.getNombre_Docente(), self.getApellido_Docente(), self.getDireccion_Docente(), self.getTelefono_Docente(), self.getFechaIngreso()
