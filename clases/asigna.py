@@ -12,10 +12,10 @@ class Asigna(object):
 	__cod_Escuela = None
 
 
-    """Constructor
-    * @param cod_Cargo, descripcion_Cargo, puntos_Cargo
-    * @return no devuelve nada
-    """
+	"""Constructor
+	* @param cod_Cargo, descripcion_Cargo, puntos_Cargo
+	* @return no devuelve nada
+	"""
 	def __init__(self, dni_Docente, cod_Cargo, cod_Escuela):
 
 		self.__dni_Docente = dni_Docente
