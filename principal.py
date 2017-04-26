@@ -80,10 +80,11 @@ centro.pack(side=BOTTOM)
 
 #Titulo
 lblTitu=Label(Tops, font=("Time", 20),text="SISPER Software de Gestion de RR.HH",fg="black", bg="white").place(x=250, y=30)
+
 #imagen titulo
 imagenT=PhotoImage(file="imagenes/turq2.png")
 lblImagen= Label(centro, image= imagenT).place(x=0, y=0)
-#lblImagen.grid(row=0, column=0)
+
 
 #funciones
 
