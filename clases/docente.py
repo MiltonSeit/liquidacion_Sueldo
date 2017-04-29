@@ -180,7 +180,7 @@ class Docente(object):
             conn.close()
             tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getNombre_Docente() + " ' fue insertado con exito")
         except:
-           print "Error: No se pudo guardar en la DB"
+            print "Error: No se pudo guardar en la DB"
 
     """Funcion mostrarDocente
      * @param ninguno.

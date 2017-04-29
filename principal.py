@@ -7,6 +7,43 @@ import tkMessageBox
 from clases.docente import Docente
 from clases.asigna import Asigna
 
+
+
+
+"""Función Comprobar
+* @param no recibe ningún parámetro
+* @return verifica si los datos están correctos
+"""
+def funcionComprobar():
+    if entra_dni.get().isdigit():
+        pass
+    else:
+        tkMessageBox.showerror("AVISO", " DNI INCORRECTO: SIN PUNTOS Y/O LETRAS")
+        return False
+
+    for en in entra_nom.get():
+        if en.isdigit():
+            tkMessageBox.showerror("AVISO", " NOMBRE INCORRECTO: SIN NÚMEROS")
+            return False
+        elif (en == "/") or(en == " ") or en == "-":
+            tkMessageBox.showerror("AVISO", " NOMBRE INCORRECTO: SIN CARACTERES ESPECIALES")
+            return False
+
+    for en in entra_ape.get():
+        if en.isdigit():
+            tkMessageBox.showerror("AVISO", " APELIIDO INCORRECTO: SIN NUMEROS")
+            return False
+        elif (en == "/") or(en == " ") or en == "-":
+            tkMessageBox.showerror("AVISO", " APELIIDO INCORRECTO: SIN CARACTERES ESPECIALES")
+            return False
+    if entra_tel.get().isdigit():
+        pass
+    else:
+        tkMessageBox.showerror("AVISO", " TELEFONO INCORRECTO: SIN PUNTOS Y/O LETRAS")
+        return False
+
+    return True
+
 """Función antiguedad
 * @param no recibe ningún parámetro
 * @return devuelve la cantidad de años que ejerce como Docente
@@ -56,14 +93,17 @@ def cargos():
 * @return da de alta al docente y asigna el cargo
 """
 def agregar_Docente():
-    #Instancia el Docente y da de alta.
-    docente = Docente(entra_dni.get(), antiguedad(), obraS(), entra_nom.get(), entra_ape.get(), entra_dire.get(), entra_tel.get(), entra_fecha.get())
-    docente.altaDocente()
+    if funcionComprobar():
+        #Instancia el Docente y da de alta.
+        docente = Docente(entra_dni.get(), antiguedad(), obraS(), entra_nom.get(), entra_ape.get(), entra_dire.get(), entra_tel.get(), entra_fecha.get())
+        docente.altaDocente()
 
-    #Instancia el cargo y lo da de alta.
-    asigna = Asigna(entra_dni.get(), cargos(), escu())
-    asigna.asignarCargo()
+        #Instancia el cargo y lo da de alta.
+        asigna = Asigna(entra_dni.get(), cargos(), escu())
+        asigna.asignarCargo()
 
+    else:
+        tkMessageBox.showwarning ("AVISO", " CORREGIR LOS DATOS ERRONEOS")
 
 #Crea la ventana Principal
 ventana = Tk()
@@ -94,9 +134,10 @@ lblImagen= Label(centro, image= imagenT).place(x=0, y=0)
 """
 def Alta_Docente():
 
-	punto= Toplevel()
+	punto= Toplevel(ventana)
 	punto.title("Alta-Docente")
 	punto.geometry("1000x500+200+200")
+    
 
 	medio=Frame(punto, width=1000, height=650)
 	medio.pack(side=BOTTOM)
