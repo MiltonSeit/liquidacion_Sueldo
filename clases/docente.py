@@ -166,21 +166,45 @@ class Docente(object):
     telefono_Docente    = property(fget = getTelefono_Docente, fset = setTelefono_Docente)
     fechaIngreso    = property(fget = getFechaIngreso, fset = setFechaIngreso)
 
+    """Funcion buscarDocente
+     * @param ninguno.
+     * @return devuelve si el docente se encuentra en la DB o no.
+     */
+     """
+    def buscarDocente(self):
+        bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
+        cursor = bd.cursor()
+        ent_dni = self.getDni_Docente()
+        sql = "SELECT dni_Docente FROM Docente WHERE dni_Docente ='%s'" % ent_dni
+        try:
+       # Ejecutamos el comando
+            cursor.execute(sql)
+       # Obtenemos todos los registros en una lista de listas
+            resultados = cursor.fetchall()
+
+            return resultados
+
+        except:
+            print "Error: No se pudo obtener los datos del docente"
+    # Nos desconectamos de la base de datos
+        bd.close()
+
     """Funcion altaDocente
      * @param ninguno.
      * @return No devuelve nada. Agrega el docente.
      */
      """
     def altaDocente(self):
-        conn = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO Docente (dni_Docente,cod_Antiguedad, cod_ObraSocial, nombre_Docente, apellido_Docente, direccion_Docente, telefono_Docente, fechaIngreso)VALUES ('%s' , '%s', '%s', '%s', '%s', '%s', '%s', '%s') " % (self.getDni_Docente(), self.getCod_Antiguedad(), self.getCod_ObraSocial(), self.getNombre_Docente(), self.getApellido_Docente(), self.getDireccion_Docente(), self.getTelefono_Docente(), self.getFechaIngreso()))
-        try:
+        if self.buscarDocente():
+            tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getNombre_Docente() + " ' Se encuentra registrado")
+        else:
+            conn = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
+            cursor = conn.cursor()
+            cursor.execute("INSERT INTO Docente (dni_Docente,cod_Antiguedad, cod_ObraSocial, nombre_Docente, apellido_Docente, direccion_Docente, telefono_Docente, fechaIngreso)VALUES ('%s' , '%s', '%s', '%s', '%s', '%s', '%s', '%s') " % (self.getDni_Docente(), self.getCod_Antiguedad(), self.getCod_ObraSocial(), self.getNombre_Docente(), self.getApellido_Docente(), self.getDireccion_Docente(), self.getTelefono_Docente(), self.getFechaIngreso()))
             conn.commit()
             conn.close()
             tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getNombre_Docente() + " ' fue insertado con exito")
-        except:
-            print "Error: No se pudo guardar en la DB"
+            
 
     """Funcion mostrarDocente
      * @param ninguno.

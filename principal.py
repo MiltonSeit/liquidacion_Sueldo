@@ -14,34 +14,41 @@ from clases.asigna import Asigna
 * @param no recibe ningún parámetro
 * @return verifica si los datos están correctos
 """
-def funcionComprobar():
+def funcionComprobar(*args):
     if entra_dni.get().isdigit():
         pass
     else:
-        tkMessageBox.showerror("AVISO", " DNI INCORRECTO: SIN PUNTOS Y/O LETRAS")
+        tkMessageBox.showerror("DNI INCORRECTO", " SIN PUNTOS Y/O LETRAS")
         return False
 
     for en in entra_nom.get():
         if en.isdigit():
-            tkMessageBox.showerror("AVISO", " NOMBRE INCORRECTO: SIN NÚMEROS")
+            tkMessageBox.showerror("NOMBRE INCORRECTO", " SIN NÚMEROS           ")
             return False
-        elif (en == "/") or(en == " ") or en == "-":
-            tkMessageBox.showerror("AVISO", " NOMBRE INCORRECTO: SIN CARACTERES ESPECIALES")
+        elif (en == "/") or en == "-":
+            tkMessageBox.showerror("NOMBRE INCORRECTO", " SIN CARACTERES ESPECIALES")
             return False
 
     for en in entra_ape.get():
         if en.isdigit():
-            tkMessageBox.showerror("AVISO", " APELIIDO INCORRECTO: SIN NUMEROS")
+            tkMessageBox.showerror("APELLIDO INCORRECTO", "SIN NUMEROS       ")
             return False
-        elif (en == "/") or(en == " ") or en == "-":
-            tkMessageBox.showerror("AVISO", " APELIIDO INCORRECTO: SIN CARACTERES ESPECIALES")
+        elif (en == "/") or en == "-":
+            tkMessageBox.showerror("APELLIDO INCORRECTO", "SIN CARACTERES ESPECIALES")
             return False
     if entra_tel.get().isdigit():
         pass
     else:
-        tkMessageBox.showerror("AVISO", " TELEFONO INCORRECTO: SIN PUNTOS Y/O LETRAS")
+        tkMessageBox.showerror("TELEFONO INCORRECTO", "SIN PUNTOS, GUINOES Y/O LETRAS")
+        return False
+    docente = Docente(entra_dni.get(), antiguedad(), obraS(), entra_nom.get(), entra_ape.get(), entra_dire.get(), entra_tel.get(), entra_fecha.get())
+
+    if docente.buscarDocente():
+        tkMessageBox.showinfo("AVISO", " El DNI'  " + entra_dni.get() + " ' Se encuentra registrado")
         return False
 
+    tkMessageBox.showinfo("AVISO", " DATOS CORRECTOS")
+    BotonAgrega = Button(medio, text="Guardar", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)
     return True
 
 """Función antiguedad
@@ -93,17 +100,11 @@ def cargos():
 * @return da de alta al docente y asigna el cargo
 """
 def agregar_Docente():
-    if funcionComprobar():
-        #Instancia el Docente y da de alta.
-        docente = Docente(entra_dni.get(), antiguedad(), obraS(), entra_nom.get(), entra_ape.get(), entra_dire.get(), entra_tel.get(), entra_fecha.get())
-        docente.altaDocente()
-
-        #Instancia el cargo y lo da de alta.
-        asigna = Asigna(entra_dni.get(), cargos(), escu())
-        asigna.asignarCargo()
-
-    else:
-        tkMessageBox.showwarning ("AVISO", " CORREGIR LOS DATOS ERRONEOS")
+    docente = Docente(entra_dni.get(), antiguedad(), obraS(), entra_nom.get(), entra_ape.get(), entra_dire.get(), entra_tel.get(), entra_fecha.get())
+    docente.altaDocente()
+    #Instancia el cargo y lo da de alta.
+    asigna = Asigna(entra_dni.get(), cargos(), escu())
+    asigna.asignarCargo()
 
 #Crea la ventana Principal
 ventana = Tk()
@@ -137,8 +138,8 @@ def Alta_Docente():
 	punto= Toplevel(ventana)
 	punto.title("Alta-Docente")
 	punto.geometry("1000x500+200+200")
-    
 
+        global medio
 	medio=Frame(punto, width=1000, height=650)
 	medio.pack(side=BOTTOM)
 
@@ -160,8 +161,10 @@ def Alta_Docente():
 	global entra_tel
 	global entra_fecha
 
+
 	entra_nom = StringVar()
 	nombre = Entry(medio, textvariable=entra_nom,font=("Arial", 13)).place(x=140, y=30)
+
 
 	entra_ape= StringVar()
 	apellido= Entry(medio, textvariable=entra_ape,font=("Arial", 13)).place(x=600, y=30)
@@ -198,8 +201,12 @@ def Alta_Docente():
 	entra03 = OptionMenu (medio, respo3,*opciones,command= cargos).place(x=600,y=300)
 	respo3.set(opciones[0])
 
+        #Boton de comprobar los datos
+        BotonComprobar = Button(medio, text="Comprobar-Datos", font=("Arial", 14), activebackground ="red", width=14, command= funcionComprobar).place(x=790, y=80)
+
+        global BotonAgrega
 	#Boton Agregar persona
-	BotonAgrega = Button(medio, text="Guardar", font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)
+	BotonAgrega = Button(medio, text="Guardar", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)
 
 	#Boton salir
 	BotonSalir = Button(medio, text="Salir", font=("Arial", 14), relief=RIDGE, activebackground ="brown", command = punto.destroy, width=19).place(x=500,y=400)
@@ -207,7 +214,7 @@ def Alta_Docente():
 	punto.mainloop()
 
 #Botones
-btonAlta=Button(centro, text="Alta Docente", font=("Time", 15), width=10, command=Alta_Docente).place(x=150, y=80)
+btonAlta=Button(centro, text="Nuevo Docente", font=("Time", 15), width=10, command=Alta_Docente).place(x=150, y=80)
 btonBaja=Button(centro, text="Baja Docente", font=("Time", 15), width=10).place(x=425, y=80)
 btonModifica=Button(centro, text="Modificar-Datos", font=("Time", 15), width=12).place(x=700, y=80)
 btonLista=Button(centro, text="Listar", font=("Time", 15), width=12).place(x=700, y=190)
