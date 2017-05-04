@@ -18,7 +18,7 @@ class Docente(object):
     * @param dni_Docente, cod_Antiguedad, cod_ObraSocial, nombre_Docente, apellido_Docente, direccion_Docente, telefono_Docente, fechaIngreso
     * @return no devuelve nada
     """
-    def __init__(self, dni_Docente, cod_Antiguedad, cod_ObraSocial, nombre_Docente, apellido_Docente, direccion_Docente, telefono_Docente, fechaIngreso):
+    def __init__(self, dni_Docente="", cod_Antiguedad="", cod_ObraSocial="", nombre_Docente="", apellido_Docente="", direccion_Docente="", telefono_Docente="", fechaIngreso=""):
         self.__dni_Docente = dni_Docente
         self.__cod_Antiguedad = cod_Antiguedad
         self.__cod_ObraSocial = cod_ObraSocial
@@ -28,6 +28,13 @@ class Docente(object):
         self.__telefono_Docente = telefono_Docente
         self.__fechaIngreso = fechaIngreso
 
+    """Constructor con un solo parametro
+    * @param dni_Docente
+    * @return no devuelve nada
+
+    def __init__(self, dni_Docente):
+        self.__dni_Docente = dni_Docente
+"""
     """Getter dni_Docente.
      * @param Ninguno.
      * @return devuelve el dni del Docente
@@ -204,7 +211,7 @@ class Docente(object):
             conn.commit()
             conn.close()
             tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getNombre_Docente() + " ' fue insertado con exito")
-            
+
 
     """Funcion mostrarDocente
      * @param ninguno.
@@ -213,3 +220,12 @@ class Docente(object):
      """
     def mostrarDocente(self):
         print self.getDni_Docente(), self.getCod_Antiguedad(), self.getCod_ObraSocial(), self.getNombre_Docente(), self.getApellido_Docente(), self.getDireccion_Docente(), self.getTelefono_Docente(), self.getFechaIngreso()
+
+    """Funcion modificarDocente
+     * @param ninguno.
+     * @return modificar los datos del docente.
+     */
+     """
+    def modificarDocente(self):
+        datosDocente = self.buscarDocente()
+        print datosDocente
