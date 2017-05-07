@@ -6,12 +6,14 @@ from datetime import datetime, date, time, timedelta
 import tkMessageBox
 from clases.docente import Docente
 from clases.asigna import Asigna
-from ventanas import *
+from ventanas_docente import *
 
-
+"""Función modificarDocente
+* @param no recibe ningún parámetro
+* @return  abre una nueva ventana para modificar los datos y actualizar el docente
+"""
 def modificarDocente():
-    docente = Docente(entra_dni.get(), obraS(), entra_nom.get(), entra_ape.get(), entra_dire.get(), entra_tel.get(), entra_fecha.get())
-    docente.modificarDocente()
+    Modificar_Docente()
 
 """Función Alta_Docente
 * @param no recibe ningún parámetro
@@ -19,7 +21,7 @@ def modificarDocente():
 """
 def Alta_Docentes():
     Alta_Docente()
-    
+
 #Crea la ventana Principal
 ventana = Tk()
 ventana.title("Principal")

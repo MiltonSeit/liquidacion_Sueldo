@@ -182,15 +182,22 @@ class Docente(object):
         bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
         cursor = bd.cursor()
         ent_dni = self.getDni_Docente()
-        sql = "SELECT dni_Docente FROM Docente WHERE dni_Docente ='%s'" % ent_dni
+        sql = "SELECT * FROM Docente WHERE dni_Docente ='%s'" % ent_dni
         try:
        # Ejecutamos el comando
             cursor.execute(sql)
        # Obtenemos todos los registros en una lista de listas
             resultados = cursor.fetchall()
-
-            return resultados
-
+            for registro in resultados:
+                dni = registro[0]
+                obraSocial = registro[2]
+                nombre = registro[3]
+                apellido = registro[4]
+                direccion = registro[5]
+                telefono = registro[6]
+                fecha = registro[7]
+            lista = [dni, obraSocial, nombre, apellido, direccion, telefono, fecha]
+            return lista
         except:
             print "Error: No se pudo obtener los datos del docente"
     # Nos desconectamos de la base de datos
@@ -227,5 +234,13 @@ class Docente(object):
      */
      """
     def modificarDocente(self):
-        datosDocente = self.buscarDocente()
-        print datosDocente
+        bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
+        cursor = bd.cursor()
+        ent_dni = self.getDni_Docente()
+        cursor.execute ("UPDATE Docente SET dni_Docente='%s',cod_Antiguedad='%s', cod_ObraSocial='%s', nombre_Docente='%s', apellido_Docente='%s', direccion_Docente='%s', telefono_Docente='%s', fechaIngreso='%s' WHERE dni_Docente='%s' " % (self.getDni_Docente(), self.getCod_Antiguedad(), self.getCod_ObraSocial(), self.getNombre_Docente(), self.getApellido_Docente(), self.getDireccion_Docente(),self.getTelefono_Docente(), self.getFechaIngreso(),self.getDni_Docente()))
+        try:
+            bd.commit()
+            bd.close()
+            tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getNombre_Docente() + " ' se ha modificado con exito")
+        except:
+           print "Error: No se pudo guardar en la DB"

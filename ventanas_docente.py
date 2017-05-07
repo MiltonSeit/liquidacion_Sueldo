@@ -7,19 +7,33 @@ import tkMessageBox
 from clases.docente import Docente
 from clases.asigna import Asigna
 
+def actualizarDocente():
+
+    docente= Docente(entra_dni.get(),antiguedad(), obraS(), entra_nom.get(),entra_ape.get(), entra_dire.get(), entra_tel.get(), entra_fecha.get())
+    docente.modificarDocente()
+    entra_dni.set("")
+    entra_nom.set("")
+    entra_ape.set("")
+    entra_dire.set("")
+    entra_tel.set("")
+    entra_fecha.set("")
+
 """Función buscarDocente
 * @param no recibe ningún parámetro
 * @return verifica si los datos están correctos
 """
 def buscarDocente():
     docente= Docente(entra_dni.get())
-    datos = docente.modificarDocente()
+    datos = docente.buscarDocente()
     entra_nom.set(datos[2])
     entra_ape.set(datos[3])
     entra_dire.set(datos[4])
     entra_tel.set(datos[5])
     entra_fecha.set(datos[6])
-    BotonAgrega = Button(medio, text="ACTUALIZAR", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)
+    valor={1:'Asimira', 2:'Medisur',3:'Sps Salud',4:'Osecac',5:'Ioscor'}
+    opc=valor[datos[1]]
+    lblObraSocial= Label(medio,text=opc, font=("Time", 15)).place(x=550, y=328)
+    BotonAgrega = Button(medio, text="ACTUALIZAR", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= actualizarDocente).place(x=230, y=400)
 """Función Comprobar
 * @param no recibe ningún parámetro
 * @return verifica si los datos están correctos
@@ -204,80 +218,75 @@ VENTANA DE MODIFICAR DOCENTE
 """
 def Modificar_Docente():
 
-	punto= Toplevel()
-	punto.title("MODIFICAR - DOCENTE")
-	punto.geometry("1000x500+200+200")
+    	punto= Toplevel()
+    	punto.title("MODIFICAR - DOCENTE")
+    	punto.geometry("1000x500+200+200")
 
         global medio
-	medio=Frame(punto, width=1000, height=650)
-	medio.pack(side=BOTTOM)
+    	medio=Frame(punto, width=1000, height=650)
+    	medio.pack(side=BOTTOM)
 
-	imagen1=PhotoImage(file="imagenes/turq2.png")
-	lblImagen= Label(medio, image= imagen1).place(x=0, y=0)
+    	imagen1=PhotoImage(file="imagenes/turq2.png")
+    	lblImagen= Label(medio, image= imagen1).place(x=0, y=0)
 
-	#etiquetas
-	lblNom= Label(medio,text="Nombre", font=("Time", 15)).place(x=50, y=30)
-	lblApe= Label(medio,text="Apellido", font=("Time", 15)).place(x=500, y=30)
-	lblDni= Label(medio,text="DNI", font=("Time", 15)).place(x=50, y=130)
-	lblDirecc= Label(medio,text="Direccion", font=("Time", 15)).place(x=500, y=130)
-	lblTel= Label(medio,text="Telefono", font=("Time", 15)).place(x=50, y=230)
-	lblFech= Label(medio,text="Fecha-Ingreso", font=("Time", 15)).place(x=500, y=230)
-
-	global entra_nom
-	global entra_dni
-	global entra_ape
-	global entra_dire
-	global entra_tel
-	global entra_fecha
-
-
-	entra_nom = StringVar()
-	nombre = Entry(medio, textvariable=entra_nom,font=("Arial", 13)).place(x=140, y=30)
+    	#etiquetas
+        lblDni= Label(medio,text="DNI", font=("Time", 15)).place(x=150, y=30)
+    	lblNom= Label(medio,text="Nombre", font=("Time", 15)).place(x=50, y=130)
+    	lblApe= Label(medio,text="Apellido", font=("Time", 15)).place(x=500, y=130)
+    	lblDirecc= Label(medio,text="Direccion", font=("Time", 15)).place(x=50, y=230)
+    	lblTel= Label(medio,text="Telefono", font=("Time", 15)).place(x=500, y=230)
+    	lblFech= Label(medio,text="Fecha-Ingreso", font=("Time", 15)).place(x=50, y=330)
+        lblSeparar= Label(medio,text="------------------------------------------------------------------------------------------------------------------------------------------------", font=("Time", 15)).place(x=0, y=80)
+    	global entra_nom
+    	global entra_dni
+    	global entra_ape
+    	global entra_dire
+    	global entra_tel
+    	global entra_fecha
 
 
-	entra_ape= StringVar()
-	apellido= Entry(medio, textvariable=entra_ape,font=("Arial", 13)).place(x=600, y=30)
+    	entra_nom = StringVar()
+    	nombre = Entry(medio, textvariable=entra_nom,font=("Arial", 13)).place(x=140, y=130)
 
-	entra_dni=StringVar()
-	dni= Entry(medio, textvariable=entra_dni,font=("Arial", 13)).place(x=140, y=130)
 
-	entra_dire=StringVar()
-	direccion= Entry(medio, textvariable=entra_dire,font=("Arial", 13)).place(x=600, y=130)
+    	entra_ape= StringVar()
+    	apellido= Entry(medio, textvariable=entra_ape,font=("Arial", 13)).place(x=600, y=130)
 
-	entra_tel=StringVar()
-	telefono= Entry(medio, textvariable=entra_tel,font=("Arial", 13)).place(x=160, y=230)
 
-	entra_fecha=StringVar()
-	fecha= Entry(medio, textvariable=entra_fecha,font=("Arial", 13)).place(x=650, y=230)
+    	entra_dni=StringVar()
+    	dni= Entry(medio, textvariable=entra_dni,font=("Arial", 13)).place(x=240, y=30)
+        entra_dni.set("DNI A BUSCAR")
 
-	#Conexion
-	global respo1
-	global respo2
-	global respo3
+    	entra_dire=StringVar()
+    	direccion= Entry(medio, textvariable=entra_dire,font=("Arial", 13)).place(x=160, y=230)
 
-	respo1=StringVar(medio)
-	opciones = ['Seleccione obra Social','Asimira', 'Medisur', 'Sps Salud','Osecac','Ioscor']
-	entra01 = OptionMenu (medio, respo1,*opciones, command= obraS).place(x=200,y=300)
-	respo1.set(opciones[0])
 
-	respo2=StringVar(medio)
-	opciones = ['Seleccione Escuela','Isabel Estela Vera', 'Agop Seferian','Bicentenario','Angel Acuna','Bernardino Rivadia']
-	entra02 = OptionMenu (medio, respo2,*opciones,command= escu).place(x=400,y=300)
-	respo2.set(opciones[0])
+    	entra_tel=StringVar()
+    	telefono= Entry(medio, textvariable=entra_tel,font=("Arial", 13)).place(x=600, y=230)
 
-	respo3=StringVar(medio)
-	opciones = ['Seleccione Cargo','Bibliotecarios', 'Jefe Preceptores Primaria', 'Jefe Coordinador','Maestro de Grado','Maestro de Grado Esc Hogar','Maestro Especial Esc Adulto','Rector Superior','Supervisor']
-	entra03 = OptionMenu (medio, respo3,*opciones,command= cargos).place(x=600,y=300)
-	respo3.set(opciones[0])
 
-        #Boton de comprobar los datos
-        BotonComprobar = Button(medio, text="Buscar Docente", font=("Arial", 14), activebackground ="red", width=14, command= buscarDocente).place(x=790, y=80)
+    	entra_fecha=StringVar()
+    	fecha= Entry(medio, textvariable=entra_fecha,font=("Arial", 13)).place(x=200, y=330)
+
+    	#Conexion
+    	global respo1
+    	global respo2
+    	global respo3
+
+    	respo1=StringVar(medio)
+    	opciones = ['Seleccione obra Social','Asimira', 'Medisur', 'Sps Salud','Osecac','Ioscor']
+    	entra01 = OptionMenu (medio, respo1,*opciones, command= obraS).place(x=700,y=328)
+    	respo1.set(opciones[0])
+
+
+            #Boton de comprobar los datos
+        BotonComprobar = Button(medio, text="Buscar Docente", font=("Arial", 14), activebackground ="red", width=14, command= buscarDocente).place(x=450, y=26)
 
         global BotonAgrega
-	#Boton Agregar persona
-	BotonAgrega = Button(medio, text="ACTUALIZAR", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)
+    	#Boton Agregar persona
+    	BotonAgrega = Button(medio, text="ACTUALIZAR", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)
 
-	#Boton salir
-	BotonSalir = Button(medio, text="SALIR", font=("Arial", 14), relief=RIDGE, activebackground ="brown", command = punto.destroy, width=19).place(x=500,y=400)
+    	#Boton salir
+    	BotonSalir = Button(medio, text="SALIR", font=("Arial", 14), relief=RIDGE, activebackground ="brown", command = punto.destroy, width=19).place(x=500,y=400)
 
-	punto.mainloop()
+    	punto.mainloop()
