@@ -7,8 +7,26 @@ import tkMessageBox
 from clases.docente import Docente
 from clases.asigna import Asigna
 
-def actualizarDocente():
+def bajaDocente():
+    docente= Docente(entra_dni.get())
+    datos = docente.buscarDocente()
+    #label de los nombres
+    lblNom= Label(medio,text="Nombre: ",background="gray", font=("Time", 15)).place(x=50, y=130)
+    lblApe= Label(medio,text="Apellido: ",background="gray", font=("Time", 15)).place(x=500, y=130)
+    lblDirecc= Label(medio,text="Direccion: ",background="gray", font=("Time", 15)).place(x=50, y=230)
+    lblTel= Label(medio,text="Telefono: ",background="gray", font=("Time", 15)).place(x=500, y=230)
+    lblFech= Label(medio,text="Fecha-Ingreso: ",background="gray", font=("Time", 15)).place(x=50, y=330)
+    #label de los datos
+    lblNombre= Label(medio,text=datos[2], font=("Time", 15)).place(x=140, y=130)
+    lblApellido= Label(medio,text=datos[3], font=("Time", 15)).place(x=600, y=130)
+    lblDirecciom= Label(medio,text=datos[4], font=("Time", 15)).place(x=160, y=230)
+    lblTelefono= Label(medio,text=datos[5], font=("Time", 15)).place(x=600, y=230)
+    lblFecha= Label(medio,text=datos[6], font=("Time", 15)).place(x=200, y=330)
+    #Activar el boton de docente
+    BotonBaja = Button(medio, text="Baja Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)
 
+
+def actualizarDocente():
     docente= Docente(entra_dni.get(),antiguedad(), obraS(), entra_nom.get(),entra_ape.get(), entra_dire.get(), entra_tel.get(), entra_fecha.get())
     docente.modificarDocente()
     entra_dni.set("")
@@ -278,13 +296,53 @@ def Modificar_Docente():
     	entra01 = OptionMenu (medio, respo1,*opciones, command= obraS).place(x=700,y=328)
     	respo1.set(opciones[0])
 
+        #Boton modificar cargo
+        BotonModificarCargo = Button(medio, text="Modificar Cargo", font=("Arial", 14), activebackground ="red", width=14, command= buscarDocente).place(x=450, y=26)
 
-            #Boton de comprobar los datos
+        #Boton de comprobar los datos
         BotonComprobar = Button(medio, text="Buscar Docente", font=("Arial", 14), activebackground ="red", width=14, command= buscarDocente).place(x=450, y=26)
 
         global BotonAgrega
     	#Boton Agregar persona
     	BotonAgrega = Button(medio, text="ACTUALIZAR", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)
+
+    	#Boton salir
+    	BotonSalir = Button(medio, text="SALIR", font=("Arial", 14), relief=RIDGE, activebackground ="brown", command = punto.destroy, width=19).place(x=500,y=400)
+
+    	punto.mainloop()
+
+"""
+VENTANA DE MODIFICAR DOCENTE
+"""
+def Baja_Docente():
+
+    	punto= Toplevel()
+    	punto.title("DAR DE BAJA AL DOCENTE")
+    	punto.geometry("1000x500+200+200")
+
+        global medio
+    	medio=Frame(punto, width=1000, height=650)
+    	medio.pack(side=BOTTOM)
+
+    	imagen1=PhotoImage(file="imagenes/turq2.png")
+    	lblImagen= Label(medio, image= imagen1).place(x=0, y=0)
+
+    	#etiquetas
+        lblDni= Label(medio,text="DNI: ",background="gray", font=("Time", 15)).place(x=150, y=30)
+        lblSeparar= Label(medio,text="------------------------------------------------------------------------------------------------------------------------------------------------", font=("Time", 15)).place(x=0, y=80)
+
+        global entra_dni
+    	entra_dni=StringVar()
+    	dni= Entry(medio, textvariable=entra_dni,font=("Arial", 13)).place(x=240, y=30)
+        entra_dni.set("DNI A BUSCAR")
+
+
+        #Boton de comprobar los datos
+        BotonBuscar = Button(medio, text="Buscar Docente", font=("Arial", 14), activebackground ="red", width=14, command= bajaDocente).place(x=450, y=26)
+
+        global BotonBaja
+    	#Boton Agregar persona
+    	BotonBaja = Button(medio, text="Baja Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)
 
     	#Boton salir
     	BotonSalir = Button(medio, text="SALIR", font=("Arial", 14), relief=RIDGE, activebackground ="brown", command = punto.destroy, width=19).place(x=500,y=400)
