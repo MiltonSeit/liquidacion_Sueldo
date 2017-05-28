@@ -147,6 +147,12 @@ def agregar_Docente():
     #Instancia el cargo y lo da de alta.
     asigna = Asigna(entra_dni.get(), cargos(), escu())
     asigna.asignarCargo()
+    entra_dni.set("")
+    entra_nom.set("")
+    entra_ape.set("")
+    entra_dire.set("")
+    entra_tel.set("")
+    entra_fecha.set("")
 
 """
 VENTANA ALTA DE DOCENTE
