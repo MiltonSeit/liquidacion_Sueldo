@@ -7,6 +7,29 @@ import tkMessageBox
 from clases.docente import Docente
 from clases.asigna import Asigna
 
+def asignacionCargo():
+    #Instancia el cargo y lo da de alta.
+    asigna = Asigna(entra_dni.get(), cargos(), escu())
+    asigna.asignarCargo()
+
+
+def asignar_Cargo():
+    docente= Docente(entra_dni.get())
+    datos = docente.buscarDocente()
+    #label de los nombres
+    lblNom= Label(medio,text="Nombre: ",background="gray", font=("Time", 15)).place(x=50, y=130)
+    lblApe= Label(medio,text="Apellido: ",background="gray", font=("Time", 15)).place(x=500, y=130)
+    lblDirecc= Label(medio,text="Direccion: ",background="gray", font=("Time", 15)).place(x=50, y=230)
+    lblTel= Label(medio,text="Telefono: ",background="gray", font=("Time", 15)).place(x=500, y=230)
+    lblFech= Label(medio,text="Fecha-Ingreso: ",background="gray", font=("Time", 15)).place(x=50, y=330)
+    #label de los datos
+    lblNombre= Label(medio,text=datos[2], font=("Time", 15)).place(x=140, y=130)
+    lblApellido= Label(medio,text=datos[3], font=("Time", 15)).place(x=600, y=130)
+    lblDireccion= Label(medio,text=datos[4], font=("Time", 15)).place(x=160, y=230)
+    lblTelefono= Label(medio,text=datos[5], font=("Time", 15)).place(x=600, y=230)
+    lblFecha= Label(medio,text=datos[6], font=("Time", 15)).place(x=200, y=330)
+    BotonAgrega = Button(medio, text="Guardar", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown",command=asignacionCargo, width=19).place(x=230, y=400)
+
 def bajaDocente():
     docente= Docente(entra_dni.get())
     datos = docente.buscarDocente()
@@ -23,7 +46,7 @@ def bajaDocente():
     lblTelefono= Label(medio,text=datos[5], font=("Time", 15)).place(x=600, y=230)
     lblFecha= Label(medio,text=datos[6], font=("Time", 15)).place(x=200, y=330)
     #Activar el boton de docente
-    BotonBaja = Button(medio, text="Baja Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)
+    BotonBaja = Button(medio, text="Baja Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19).place(x=230, y=400)
 
 
 def actualizarDocente():
@@ -52,6 +75,7 @@ def buscarDocente():
     opc=valor[datos[1]]
     lblObraSocial= Label(medio,text=opc, font=("Time", 15)).place(x=550, y=328)
     BotonAgrega = Button(medio, text="ACTUALIZAR", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= actualizarDocente).place(x=230, y=400)
+
 """Función Comprobar
 * @param no recibe ningún parámetro
 * @return verifica si los datos están correctos
@@ -143,10 +167,7 @@ def cargos():
 """
 def agregar_Docente():
     docente = Docente(entra_dni.get(), antiguedad(), obraS(), entra_nom.get(), entra_ape.get(), entra_dire.get(), entra_tel.get(), entra_fecha.get())
-    docente.altaDocente()
-    #Instancia el cargo y lo da de alta.
-    asigna = Asigna(entra_dni.get(), cargos(), escu())
-    asigna.asignarCargo()
+    docente.agregarDocente()
     entra_dni.set("")
     entra_nom.set("")
     entra_ape.set("")
@@ -157,10 +178,10 @@ def agregar_Docente():
 """
 VENTANA ALTA DE DOCENTE
 """
-def Alta_Docente():
+def Agregar_Docente():
 
 	punto= Toplevel()
-	punto.title("Alta-Docente")
+	punto.title("Agregar-Docente")
 	punto.geometry("1000x500+200+200")
 
         global medio
@@ -214,16 +235,6 @@ def Alta_Docente():
 	opciones = ['Seleccione obra Social','Asimira', 'Medisur', 'Sps Salud','Osecac','Ioscor']
 	entra01 = OptionMenu (medio, respo1,*opciones, command= obraS).place(x=200,y=300)
 	respo1.set(opciones[0])
-
-	respo2=StringVar(medio)
-	opciones = ['Seleccione Escuela','Isabel Estela Vera', 'Agop Seferian','Bicentenario','Angel Acuna','Bernardino Rivadia']
-	entra02 = OptionMenu (medio, respo2,*opciones,command= escu).place(x=400,y=300)
-	respo2.set(opciones[0])
-
-	respo3=StringVar(medio)
-	opciones = ['Seleccione Cargo','Bibliotecarios', 'Jefe Preceptores Primaria', 'Jefe Coordinador','Maestro de Grado','Maestro de Grado Esc Hogar','Maestro Especial Esc Adulto','Rector Superior','Supervisor']
-	entra03 = OptionMenu (medio, respo3,*opciones,command= cargos).place(x=600,y=300)
-	respo3.set(opciones[0])
 
         #Boton de comprobar los datos
         BotonComprobar = Button(medio, text="Comprobar-Datos", font=("Arial", 14), activebackground ="red", width=14, command= funcionComprobar).place(x=790, y=80)
@@ -349,6 +360,59 @@ def Baja_Docente():
         global BotonBaja
     	#Boton Agregar persona
     	BotonBaja = Button(medio, text="Baja Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)
+
+    	#Boton salir
+    	BotonSalir = Button(medio, text="SALIR", font=("Arial", 14), relief=RIDGE, activebackground ="brown", command = punto.destroy, width=19).place(x=500,y=400)
+
+    	punto.mainloop()
+
+"""
+VENTANA DE Asignar cargos
+"""
+def Asignar_Cargos():
+
+    	punto= Toplevel()
+    	punto.title("ASIGNAR CARGOS AL DOCENTE")
+    	punto.geometry("1000x500+200+200")
+
+        global medio
+    	medio=Frame(punto, width=1000, height=650)
+    	medio.pack(side=BOTTOM)
+
+    	imagen1=PhotoImage(file="imagenes/turq2.png")
+    	lblImagen= Label(medio, image= imagen1).place(x=0, y=0)
+
+    	#etiquetas
+        lblDni= Label(medio,text="DNI: ",background="gray", font=("Time", 15)).place(x=150, y=30)
+        lblSeparar= Label(medio,text="------------------------------------------------------------------------------------------------------------------------------------------------", font=("Time", 15)).place(x=0, y=80)
+
+        global entra_dni
+    	entra_dni=StringVar()
+    	dni= Entry(medio, textvariable=entra_dni,font=("Arial", 13)).place(x=240, y=30)
+        entra_dni.set("DNI A BUSCAR")
+
+
+        #Boton de comprobar los datos
+        BotonBuscar = Button(medio, text="Buscar Docente", font=("Arial", 14), activebackground ="red", width=14, command= asignar_Cargo).place(x=450, y=26)
+
+        	#Conexion
+        global respo1
+        global respo2
+        global respo3
+
+        respo2=StringVar(medio)
+        opciones = ['Seleccione Escuela','Isabel Estela Vera', 'Agop Seferian','Bicentenario','Angel Acuna','Bernardino Rivadia']
+        entra02 = OptionMenu (medio, respo2,*opciones,command= escu).place(x=400,y=300)
+        respo2.set(opciones[0])
+
+        respo3=StringVar(medio)
+        opciones = ['Seleccione Cargo','Bibliotecarios', 'Jefe Preceptores Primaria', 'Jefe Coordinador','Maestro de Grado','Maestro de Grado Esc Hogar','Maestro Especial Esc Adulto','Rector Superior','Supervisor']
+        entra03 = OptionMenu (medio, respo3,*opciones,command= cargos).place(x=600,y=300)
+        respo3.set(opciones[0])
+
+        global BotonAgrega
+    	#Boton Agregar cargo
+    	BotonAgrega = Button(medio, text="Guardar", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19).place(x=230, y=400)
 
     	#Boton salir
     	BotonSalir = Button(medio, text="SALIR", font=("Arial", 14), relief=RIDGE, activebackground ="brown", command = punto.destroy, width=19).place(x=500,y=400)

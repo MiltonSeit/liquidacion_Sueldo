@@ -190,6 +190,7 @@ class Docente(object):
             resultados = cursor.fetchall()
             for registro in resultados:
                 dni = registro[0]
+                #el que no se envia es cod_antiguedad
                 obraSocial = registro[2]
                 nombre = registro[3]
                 apellido = registro[4]
@@ -208,16 +209,16 @@ class Docente(object):
      * @return No devuelve nada. Agrega el docente.
      */
      """
-    def altaDocente(self):
+    def agregarDocente(self):
         if self.buscarDocente():
-            tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getNombre_Docente() + " ' Se encuentra registrado")
+            tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getDni_Docente() + " ' Se encuentra registrado")
         else:
             conn = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
             cursor = conn.cursor()
             cursor.execute("INSERT INTO Docente (dni_Docente,cod_Antiguedad, cod_ObraSocial, nombre_Docente, apellido_Docente, direccion_Docente, telefono_Docente, fechaIngreso)VALUES ('%s' , '%s', '%s', '%s', '%s', '%s', '%s', '%s') " % (self.getDni_Docente(), self.getCod_Antiguedad(), self.getCod_ObraSocial(), self.getNombre_Docente(), self.getApellido_Docente(), self.getDireccion_Docente(), self.getTelefono_Docente(), self.getFechaIngreso()))
             conn.commit()
             conn.close()
-            tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getNombre_Docente() + " ' fue insertado con exito")
+            tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getDni_Docente() + " ' fue insertado con exito")
 
 
     """Funcion mostrarDocente

@@ -84,3 +84,4 @@ class Asigna(object):
 		cursor.execute("INSERT INTO Asignar(dni_Docente, cod_Cargo,numero_Escuela)VALUES ('%s','%s','%s')" %(self.getDni_Docente(), self.getCod_Cargo(),self.getCod_Escuela()))
 		base.commit()
 		base.close()
+		tkMessageBox.showinfo("AVISO", " El Cargo de '  " + self.getDni_Docente() + " ' fue insertado con exito")
