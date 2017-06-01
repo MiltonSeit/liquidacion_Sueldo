@@ -20,8 +20,8 @@ def asignarCargo():
 * @param no recibe ningún parámetro
 * @return  abre una nueva ventana para modificar los datos y actualizar el docente
 """
-def bajaDocente():
-    Baja_Docente()
+def AB_Docente():
+    AlBa_Docente()
 
 """Función modificarDocente
 * @param no recibe ningún parámetro
@@ -60,7 +60,7 @@ lblImagen= Label(centro, image= imagenT).place(x=0, y=0)
 
 #Botones
 btonAlta=Button(centro, text="Nuevo Docente", font=("Time", 15), width=12, command=Agregar_Docentes).place(x=150, y=80)
-btonBaja=Button(centro, text="Alta/Baja Docente", font=("Time", 15), width=15, command=Baja_Docente).place(x=425, y=80)
+btonBaja=Button(centro, text="Alta/Baja Docente", font=("Time", 15), width=15, command=AB_Docente).place(x=425, y=80)
 btonModifica=Button(centro, text="Modificar-Datos", font=("Time", 15),command=modificarDocente, width=12).place(x=700, y=80)
 btonLista=Button(centro, text="Listar", font=("Time", 15), width=12).place(x=700, y=190)
 btonCalcula=Button(centro, text="Calcular Sueldo", font=("Time", 15), width=12).place(x=150, y=190)

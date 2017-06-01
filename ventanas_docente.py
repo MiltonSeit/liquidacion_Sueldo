@@ -7,6 +7,12 @@ import tkMessageBox
 from clases.docente import Docente
 from clases.asigna import Asigna
 
+def alta_Docente():
+    tkMessageBox.showinfo("AVISO", " El Docente'  " + entra_dni.get() + " ' fue dado de alta")
+
+def baja_Docente():
+    tkMessageBox.showinfo("AVISO", " El Docente'  " + entra_dni.get() + " ' fue dado de baja")
+
 def asignacionCargo():
     #Instancia el cargo y lo da de alta.
     asigna = Asigna(entra_dni.get(), cargos(), escu())
@@ -30,7 +36,7 @@ def asignar_Cargo():
     lblFecha= Label(medio,text=datos[6], font=("Time", 15)).place(x=200, y=330)
     BotonAgrega = Button(medio, text="Guardar", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown",command=asignacionCargo, width=19).place(x=230, y=400)
 
-def bajaDocente():
+def alta_bajaDocente():
     docente= Docente(entra_dni.get())
     datos = docente.buscarDocente()
     #label de los nombres
@@ -46,7 +52,8 @@ def bajaDocente():
     lblTelefono= Label(medio,text=datos[5], font=("Time", 15)).place(x=600, y=230)
     lblFecha= Label(medio,text=datos[6], font=("Time", 15)).place(x=200, y=330)
     #Activar el boton de docente
-    BotonBaja = Button(medio, text="Baja Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19).place(x=230, y=400)
+    BotonBaja = Button(medio, text="Baja Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command=baja_Docente).place(x=230, y=400)
+    BotonAlta = Button(medio, text="Alta Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= alta_Docente).place(x=500,y=400)
 
 
 def actualizarDocente():
@@ -176,7 +183,7 @@ def agregar_Docente():
     entra_fecha.set("")
 
 """
-VENTANA ALTA DE DOCENTE
+VENTANA AGREGAR DOCENTE
 """
 def Agregar_Docente():
 
@@ -331,10 +338,10 @@ def Modificar_Docente():
 """
 VENTANA DE MODIFICAR DOCENTE
 """
-def Baja_Docente():
+def AlBa_Docente():
 
     	punto= Toplevel()
-    	punto.title("DAR DE BAJA AL DOCENTE")
+    	punto.title("DAR DE ALTA/BAJA AL DOCENTE")
     	punto.geometry("1000x500+200+200")
 
         global medio
@@ -355,14 +362,18 @@ def Baja_Docente():
 
 
         #Boton de comprobar los datos
-        BotonBuscar = Button(medio, text="Buscar Docente", font=("Arial", 14), activebackground ="red", width=14, command= bajaDocente).place(x=450, y=26)
+        BotonBuscar = Button(medio, text="Buscar Docente", font=("Arial", 14), activebackground ="red", width=14, command= alta_bajaDocente).place(x=450, y=26)
 
         global BotonBaja
-    	#Boton Agregar persona
-    	BotonBaja = Button(medio, text="Baja Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)
+    	#Boton Baja
+    	BotonBaja = Button(medio, text="Baja Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19,).place(x=230, y=400)
+
+        global BotonAlta
+        #Boton ALTA
+    	BotonAlta = Button(medio, text="Alta Docente", state='disabled',font=("Arial", 14), relief=RIDGE, activebackground ="brown",  width=19).place(x=500,y=400)
 
     	#Boton salir
-    	BotonSalir = Button(medio, text="SALIR", font=("Arial", 14), relief=RIDGE, activebackground ="brown", command = punto.destroy, width=19).place(x=500,y=400)
+    	BotonSalir = Button(medio, text="SALIR", font=("Arial", 14), relief=RIDGE, activebackground ="brown", command = punto.destroy, width=19).place(x=750,y=400)
 
     	punto.mainloop()
 
