@@ -8,13 +8,15 @@ from clases.docente import Docente
 from clases.asigna import Asigna
 
 def alta_Docente():
-    tkMessageBox.showinfo("AVISO", " El Docente'  " + entra_dni.get() + " ' fue dado de alta")
+    docente = Docente(entra_dni.get())
+    docente.altaDocente()
 
 def baja_Docente():
-    tkMessageBox.showinfo("AVISO", " El Docente'  " + entra_dni.get() + " ' fue dado de baja")
+    docente = Docente(entra_dni.get())
+    docente.bajaDocente()
 
 def asignacionCargo():
-    #Instancia el cargo y lo da de alta.
+    #Instancia el cargo y lo asigno al docente.
     asigna = Asigna(entra_dni.get(), cargos(), escu())
     asigna.asignarCargo()
 

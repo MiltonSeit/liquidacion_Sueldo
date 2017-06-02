@@ -204,9 +204,9 @@ class Docente(object):
     # Nos desconectamos de la base de datos
         bd.close()
 
-    """Funcion altaDocente
+    """Funcion agregarDocente
      * @param ninguno.
-     * @return No devuelve nada. Agrega el docente.
+     * @return No devuelve nada. Agrega el docente al sistema.
      */
      """
     def agregarDocente(self):
@@ -243,5 +243,36 @@ class Docente(object):
             bd.commit()
             bd.close()
             tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getNombre_Docente() + " ' se ha modificado con exito")
+        except:
+           print "Error: No se pudo guardar en la DB"
+
+    """Funcion bajaDocente
+     * @param ninguno.
+     * @return da de baja al docente que se encuentra activo..
+     */
+     """
+    def bajaDocente(self):
+        bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
+        cursor = bd.cursor()
+        cursor.execute ("UPDATE Docente SET activo='%s' WHERE dni_Docente='%s' " % ('N',self.getDni_Docente()))
+        try:
+            bd.commit()
+            bd.close()
+            tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getDni_Docente() + " ' se ha dado de baja con éxito")
+        except:
+           print "Error: No se pudo guardar en la DB"
+
+    """Función altaDocente
+    * @param no recibe ninguno.
+    * @return da de alta el usuario que estaba dado de baja.
+    """
+    def altaDocente(self):
+        bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
+        cursor = bd.cursor()
+        cursor.execute("UPDATE Docente SET activo='%s' WHERE dni_Docente='%s'" % ('Y',self.getDni_Docente()))
+        try:
+            bd.commit()
+            bd.close()
+            tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getDni_Docente() + " ' se ha dado de baja con éxito")
         except:
            print "Error: No se pudo guardar en la DB"
