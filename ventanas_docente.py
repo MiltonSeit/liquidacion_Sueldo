@@ -234,6 +234,7 @@ def Agregar_Docente():
 
 	entra_fecha=StringVar()
 	fecha= Entry(medio, textvariable=entra_fecha,font=("Arial", 13)).place(x=650, y=230)
+        entra_fecha.set("DD/MM/AAAA")
 
 	#Conexion
 	global respo1

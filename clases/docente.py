@@ -200,7 +200,7 @@ class Docente(object):
             lista = [dni, obraSocial, nombre, apellido, direccion, telefono, fecha]
             return lista
         except:
-            print "Error: No se pudo obtener los datos del docente"
+            pass
     # Nos desconectamos de la base de datos
         bd.close()
 

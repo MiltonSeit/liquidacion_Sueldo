@@ -1,13 +1,10 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
+import tkMessageBox
 #Definimos la clase Recibo
 class Recibo(object):
     __numero_Recibo = None
-    __dni_Docente = None
-    __cod_Cargo = None
-    __cod_Zona = None
-    __cod_Escuela = None
+    __cod_Asignar = None
     __sueldo_Basico = None
     __monto_Anti = None
     __suma_Zona = None
@@ -27,12 +24,9 @@ class Recibo(object):
     * @param numero_Recibo, dni_Docente, cod_Cargo, cod_Zona, cod_Escuela, sueldo_Basico, monto_Anti, suma_Zona, asignacion_Julio, presentismo, no_Remune, subTotal1, jubilacion, desObraSocial, seguro, subTotal2, total, fechaCobro, fechaPeriodo
     * @return no devuelve nada
     """
-    def __init__(self, numero_Recibo, dni_Docente, cod_Cargo, cod_Zona, cod_Escuela, sueldo_Basico, monto_Anti, suma_Zona, asignacion_Julio, presentismo, no_Remune, subTotal1, jubilacion, desObraSocial, seguro, subTotal2, total, fechaCobro, fechaPeriodo):
+    def __init__(self, numero_Recibo="", cod_Asignar="", sueldo_Basico="", monto_Anti="", suma_Zona="", asignacion_Julio="", presentismo="", no_Remune="", subTotal1="", jubilacion="", desObraSocial="", seguro="", subTotal2="", total="", fechaCobro="", fechaPeriodo=""):
         self.__numero_Recibo = numero_Recibo
-        self.__dni_Docente = dni_Docente
-        self.__cod_Cargo = cod_Cargo
-        self.__cod_Zona = cod_Zona
-        self.__cod_Escuela = cod_Escuela
+        self.__cod_Asignar = cod_Asignar
         self.__sueldo_Basico = sueldo_Basico
         self.__monto_Anti = monto_Anti
         self.__suma_Zona = suma_Zona
@@ -56,37 +50,13 @@ class Recibo(object):
     def getNumero_Recibo(self):
         return self.__numero_Recibo
 
-    """Getter dni_Docente.
+    """Getter cod_Asignar.
      * @param Ninguno.
-     * @return devuelve el dni del docente
+     * @return devuelve el codigo de asignación.
      */
     """
-    def getDni_Docente(self):
-        return self.__dni_Docente
-
-    """Getter cod_Cargo.
-     * @param Ninguno.
-     * @return devuelve el codigo de cargo del docente.
-     */
-    """
-    def getCod_Cargo(self):
-        return self.__cod_Cargo
-
-    """Getter cod_Zona.
-     * @param Ninguno.
-     * @return devuelve el codigo de la zona en la que se encuentra el cliente.
-     */
-    """
-    def getCod_Zona(self):
-        return self.__cod_Zona
-
-    """Getter cod_Escuela.
-     * @param Ninguno.
-     * @return devuelve el codigo de la escuela en la que trabaja el cliente.
-     */
-    """
-    def getCod_Escuela(self):
-        return self.__cod_Escuela
+    def getCod_Asignar(self):
+        return self.__cod_Asignar
 
     """Getter sueldo_Basico.
      * @param Ninguno.
@@ -110,7 +80,7 @@ class Recibo(object):
      */
     """
     def getSuma_Zona(self):
-        return suma_Zona
+        return self.__suma_Zona
 
     """Getter asignacion_Julio.
      * @param Ninguno.
@@ -208,37 +178,13 @@ class Recibo(object):
     def setNumero_Recibo(self, numero_Recibo):
         self.__numero_Recibo = numero_Recibo
 
-    """Setter dni_Docente.
-     * @param dni_Docente.
+    """Setter cod_Asignar.
+     * @param cod_Asignar.
      * @return no devuelve nada.
      */
     """
-    def setDni_Docente(self, dni_Docente):
-        self.__dni_Docente = dni_Docente
-
-    """Setter cod_Cargo.
-     * @param cod_Cargo.
-     * @return no devuelve nada.
-     */
-    """
-    def setCod_Cargo(self, cod_Cargo):
-        self.__cod_Cargo = cod_Cargo
-
-    """Setter cod_Zona.
-     * @param cod_Zona.
-     * @return no devuelve nada.
-     */
-    """
-    def setCod_Zona(self, cod_Zona):
-        self.__cod_Zona = cod_Zona
-
-    """Setter cod_Escuela.
-     * @param cod_Escuela.
-     * @return no devuelve nada.
-     */
-    """
-    def setCod_Escuela(self, cod_Escuela):
-        self.__cod_Escuela = cod_Escuela
+    def setCod_Asignar(self, cod_Asignar):
+        self.__cod_Asignar = cod_Asignar
 
     """Setter sueldo_Basico.
      * @param sueldo_Basico.
@@ -351,3 +297,61 @@ class Recibo(object):
     """
     def setFechaPeriodo(self, fechaPeriodo):
         self.__fechaPeriodo = fechaPeriodo
+
+    numero_Recibo = property(fget= getNumero_Recibo,fset=setNumero_Recibo)
+    cod_Asignar = property(fget=getCod_Asignar,fset=setCod_Asignar)
+    sueldo_Basico = property(fget=getSueldo_Basico,fset=setSueldo_Basico)
+    monto_Anti = property(fget=getMonto_Anti,fset=setMonto_Anti)
+    suma_Zona = property(fget=getSuma_Zona,fset=getSuma_Zona)
+    asignacion_Julio = property(fget=getAsignacion_Julio,fset=setAsignacion_Julio)
+    presentismo = property(fget=getPresentismo,fset=setPresentismo)
+    no_Remune = property(fget=getNo_Remunerativo,fset=setNo_Remune)
+    subTotal1 = property(fget=getSubTotal1,fset=setSubTotal1)
+    jubilacion = property(fget=getJubilacion,fset=setJubilacion)
+    desObraSocial = property(fget=getDesObraSocial,fset=setDesObraSocial)
+    seguro = property(fget=getSeguro,fset=setSeguro)
+    subTotal2 = property(fget=getSubTotal2,fset=setSubTotal2)
+    total = property(fget=getTotal,fset=setTotal)
+    fechaCobro = property(fget=getFechaCobro,fset=setFechaCobro)
+    fechaPeriodo = property(fget=getFechaPeriodo,fset=setFechaPeriodo)
+
+    def mostrarRecibo(self):
+        print self.getNumero_Recibo()," ",self.getCod_Asignar(), " ", self.getSueldo_Basico(), " ", self.getMonto_Anti()," ", self.getSuma_Zona(), " ", self.getAsignacion_Julio()," ",
+        self.getPresentismo()," ", self.getNo_Remunerativo()," ", self.getSubTotal1()," ", self.getJubilacion()," ", self.getDesObraSocial()," ", self.getSeguro()," ", self.getSubTotal2()," ", self.getTotal()," fechaC ", self.getFechaCobro()," fechaPer", self.getFechaPeriodo()
+
+    def crearFichero(self):
+        registro = open("registroRecibo.csv",'a')
+        registro.write(str(self.getNumero_Recibo()))
+        registro.write(",")
+        registro.write(str(self.getCod_Asignar()))
+        registro.write(",")
+        registro.write(str(self.getSueldo_Basico()))
+        registro.write(",")
+        registro.write(str(self.getMonto_Anti()))
+        registro.write(",")
+        registro.write(str(self.getSuma_Zona()))
+        registro.write(",")
+        registro.write(str(self.getAsignacion_Julio()))
+        registro.write(",")
+        registro.write(str(self.getPresentismo()))
+        registro.write(",")
+        registro.write(str(self.getNo_Remunerativo()))
+        registro.write(",")
+        registro.write(str(self.getSubTotal1()))
+        registro.write(",")
+        registro.write(str(self.getJubilacion()))
+        registro.write(",")
+        registro.write(str(self.getDesObraSocial()))
+        registro.write(",")
+        registro.write(str(self.getSeguro()))
+        registro.write(",")
+        registro.write(str(self.getSubTotal2()))
+        registro.write(",")
+        registro.write(str(self.getTotal()))
+        registro.write(",")
+        registro.write(str(self.getFechaCobro()))
+        registro.write(",")
+        registro.write(str(self.getFechaPeriodo()))
+        registro.write(",")
+        registro.write("\n")
+        registro.close()
