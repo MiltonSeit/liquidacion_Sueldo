@@ -7,6 +7,12 @@ from clases.recibo import Recibo
 import MySQLdb
 import mysql.connector
 import decimal
+import os
+
+"""def abrirPdf():
+    titi='lasdla.pdf'
+    os.system('evince '+titi)
+"""
 
 def calcularNoseQue():
     mes = date.today().month
@@ -22,6 +28,16 @@ def calcularNoseQue():
 
 
 
+def guardarRecibo(cod_Asignar,sueldo_basico,montoAntiguedad,zona,asignacionJulio,presentismo,noRemunerativo,subTotal1,jubilacion,obra_Social,seguro,subTotal2,total,periodo):
+    try:
+        bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
+        cursor = bd.cursor()
+        sql="INSERT INTO Recibo(cod_Asignar, sueldoBasico, montoAnti, sumaZona, asignacion_Julio,presentismo, no_Remune, subTotal1, jubilacion, desObraSoial, seguro, subTotal2, total,fechaPeriodo) VALUES ('%s' , '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s' , '%s', '%s', '%s', '%s', '%s')" % (cod_Asignar,sueldo_basico,montoAntiguedad,zona,asignacionJulio,presentismo,noRemunerativo,subTotal1,jubilacion,obra_Social,seguro,subTotal2,total,periodo)
+        cursor.execute(sql)
+        bd.commit()
+    except mysql.connector.Error as err:
+        print("Something went wrong: {}".format(err))
+    bd.close()
 
 def calcularRecibo(cod_Asignar, sueldo_basico,porcAnti,porcZona,descObra):
     #BENEFICIOS
@@ -32,6 +48,9 @@ def calcularRecibo(cod_Asignar, sueldo_basico,porcAnti,porcZona,descObra):
     noRemunerativo = 1000
     subTotal1 = (sueldo_basico + montoAntiguedad + zona + asignacionJulio + presentismo + noRemunerativo)
 
+    mes = str(datetime.today().month)
+    anio = str(datetime.today().year)
+    periodo = mes + anio
     #DESCUENTOS
     jubilacion = subTotal1 * decimal.Decimal(0.20)
     obra_Social = subTotal1 * decimal.Decimal(descObra)
@@ -39,11 +58,8 @@ def calcularRecibo(cod_Asignar, sueldo_basico,porcAnti,porcZona,descObra):
     subTotal2 = (jubilacion + obra_Social + seguro)
 
     #TOTAL
-    fechaPeriodo = "10/05/2017"
     total = subTotal1 - subTotal2
-
-    recibo = Recibo(cod_Asignar,round(sueldo_basico,2), round(montoAntiguedad,2), round(zona,2),round(asignacionJulio,2), round(presentismo,2), round(noRemunerativo,2), round(subTotal1,2), round(jubilacion,2), round(obra_Social,2), round(seguro,2), round(subTotal2,2), round(total,2), fechaPeriodo)
-    recibo.crearFichero()
+    guardarRecibo(cod_Asignar,round(sueldo_basico,2), round(montoAntiguedad,2), round(zona,2),round(asignacionJulio,2), round(presentismo,2), round(noRemunerativo,2), round(subTotal1,2), round(jubilacion,2), round(obra_Social,2), round(seguro,2), round(subTotal2,2), round(total,2), periodo)
 
 def obtenerDatosParaRecibo():
     try:

@@ -1,6 +1,9 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import tkMessageBox
+import MySQLdb
+import mysql.connector
+from fpdf import FPDF
 #Definimos la clase Recibo
 class Recibo(object):
     __numero_Recibo = None
@@ -316,42 +319,41 @@ class Recibo(object):
     fechaPeriodo = property(fget=getFechaPeriodo,fset=setFechaPeriodo)
 
     def mostrarRecibo(self):
-        print self.getNumero_Recibo()," ",self.getCod_Asignar(), " ", self.getSueldo_Basico(), " ", self.getMonto_Anti()," ", self.getSuma_Zona(), " ", self.getAsignacion_Julio()," ",
-        self.getPresentismo()," ", self.getNo_Remunerativo()," ", self.getSubTotal1()," ", self.getJubilacion()," ", self.getDesObraSocial()," ", self.getSeguro()," ", self.getSubTotal2()," ", self.getTotal()," fechaC ", self.getFechaCobro()," fechaPer", self.getFechaPeriodo()
+        print "Codigo Asignar: ",self.getCod_Asignar()
+        print "Sueldo Basico: ", self.getSueldo_Basico()
+        print "Monto Antiguedad ", self.getMonto_Anti()
+        print "Suma Zona: ", self.getSuma_Zona()
+        print "Asignacion Julio: ", self.getAsignacion_Julio()
+        print "Presentismo: ",self.getPresentismo()
+        print "NO remunerativo: ", self.getNo_Remunerativo()
+        print "SubTotal1: ", self.getSubTotal1()
+        print "Jubilacion:  ", self.getJubilacion()
+        print "Desc Obra Social: ", self.getDesObraSocial()
+        print "Seguro:  ", self.getSeguro()
+        print "SubTotal2: ", self.getSubTotal2()
+        print "Total: ", self.getTotal()
+        print "Fecha Periodo: ",self.getFechaPeriodo()
 
-    def crearFichero(self):
-        registro = open("registroRecibo.csv",'a')
-        registro.write(str(self.getNumero_Recibo()))
-        registro.write(",")
-        registro.write(str(self.getCod_Asignar()))
-        registro.write(",")
-        registro.write(str(self.getSueldo_Basico()))
-        registro.write(",")
-        registro.write(str(self.getMonto_Anti()))
-        registro.write(",")
-        registro.write(str(self.getSuma_Zona()))
-        registro.write(",")
-        registro.write(str(self.getAsignacion_Julio()))
-        registro.write(",")
-        registro.write(str(self.getPresentismo()))
-        registro.write(",")
-        registro.write(str(self.getNo_Remunerativo()))
-        registro.write(",")
-        registro.write(str(self.getSubTotal1()))
-        registro.write(",")
-        registro.write(str(self.getJubilacion()))
-        registro.write(",")
-        registro.write(str(self.getDesObraSocial()))
-        registro.write(",")
-        registro.write(str(self.getSeguro()))
-        registro.write(",")
-        registro.write(str(self.getSubTotal2()))
-        registro.write(",")
-        registro.write(str(self.getTotal()))
-        registro.write(",")
-        registro.write(str(self.getFechaCobro()))
-        registro.write(",")
-        registro.write(str(self.getFechaPeriodo()))
-        registro.write(",")
-        registro.write("\n")
-        registro.close()
+
+    ##def guardarRecibo(self):
+    ##    try:
+            #bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
+            #cursor = bd.cursor()
+            #sql="INSERT INTO Recibo(cod_Asignar, sueldoBasico, montoAnti, sumaZona, asignacion_Julio,presentismo, no_Remune, subTotal1, jubilacion, desObraSoial, seguro, subTotal2, total,fechaPeriodo) VALUES ('%s' , '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s' , '%s', '%s', '%s', '%s', '%s')" % (self.getCod_Asignar(),self.getSueldo_Basico(),self.getMonto_Anti(),self.getSuma_Zona(),self.getAsignacion_Julio(),
+            #self.getPresentismo(),self.getNo_Remunerativo(),self.getSubTotal1(),self.getJubilacion(),self.getDesObraSocial(),self.getSeguro(),self.getSubTotal2(),self.getTotal(),self.getFechaPeriodo())
+            #cursor.execute(sql)
+            #bd.commit()
+            #bd.close()
+        #except mysql.connector.Error as err:
+            #print("Something went wrong: {}".format(err))
+        #bd.close()
+
+    def crearPdf(self):
+        pdf = FPDF()
+        pdf.add_page()
+        pdf.set_font('Arial', 'B', 16)
+        pdf.cell(40, 10, str(self.getNumero_Recibo()))
+        nombre = str(self.getNumero_Recibo())
+        ext = '.pdf'
+        total = nombre+ext
+        pdf.output(total, 'F')
