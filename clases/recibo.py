@@ -4,6 +4,8 @@ import tkMessageBox
 import MySQLdb
 import mysql.connector
 from fpdf import FPDF
+import decimal
+from datetime import *
 #Definimos la clase Recibo
 class Recibo(object):
     __numero_Recibo = None
@@ -275,7 +277,7 @@ class Recibo(object):
      */
     """
     def setSubTotal2(self, subTotal2):
-        self.__subTotal2 = setSubTotal2
+        self.__subTotal2 = subTotal2
 
     """Setter total.
      * @param total.
@@ -335,18 +337,60 @@ class Recibo(object):
         print "Fecha Periodo: ",self.getFechaPeriodo()
 
 
-    ##def guardarRecibo(self):
-    ##    try:
-            #bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
-            #cursor = bd.cursor()
-            #sql="INSERT INTO Recibo(cod_Asignar, sueldoBasico, montoAnti, sumaZona, asignacion_Julio,presentismo, no_Remune, subTotal1, jubilacion, desObraSoial, seguro, subTotal2, total,fechaPeriodo) VALUES ('%s' , '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s' , '%s', '%s', '%s', '%s', '%s')" % (self.getCod_Asignar(),self.getSueldo_Basico(),self.getMonto_Anti(),self.getSuma_Zona(),self.getAsignacion_Julio(),
-            #self.getPresentismo(),self.getNo_Remunerativo(),self.getSubTotal1(),self.getJubilacion(),self.getDesObraSocial(),self.getSeguro(),self.getSubTotal2(),self.getTotal(),self.getFechaPeriodo())
-            #cursor.execute(sql)
-            #bd.commit()
-            #bd.close()
-        #except mysql.connector.Error as err:
-            #print("Something went wrong: {}".format(err))
-        #bd.close()
+    def guardarRecibo(self):
+        try:
+            bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
+            cursor = bd.cursor()
+            sql="INSERT INTO Recibo(cod_Asignar, sueldoBasico, montoAnti, sumaZona, asignacion_Julio,presentismo, no_Remune, subTotal1, jubilacion, desObraSoial, seguro, subTotal2, total,fechaPeriodo) VALUES ('%s' , '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s' , '%s', '%s', '%s', '%s', '%s')" % (self.getCod_Asignar(),self.getSueldo_Basico(),self.getMonto_Anti(),self.getSuma_Zona(),self.getAsignacion_Julio(),
+            self.getPresentismo(),self.getNo_Remunerativo(),self.getSubTotal1(),self.getJubilacion(),self.getDesObraSocial(),self.getSeguro(),self.getSubTotal2(),self.getTotal(),self.getFechaPeriodo())
+            cursor.execute(sql)
+            bd.commit()
+        except mysql.connector.Error as err:
+            print("Something went wrong: {}".format(err))
+        bd.close()
+
+    def obtenerDatosParaRecibo(self):
+        try:
+            bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
+            cursor = bd.cursor()
+            sql="SELECT distinct a.cod_Asignar, (3.437393 * c.puntos_Cargos), ant.porc_Anti, zon.porcentaje_Zona ,obra.descuento_Obra FROM Docente d INNER JOIN Asignar a on d.dni_Docente = a.dni_Docente INNER JOIN ObraSocial obra on obra.cod_ObraSocial = d.cod_ObraSocial INNER JOIN Cargo c on c.cod_Cargo = a.cod_Cargo INNER JOIN Antiguedad ant on ant.cod_Antiguedad = d.cod_Antiguedad INNER JOIN Escuela esc on esc.numero_Escuela = a.numero_Escuela  INNER JOIN Zona zon on zon.cod_Zona = esc.cod_Zona;"
+            cursor.execute(sql)
+            resultados = cursor.fetchall()
+            for registro in resultados:
+                cod_Asignar = registro[0]
+                sueldo_basico = registro[1]
+                porcAnti = registro[2]
+                porcZona = registro[3]
+                descObra = registro[4]
+                self.calcularRecibo(cod_Asignar,sueldo_basico,porcAnti,porcZona,descObra)
+        except mysql.connector.Error as err:
+            print("Something went wrong: {}".format(err))
+        bd.close()
+
+    def calcularRecibo(self, cod_Asignar, sueldo_basico,porcAnti,porcZona,descObra):
+        #BENEFICIOS
+        self.setCod_Asignar(cod_Asignar)
+        self.setSueldo_Basico(sueldo_basico)
+        self.setMonto_Anti (self.getSueldo_Basico() * decimal.Decimal(porcAnti))
+        self.setSuma_Zona(self.getSueldo_Basico() * decimal.Decimal(porcZona))
+        self.setAsignacion_Julio(1852)
+        self.setPresentismo(((self.getSueldo_Basico() + self.getMonto_Anti()) * decimal.Decimal(0.75))*decimal.Decimal(0.08))
+        self.setNo_Remune(1000)
+        self.setSubTotal1(self.getSueldo_Basico() + self.getMonto_Anti() + self.getSuma_Zona() + self.getAsignacion_Julio() + self.getPresentismo() + self.getNo_Remunerativo())
+
+        mes = str(datetime.today().month)
+        anio = str(datetime.today().year)
+        self.setFechaPeriodo(mes + anio)
+
+        #DESCUENTOS
+        self.setJubilacion(self.getSubTotal1() * decimal.Decimal(0.20))
+        self.setDesObraSocial(self.getSubTotal1() * decimal.Decimal(descObra))
+        self.setSeguro(300)
+        self.setSubTotal2(self.getJubilacion() + self.getDesObraSocial() + self.getSeguro())
+
+        #TOTAL
+        self.setTotal(self.getSubTotal1() - self.getSubTotal2())
+        self.guardarRecibo()
 
     def crearPdf(self):
         pdf = FPDF()

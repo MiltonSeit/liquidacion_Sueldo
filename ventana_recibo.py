@@ -22,7 +22,8 @@ def calcularNoseQue():
     elif mes < int(entra_periodo.get()):
         tkMessageBox.showinfo("AVISO", " El periodo ingresado es incorrecto, todavia a ese mes no llegamos")
     elif mes == int(entra_periodo.get()):
-        obtenerDatosParaRecibo()
+        recibo = Recibo(1)
+        recibo.obtenerDatosParaRecibo()
     else:
         tkMessageBox.showinfo("AVISO", " El periodo ingresado es incorrecto, ese mes ya se paso")
 
@@ -38,47 +39,6 @@ def guardarRecibo(cod_Asignar,sueldo_basico,montoAntiguedad,zona,asignacionJulio
     except mysql.connector.Error as err:
         print("Something went wrong: {}".format(err))
     bd.close()
-
-def calcularRecibo(cod_Asignar, sueldo_basico,porcAnti,porcZona,descObra):
-    #BENEFICIOS
-    montoAntiguedad = sueldo_basico * decimal.Decimal(porcAnti)
-    zona = sueldo_basico * decimal.Decimal(porcZona)
-    asignacionJulio = 1852
-    presentismo = (((sueldo_basico + montoAntiguedad) * decimal.Decimal(0.75))*decimal.Decimal(0.08))
-    noRemunerativo = 1000
-    subTotal1 = (sueldo_basico + montoAntiguedad + zona + asignacionJulio + presentismo + noRemunerativo)
-
-    mes = str(datetime.today().month)
-    anio = str(datetime.today().year)
-    periodo = mes + anio
-    #DESCUENTOS
-    jubilacion = subTotal1 * decimal.Decimal(0.20)
-    obra_Social = subTotal1 * decimal.Decimal(descObra)
-    seguro = 300
-    subTotal2 = (jubilacion + obra_Social + seguro)
-
-    #TOTAL
-    total = subTotal1 - subTotal2
-    guardarRecibo(cod_Asignar,round(sueldo_basico,2), round(montoAntiguedad,2), round(zona,2),round(asignacionJulio,2), round(presentismo,2), round(noRemunerativo,2), round(subTotal1,2), round(jubilacion,2), round(obra_Social,2), round(seguro,2), round(subTotal2,2), round(total,2), periodo)
-
-def obtenerDatosParaRecibo():
-    try:
-        bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
-        cursor = bd.cursor()
-        sql="SELECT distinct a.cod_Asignar, (3.437393 * c.puntos_Cargos), ant.porc_Anti, zon.porcentaje_Zona ,obra.descuento_Obra FROM Docente d INNER JOIN Asignar a on d.dni_Docente = a.dni_Docente INNER JOIN ObraSocial obra on obra.cod_ObraSocial = d.cod_ObraSocial INNER JOIN Cargo c on c.cod_Cargo = a.cod_Cargo INNER JOIN Antiguedad ant on ant.cod_Antiguedad = d.cod_Antiguedad INNER JOIN Escuela esc on esc.numero_Escuela = a.numero_Escuela  INNER JOIN Zona zon on zon.cod_Zona = esc.cod_Zona;"
-        cursor.execute(sql)
-        resultados = cursor.fetchall()
-        for registro in resultados:
-            cod_Asignar = registro[0]
-            sueldo_basico = registro[1]
-            porcAnti = registro[2]
-            porcZona = registro[3]
-            descObra = registro[4]
-            calcularRecibo(cod_Asignar,sueldo_basico,porcAnti,porcZona,descObra)
-    except mysql.connector.Error as err:
-        print("Something went wrong: {}".format(err))
-    bd.close()
-
 
 """
 VENTANA DE CALCULAR RECIBO
