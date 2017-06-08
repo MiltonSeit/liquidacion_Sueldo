@@ -380,7 +380,7 @@ class Recibo(object):
 
         mes = str(datetime.today().month)
         anio = str(datetime.today().year)
-        self.setFechaPeriodo(mes + anio)
+        self.setFechaPeriodo(mes+anio)
 
         #DESCUENTOS
         self.setJubilacion(self.getSubTotal1() * decimal.Decimal(0.20))

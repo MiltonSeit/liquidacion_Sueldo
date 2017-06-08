@@ -8,7 +8,15 @@ from clases.docente import Docente
 from clases.asigna import Asigna
 from ventanas_docente import *
 from ventana_recibo import *
+from ventanas_prevCargo import *
 
+
+"""Función Previsualizar cargo
+* @param no recibe ningún parámetro
+* @return  abre una nueva ventana para previsualizar los cargos
+"""
+def preVisualizar():
+    ventanaPrevisualizar()
 
 """Función calcular Sueldo
 * @param no recibe ningún parámetro
@@ -72,7 +80,7 @@ btonBaja=Button(centro, text="Alta/Baja Docente", font=("Time", 15), width=15, c
 btonModifica=Button(centro, text="Modificar-Datos", font=("Time", 15),command=modificarDocente, width=12).place(x=700, y=80)
 btonLista=Button(centro, text="Listar", font=("Time", 15), width=12).place(x=700, y=190)
 btonCalcula=Button(centro, text="Calcular Sueldo", font=("Time", 15), command =calcularSueldo, width=12).place(x=150, y=190)
-btonVisualiza=Button(centro, text="Previsualizar Cargo", font=("Time", 15), width=14).place(x=425, y=190)
+btonVisualiza=Button(centro, text="Previsualizar Cargo", font=("Time", 15), width=14, command=preVisualizar).place(x=425, y=190)
 btonAsignar=Button(centro, text="Asignar Cargo", font=("Time", 15), command=asignarCargo,width=10).place(x=425, y=280)
 btonSalir= Button(centro, text="Salir", font=("Time", 15), width=10, command=ventana.destroy).place(x=800, y=350)
 

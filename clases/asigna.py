@@ -3,6 +3,7 @@
 import time
 import MySQLdb
 import tkMessageBox
+import mysql.connector
 
 class Asigna(object):
 
@@ -16,7 +17,7 @@ class Asigna(object):
 	* @param cod_Cargo, descripcion_Cargo, puntos_Cargo
 	* @return no devuelve nada
 	"""
-	def __init__(self, dni_Docente, cod_Cargo, cod_Escuela):
+	def __init__(self, dni_Docente, cod_Cargo="", cod_Escuela=""):
 
 		self.__dni_Docente = dni_Docente
 		self.__cod_Cargo = cod_Cargo
@@ -85,3 +86,30 @@ class Asigna(object):
 		base.commit()
 		base.close()
 		tkMessageBox.showinfo("AVISO", " El Cargo de '  " + self.getDni_Docente() + " ' fue insertado con exito")
+
+	"""Funcion buscarCargos
+	* @param ninguno
+	* @return devuelve los datos de los docentes con sus cargos
+	*/
+	"""
+	def buscarCargos(self):
+		try:
+			bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
+			cursor = bd.cursor()
+			dnis = int(self.getDni_Docente())
+			sql="SELECT DISTINCT d.nombre_Docente, d.apellido_Docente, c.descripcion_Cargo, e.nombre_Escuela,r.fechaPeriodo from Docente d INNER JOIN Asignar a on d.dni_Docente = a.dni_Docente INNER JOIN Cargo c on c.cod_Cargo = a.cod_Cargo INNER JOIN Escuela e on e.numero_Escuela = a.numero_Escuela INNER JOIN Recibo r on r.cod_Asignar = a.cod_Asignar where a.dni_Docente = %s;" % self.getDni_Docente()
+			cursor.execute(sql)
+			resultados = cursor.fetchall()
+			for registro in resultados:
+				nombreDocente = registro[0]
+				apellidoDocente = registro[1]
+				descripcionCargo = registro[2]
+				nombreEscuela = registro[3]
+				fechaPeriodo = registro[4]
+				self.mostrarCargo(nombreDocente, apellidoDocente, descripcionCargo, nombreEscuela, fechaPeriodo)
+		except mysql.connector.Error as err:
+			print("Something went wrong: {}".format(err))
+		bd.close()
+
+	def mostrarCargo(self,nombreDocente, apellidoDocente, descripcionCargo, nombreEscuela, fechaPeriodo):
+		print nombreDocente, apellidoDocente, descripcionCargo, nombreEscuela, fechaPeriodo
