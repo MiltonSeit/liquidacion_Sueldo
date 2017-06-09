@@ -181,8 +181,7 @@ class Docente(object):
     def buscarDocente(self):
         bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
         cursor = bd.cursor()
-        ent_dni = self.getDni_Docente()
-        sql = "SELECT * FROM Docente WHERE dni_Docente ='%s'" % ent_dni
+        sql = "SELECT * FROM Docente WHERE dni_Docente ='%s'" % self.getDni_Docente()
         try:
        # Ejecutamos el comando
             cursor.execute(sql)

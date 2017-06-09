@@ -320,6 +320,35 @@ class Recibo(object):
     fechaCobro = property(fget=getFechaCobro,fset=setFechaCobro)
     fechaPeriodo = property(fget=getFechaPeriodo,fset=setFechaPeriodo)
 
+    def buscarRecibo(self):
+        try:
+            bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
+            cursor = bd.cursor()
+            sql = "SELECT * FROM Recibo WHERE numero_Recibo ='%s'" % self.getNumero_Recibo()
+            cursor.execute(sql)
+            resultados = cursor.fetchall()
+            for registro in resultados:
+                self.setNumero_Recibo(registro[0])
+                self.setCod_Asignar(registro[1])
+                self.setSueldo_Basico(registro[2])
+                self.setMonto_Anti(registro[3])
+                self.setSuma_Zona(registro[4])
+                self.setAsignacion_Julio(registro[5])
+                self.setPresentismo(registro[6])
+                self.setNo_Remune(registro[7])
+                self.setSubTotal1(registro[8])
+                self.setJubilacion(registro[9])
+                self.setDesObraSocial(registro[10])
+                self.setSeguro(registro[11])
+                self.setSubTotal2(registro[12])
+                self.setTotal(registro[13])
+                self.setFechaCobro(registro[14])
+                self.setFechaPeriodo(registro[15])
+            self.mostrarRecibo()
+        except mysql.connector.Error as err:
+            print("Something went wrong: {}".format(err))
+        bd.close()
+
     def mostrarRecibo(self):
         print "Codigo Asignar: ",self.getCod_Asignar()
         print "Sueldo Basico: ", self.getSueldo_Basico()
