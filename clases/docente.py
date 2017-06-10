@@ -203,6 +203,21 @@ class Docente(object):
     # Nos desconectamos de la base de datos
         bd.close()
 
+    """Función actualizar antiguedad
+    * @param no recibe ningún parámetro
+    * @return devuelve la cantidad de años que ejerce como Docente
+    """
+    def actualizarAntiguedad(self):
+        fechActual = datetime.now()
+        fecha_ingreso = self.getCod_Antiguedad()
+        diferencia = (fechActual - fecha_ingreso)
+        resultado = (diferencia/365)
+        anios = resultado.days
+        if anios > 24:
+            self.setCod_Antiguedad(25)
+        else:
+            self.setCod_Antiguedad(anios)
+
     """Funcion agregarDocente
      * @param ninguno.
      * @return No devuelve nada. Agrega el docente al sistema.
@@ -214,7 +229,7 @@ class Docente(object):
         else:
             conn = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO Docente (dni_Docente,cod_Antiguedad, cod_ObraSocial, nombre_Docente, apellido_Docente, direccion_Docente, telefono_Docente, fechaIngreso)VALUES ('%s' , '%s', '%s', '%s', '%s', '%s', '%s', '%s') " % (self.getDni_Docente(), self.getCod_Antiguedad(), self.getCod_ObraSocial(), self.getNombre_Docente(), self.getApellido_Docente(), self.getDireccion_Docente(), self.getTelefono_Docente(), self.getFechaIngreso()))
+            cursor.execute("INSERT INTO Docente (dni_Docente,cod_Antiguedad, cod_ObraSocial, nombre_Docente, apellido_Docente, direccion_Docente, telefono_Docente, fechaIngreso, activo)VALUES ('%s' , '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s') " % (self.getDni_Docente(), self.getCod_Antiguedad(), self.getCod_ObraSocial(), self.getNombre_Docente(), self.getApellido_Docente(), self.getDireccion_Docente(), self.getTelefono_Docente(), self.getFechaIngreso(),'Y'))
             conn.commit()
             conn.close()
             tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getDni_Docente() + " ' fue insertado con exito")
@@ -234,6 +249,7 @@ class Docente(object):
      */
      """
     def modificarDocente(self):
+        self.actualizarAntiguedad()
         bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
         cursor = bd.cursor()
         ent_dni = self.getDni_Docente()

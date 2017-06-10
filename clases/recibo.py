@@ -6,6 +6,7 @@ import mysql.connector
 from fpdf import FPDF
 import decimal
 from datetime import *
+import os, sys
 #Definimos la clase Recibo
 class Recibo(object):
     __numero_Recibo = None
@@ -13,38 +14,32 @@ class Recibo(object):
     __sueldo_Basico = None
     __monto_Anti = None
     __suma_Zona = None
-    __asignacion_Julio = None
     __presentismo = None
-    __no_Remune = None
     __subTotal1 = None
     __jubilacion = None
     __desObraSocial = None
     __seguro = None
     __subTotal2 = None
     __total = None
-    __fechaCobro = None
     __fechaPeriodo = None
 
     """Constructor
-    * @param numero_Recibo, dni_Docente, cod_Cargo, cod_Zona, cod_Escuela, sueldo_Basico, monto_Anti, suma_Zona, asignacion_Julio, presentismo, no_Remune, subTotal1, jubilacion, desObraSocial, seguro, subTotal2, total, fechaCobro, fechaPeriodo
+    * @param numero_Recibo,cod_Asignar, sueldo_Basico, monto_Anti, suma_Zona,  presentismo,  subTotal1, jubilacion, desObraSocial, seguro, subTotal2, total, fechaCobro, fechaPeriodo
     * @return no devuelve nada
     """
-    def __init__(self, numero_Recibo="", cod_Asignar="", sueldo_Basico="", monto_Anti="", suma_Zona="", asignacion_Julio="", presentismo="", no_Remune="", subTotal1="", jubilacion="", desObraSocial="", seguro="", subTotal2="", total="", fechaCobro="", fechaPeriodo=""):
+    def __init__(self, numero_Recibo="", cod_Asignar="", sueldo_Basico="", monto_Anti="", suma_Zona="", presentismo="",  subTotal1="", jubilacion="", desObraSocial="", seguro="", subTotal2="", total="", fechaPeriodo=""):
         self.__numero_Recibo = numero_Recibo
         self.__cod_Asignar = cod_Asignar
         self.__sueldo_Basico = sueldo_Basico
         self.__monto_Anti = monto_Anti
         self.__suma_Zona = suma_Zona
-        self.__asignacion_Julio = asignacion_Julio
         self.__presentismo = presentismo
-        self.__no_Remune = no_Remune
         self.__subTotal1 = subTotal1
         self.__jubilacion = jubilacion
         self.__desObraSocial = desObraSocial
         self.__seguro = seguro
         self.__subTotal2 = subTotal2
         self.__total = total
-        self.__fechaCobro = fechaCobro
         self.__fechaPeriodo = fechaPeriodo
 
     """Getter numero_Recibo.
@@ -87,14 +82,6 @@ class Recibo(object):
     def getSuma_Zona(self):
         return self.__suma_Zona
 
-    """Getter asignacion_Julio.
-     * @param Ninguno.
-     * @return devuelve la asignación de julio.
-     */
-    """
-    def getAsignacion_Julio(self):
-        return self.__asignacion_Julio
-
     """Getter presentismo.
      * @param Ninguno.
      * @return devuelve el presentismo total del docente.
@@ -103,13 +90,6 @@ class Recibo(object):
     def getPresentismo(self):
         return self.__presentismo
 
-    """Getter no_Remune.
-     * @param Ninguno.
-     * @return devuelve  lo remunerativo.
-     */
-    """
-    def getNo_Remunerativo(self):
-        return self.__no_Remune
 
     """Getter subTotal1.
      * @param Ninguno.
@@ -159,14 +139,6 @@ class Recibo(object):
     def getTotal(self):
         return self.__total
 
-    """Getter fechaCobro.
-     * @param Ninguno.
-     * @return devuelve la fecha de cobro del docente.
-     */
-    """
-    def getFechaCobro(self):
-        return self.__fechaCobro
-
     """Getter fechaPeriodo.
      * @param Ninguno.
      * @return devuelve el periodo que va cobrar.
@@ -215,13 +187,6 @@ class Recibo(object):
     def setSuma_Zona(self, suma_Zona):
         self.__suma_Zona = suma_Zona
 
-    """Setter asignacion_Julio.
-     * @param asignacion_Julio.
-     * @return no devuelve nada.
-     */
-    """
-    def setAsignacion_Julio(self, asignacion_Julio):
-        self.__asignacion_Julio = asignacion_Julio
 
     """Setter presentismo.
      * @param presentismo.
@@ -230,14 +195,6 @@ class Recibo(object):
     """
     def setPresentismo(self, presentismo):
         self.__presentismo = presentismo
-
-    """Setter no_Remune.
-     * @param no_Remune.
-     * @return no devuelve nada.
-     */
-    """
-    def setNo_Remune(self, no_Remune):
-        self.__no_Remune = no_Remune
 
     """Setter subTotal1.
      * @param subTotal1.
@@ -287,14 +244,6 @@ class Recibo(object):
     def setTotal(self, total):
         self.__total = total
 
-    """Setter fechaCobro.
-     * @param fechaCobro.
-     * @return no devuelve nada.
-     */
-    """
-    def setFechaCobro(self, fechaCobro):
-        self.__fechaCobro = fechaCobro
-
     """Setter fechaPeriodo.
      * @param fechaPeriodo.
      * @return no devuelve nada.
@@ -308,16 +257,13 @@ class Recibo(object):
     sueldo_Basico = property(fget=getSueldo_Basico,fset=setSueldo_Basico)
     monto_Anti = property(fget=getMonto_Anti,fset=setMonto_Anti)
     suma_Zona = property(fget=getSuma_Zona,fset=getSuma_Zona)
-    asignacion_Julio = property(fget=getAsignacion_Julio,fset=setAsignacion_Julio)
     presentismo = property(fget=getPresentismo,fset=setPresentismo)
-    no_Remune = property(fget=getNo_Remunerativo,fset=setNo_Remune)
     subTotal1 = property(fget=getSubTotal1,fset=setSubTotal1)
     jubilacion = property(fget=getJubilacion,fset=setJubilacion)
     desObraSocial = property(fget=getDesObraSocial,fset=setDesObraSocial)
     seguro = property(fget=getSeguro,fset=setSeguro)
     subTotal2 = property(fget=getSubTotal2,fset=setSubTotal2)
     total = property(fget=getTotal,fset=setTotal)
-    fechaCobro = property(fget=getFechaCobro,fset=setFechaCobro)
     fechaPeriodo = property(fget=getFechaPeriodo,fset=setFechaPeriodo)
 
     def buscarRecibo(self):
@@ -333,18 +279,15 @@ class Recibo(object):
                 self.setSueldo_Basico(registro[2])
                 self.setMonto_Anti(registro[3])
                 self.setSuma_Zona(registro[4])
-                self.setAsignacion_Julio(registro[5])
-                self.setPresentismo(registro[6])
-                self.setNo_Remune(registro[7])
-                self.setSubTotal1(registro[8])
-                self.setJubilacion(registro[9])
-                self.setDesObraSocial(registro[10])
-                self.setSeguro(registro[11])
-                self.setSubTotal2(registro[12])
-                self.setTotal(registro[13])
-                self.setFechaCobro(registro[14])
-                self.setFechaPeriodo(registro[15])
-            self.crearPdf()
+                self.setPresentismo(registro[5])
+                self.setSubTotal1(registro[6])
+                self.setJubilacion(registro[7])
+                self.setDesObraSocial(registro[8])
+                self.setSeguro(registro[9])
+                self.setSubTotal2(registro[10])
+                self.setTotal(registro[11])
+                self.setFechaPeriodo(registro[12])
+
         except mysql.connector.Error as err:
             print("Something went wrong: {}".format(err))
         bd.close()
@@ -354,9 +297,7 @@ class Recibo(object):
         print "Sueldo Basico: ", self.getSueldo_Basico()
         print "Monto Antiguedad ", self.getMonto_Anti()
         print "Suma Zona: ", self.getSuma_Zona()
-        print "Asignacion Julio: ", self.getAsignacion_Julio()
         print "Presentismo: ",self.getPresentismo()
-        print "NO remunerativo: ", self.getNo_Remunerativo()
         print "SubTotal1: ", self.getSubTotal1()
         print "Jubilacion:  ", self.getJubilacion()
         print "Desc Obra Social: ", self.getDesObraSocial()
@@ -370,11 +311,10 @@ class Recibo(object):
         try:
             bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
             cursor = bd.cursor()
-            sql="INSERT INTO Recibo(cod_Asignar, sueldoBasico, montoAnti, sumaZona, asignacion_Julio,presentismo, no_Remune, subTotal1, jubilacion, desObraSoial, seguro, subTotal2, total,fechaPeriodo) VALUES ('%s' , '%s', '%s', '%s', '%s', '%s', '%s', '%s','%s' , '%s', '%s', '%s', '%s', '%s')" % (self.getCod_Asignar(),self.getSueldo_Basico(),self.getMonto_Anti(),self.getSuma_Zona(),self.getAsignacion_Julio(),
-            self.getPresentismo(),self.getNo_Remunerativo(),self.getSubTotal1(),self.getJubilacion(),self.getDesObraSocial(),self.getSeguro(),self.getSubTotal2(),self.getTotal(),self.getFechaPeriodo())
+            sql="INSERT INTO Recibo(cod_Asignar, sueldoBasico, montoAnti, sumaZona,presentismo, subTotal1, jubilacion, desObraSoial, seguro, subTotal2, total,fechaPeriodo) VALUES ('%s', '%s', '%s', '%s', '%s', '%s','%s' , '%s', '%s', '%s', '%s', '%s')" % (self.getCod_Asignar(),self.getSueldo_Basico(),self.getMonto_Anti(),self.getSuma_Zona(),
+            self.getPresentismo(),self.getSubTotal1(),self.getJubilacion(),self.getDesObraSocial(),self.getSeguro(),self.getSubTotal2(),self.getTotal(),self.getFechaPeriodo())
             cursor.execute(sql)
             bd.commit()
-            self.crearPdf()
         except mysql.connector.Error as err:
             print("Something went wrong: {}".format(err))
         bd.close()
@@ -398,31 +338,31 @@ class Recibo(object):
         bd.close()
 
     def calcularRecibo(self, cod_Asignar, sueldo_basico,porcAnti,porcZona,descObra):
+
         #BENEFICIOS
         self.setCod_Asignar(cod_Asignar)
-        self.setSueldo_Basico(sueldo_basico)
-        self.setMonto_Anti (self.getSueldo_Basico() * decimal.Decimal(porcAnti))
-        self.setSuma_Zona(self.getSueldo_Basico() * decimal.Decimal(porcZona))
-        self.setAsignacion_Julio(1852)
-        self.setPresentismo(((self.getSueldo_Basico() + self.getMonto_Anti()) * decimal.Decimal(0.75))*decimal.Decimal(0.08))
-        self.setNo_Remune(1000)
-        self.setSubTotal1(self.getSueldo_Basico() + self.getMonto_Anti() + self.getSuma_Zona() + self.getAsignacion_Julio() + self.getPresentismo() + self.getNo_Remunerativo())
+        self.setSueldo_Basico(round(sueldo_basico,2))
+        self.setMonto_Anti (self.getSueldo_Basico() * porcAnti)
+        self.setSuma_Zona(self.getSueldo_Basico() * porcZona)
+        self.setPresentismo(round(((self.getSueldo_Basico() + self.getMonto_Anti()) * 0.75)*0.08 ,2))
+        self.setSubTotal1(round(self.getSueldo_Basico() + self.getMonto_Anti() + self.getSuma_Zona() +  self.getPresentismo(),2))
 
         mes = str(datetime.today().month)
         anio = str(datetime.today().year)
         self.setFechaPeriodo(mes+anio)
 
         #DESCUENTOS
-        self.setJubilacion(self.getSubTotal1() * decimal.Decimal(0.20))
-        self.setDesObraSocial(self.getSubTotal1() * decimal.Decimal(descObra))
+        self.setJubilacion(round(self.getSubTotal1() * 0.20 ,2))
+        self.setDesObraSocial(round(self.getSubTotal1() * descObra,2))
         self.setSeguro(300)
-        self.setSubTotal2(self.getJubilacion() + self.getDesObraSocial() + self.getSeguro())
+        self.setSubTotal2(round(self.getJubilacion() + self.getDesObraSocial() + self.getSeguro(),2))
 
         #TOTAL
         self.setTotal(self.getSubTotal1() - self.getSubTotal2())
         self.guardarRecibo()
 
     def crearPdf(self):
+        periodo = "recibos"
         try:
             escuela = " "
             apellido =" "
@@ -432,16 +372,28 @@ class Recibo(object):
             ingreso = " "
             bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
             cursor = bd.cursor()
-            sql = "SELECT DISTINCT e.nombre_Escuela,d.apellido_Docente, d.nombre_Docente,d.dni_Docente, c.descripcion_Cargo,d.fechaIngreso FROM Docente d INNER JOIN Asignar a on d.dni_Docente = a.dni_Docente INNER JOIN Cargo c on c.cod_Cargo = a.cod_Cargo INNER JOIN Escuela e on e.numero_Escuela = a.numero_Escuela INNER JOIN Recibo r on r.cod_Asignar = a.cod_Asignar  WHERE numero_Recibo ='%s'" % self.getNumero_Recibo()
+            sql = "SELECT DISTINCT e.nombre_Escuela,d.apellido_Docente, d.nombre_Docente, d.dni_Docente, c.descripcion_Cargo, r.numero_Recibo, r.sueldoBasico, r.montoAnti, r.sumaZona, r.presentismo, r.subTotal1, r.jubilacion, r.desObraSoial, r.seguro, r.subTotal2, r.Total, r.fechaPeriodo, d.fechaIngreso FROM Docente d INNER JOIN Asignar a on d.dni_Docente = a.dni_Docente INNER JOIN Cargo c on c.cod_Cargo = a.cod_Cargo INNER JOIN Escuela e on e.numero_Escuela = a.numero_Escuela INNER JOIN Recibo r on r.cod_Asignar = a.cod_Asignar WHERE numero_Recibo ='%s'" % self.getNumero_Recibo()
             cursor.execute(sql)
             resultados = cursor.fetchall()
             for registro in resultados:
-                escuela = registro[0]
-                apellido = registro[1]
-                nombre = registro[2]
-                dni = registro[3]
-                cargo = registro[4]
-                ingreso = registro[5]
+                escuela = str(registro[0])
+                apellido = str(registro[1])
+                nombre = str(registro[2])
+                dni = str(registro[3])
+                cargo = str(registro[4])
+                self.setNumero_Recibo(registro[5])
+                self.setSueldo_Basico(registro[6])
+                self.setMonto_Anti(registro[7])
+                self.setSuma_Zona(registro[8])
+                self.setPresentismo(registro[9])
+                self.setSubTotal1(registro[10])
+                self.setJubilacion(registro[11])
+                self.setDesObraSocial(registro[12])
+                self.setSeguro(registro[13])
+                self.setSubTotal2(registro[14])
+                self.setTotal(registro[15])
+                self.setFechaPeriodo(registro[16])
+                ingreso = str(registro[17])
         except mysql.connector.Error as err:
             print("Something went wrong: {}".format(err))
         bd.close()
@@ -455,18 +407,23 @@ class Recibo(object):
         pdf.text(69, 89 , dni)
         pdf.text(96, 89 , cargo)
         pdf.text(161, 89 , str(self.getNumero_Recibo()))
-        pdf.text(74, 115 , str(self.getSueldo_Basico()))
-        pdf.text(74, 120 , str(self.getMonto_Anti()))
-        pdf.text(74, 125 , str(self.getSuma_Zona()))
-        pdf.text(74, 130 , str(self.getPresentismo()))
-        pdf.text(74, 140,  str(self.getSubTotal1()))
-        pdf.text(155, 116, str(self.getJubilacion()))
-        pdf.text(155, 121, str(self.getDesObraSocial()))
-        pdf.text(155, 126, str(self.getSeguro()) )
-        pdf.text(150, 141, str(self.getSubTotal2()))
-        pdf.text(145, 216, str(self.getTotal()))
+        pdf.text(74, 115 , "$ "+str(self.getSueldo_Basico()))
+        pdf.text(74, 120 , "$ "+str(self.getMonto_Anti()))
+        pdf.text(74, 125 , "$ "+str(self.getSuma_Zona()))
+        pdf.text(74, 130 , "$ "+str(self.getPresentismo()))
+        pdf.text(74, 140,  "$ "+str(self.getSubTotal1()))
+        pdf.text(155, 116, "$ "+str(self.getJubilacion()))
+        pdf.text(155, 121, "$ "+str(self.getDesObraSocial()))
+        pdf.text(155, 126, "$ "+str(self.getSeguro()) )
+        pdf.text(150, 141, "$ "+str(self.getSubTotal2()))
+        pdf.text(145, 216, "$ "+str(self.getTotal()))
         pdf.text(29, 231 , ingreso)
         nombre = str(self.getNumero_Recibo())
         ext = '.pdf'
-        total = nombre+ext
-        pdf.output(total, 'F')
+        salida = nombre+ext
+        pdf.output(periodo+"/"+salida, 'F')
+        self.abrirPdf()
+
+    def abrirPdf(self):
+        abrir='recibos/'+str(self.getNumero_Recibo())+'.pdf'
+        os.system('evince '+abrir)
