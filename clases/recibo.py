@@ -344,7 +344,7 @@ class Recibo(object):
                 self.setTotal(registro[13])
                 self.setFechaCobro(registro[14])
                 self.setFechaPeriodo(registro[15])
-            self.mostrarRecibo()
+            self.crearPdf()
         except mysql.connector.Error as err:
             print("Something went wrong: {}".format(err))
         bd.close()
@@ -374,6 +374,7 @@ class Recibo(object):
             self.getPresentismo(),self.getNo_Remunerativo(),self.getSubTotal1(),self.getJubilacion(),self.getDesObraSocial(),self.getSeguro(),self.getSubTotal2(),self.getTotal(),self.getFechaPeriodo())
             cursor.execute(sql)
             bd.commit()
+            self.crearPdf()
         except mysql.connector.Error as err:
             print("Something went wrong: {}".format(err))
         bd.close()
@@ -422,10 +423,49 @@ class Recibo(object):
         self.guardarRecibo()
 
     def crearPdf(self):
+        try:
+            escuela = " "
+            apellido =" "
+            nombre = " "
+            dni = " "
+            cargo = " "
+            ingreso = " "
+            bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
+            cursor = bd.cursor()
+            sql = "SELECT DISTINCT e.nombre_Escuela,d.apellido_Docente, d.nombre_Docente,d.dni_Docente, c.descripcion_Cargo,d.fechaIngreso FROM Docente d INNER JOIN Asignar a on d.dni_Docente = a.dni_Docente INNER JOIN Cargo c on c.cod_Cargo = a.cod_Cargo INNER JOIN Escuela e on e.numero_Escuela = a.numero_Escuela INNER JOIN Recibo r on r.cod_Asignar = a.cod_Asignar  WHERE numero_Recibo ='%s'" % self.getNumero_Recibo()
+            cursor.execute(sql)
+            resultados = cursor.fetchall()
+            for registro in resultados:
+                escuela = registro[0]
+                apellido = registro[1]
+                nombre = registro[2]
+                dni = registro[3]
+                cargo = registro[4]
+                ingreso = registro[5]
+        except mysql.connector.Error as err:
+            print("Something went wrong: {}".format(err))
+        bd.close()
         pdf = FPDF()
         pdf.add_page()
-        pdf.set_font('Arial', 'B', 16)
-        pdf.cell(40, 10, str(self.getNumero_Recibo()))
+        pdf.image('factura.jpg',5,2,200,290)
+        pdf.set_font('Arial', 'B', 10)
+        pdf.text(96, 72  , escuela)
+        pdf.text(161, 72 , str(self.getFechaPeriodo()))
+        pdf.text(28, 89 , apellido +" "+ nombre)
+        pdf.text(69, 89 , dni)
+        pdf.text(96, 89 , cargo)
+        pdf.text(161, 89 , str(self.getNumero_Recibo()))
+        pdf.text(74, 115 , str(self.getSueldo_Basico()))
+        pdf.text(74, 120 , str(self.getMonto_Anti()))
+        pdf.text(74, 125 , str(self.getSuma_Zona()))
+        pdf.text(74, 130 , str(self.getPresentismo()))
+        pdf.text(74, 140,  str(self.getSubTotal1()))
+        pdf.text(155, 116, str(self.getJubilacion()))
+        pdf.text(155, 121, str(self.getDesObraSocial()))
+        pdf.text(155, 126, str(self.getSeguro()) )
+        pdf.text(150, 141, str(self.getSubTotal2()))
+        pdf.text(145, 216, str(self.getTotal()))
+        pdf.text(29, 231 , ingreso)
         nombre = str(self.getNumero_Recibo())
         ext = '.pdf'
         total = nombre+ext

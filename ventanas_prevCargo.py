@@ -15,6 +15,10 @@ def buscarDatos():
     datos = asignar.buscarCargos()
     mostrarLabel(datos)
 
+def crearPdf(numero_Recibo):
+    recibo = Recibo(numero_Recibo)
+    recibo.crearPdf()
+
 def mostrarRecibo(numero_Recibo, datos):
     encuentra = 'NO'
     for dato in datos:
@@ -41,7 +45,8 @@ def mostrarLabel(datos):
     recibo= Entry(medio, textvariable=entra_recibo,font=("Arial", 13)).place(x=100, y=450)
     entra_recibo.set("Ingresar Nº de Recibo")
 
-    BotonGenerarRecibo = Button(medio, text="Ver Recibo", font=("Arial", 14), relief=RIDGE, activebackground ="brown", width=19, command= lambda:mostrarRecibo(entra_recibo.get(),datos)).place(x=350,y=450)
+    BotonGenerarRecibo = Button(medio, text="Ver Recibo", font=("Arial", 14), relief=RIDGE, activebackground ="brown", width=19, command= lambda:crearPdf(entra_recibo.get())).place(x=350,y=450)
+    #BotonGenerarRecibo = Button(medio, text="Ver Recibo", font=("Arial", 14), relief=RIDGE, activebackground ="brown", width=19, command= lambda:mostrarRecibo(entra_recibo.get(),datos)).place(x=350,y=450)
 
     for dato in datos:
         if dato[5] == entra_periodo.get():
