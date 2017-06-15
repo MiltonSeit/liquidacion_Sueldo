@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 import tkMessageBox
 import MySQLdb
+import mysql.connector
 #Definimos la clase Docente
 class Docente(object):
     __dni_Docente = None
@@ -179,13 +180,11 @@ class Docente(object):
      */
      """
     def buscarDocente(self):
-        bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
-        cursor = bd.cursor()
-        sql = "SELECT * FROM Docente WHERE dni_Docente ='%s'" % self.getDni_Docente()
         try:
-       # Ejecutamos el comando
+            bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
+            cursor = bd.cursor()
+            sql = "SELECT * FROM Docente WHERE dni_Docente ='%s'" % self.getDni_Docente()
             cursor.execute(sql)
-       # Obtenemos todos los registros en una lista de listas
             resultados = cursor.fetchall()
             for registro in resultados:
                 dni = registro[0]
@@ -196,11 +195,11 @@ class Docente(object):
                 direccion = registro[5]
                 telefono = registro[6]
                 fecha = registro[7]
-            lista = [dni, obraSocial, nombre, apellido, direccion, telefono, fecha]
+                activo= registro[8]
+            lista = [dni, obraSocial, nombre, apellido, direccion, telefono, fecha, activo]
             return lista
-        except:
-            pass
-    # Nos desconectamos de la base de datos
+        except mysql.connector.Error as err:
+            print("Something went wrong: {}".format(err))
         bd.close()
 
     """Función actualizar antiguedad
@@ -224,16 +223,16 @@ class Docente(object):
      */
      """
     def agregarDocente(self):
-        if self.buscarDocente():
-            tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getDni_Docente() + " ' Se encuentra registrado")
-        else:
+        try:
             conn = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
             cursor = conn.cursor()
             cursor.execute("INSERT INTO Docente (dni_Docente,cod_Antiguedad, cod_ObraSocial, nombre_Docente, apellido_Docente, direccion_Docente, telefono_Docente, fechaIngreso, activo)VALUES ('%s' , '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s') " % (self.getDni_Docente(), self.getCod_Antiguedad(), self.getCod_ObraSocial(), self.getNombre_Docente(), self.getApellido_Docente(), self.getDireccion_Docente(), self.getTelefono_Docente(), self.getFechaIngreso(),'Y'))
             conn.commit()
             conn.close()
-            tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getDni_Docente() + " ' fue insertado con exito")
-
+            tkMessageBox.showinfo("AVISO", " El Docente '" + self.getDni_Docente() +"' fue insertado con exito")
+        except mysql.connector.Error as err:
+            print("Something went wrong: {}".format(err))
+        bd.close()
 
     """Funcion mostrarDocente
      * @param ninguno.
@@ -250,16 +249,16 @@ class Docente(object):
      """
     def modificarDocente(self):
         self.actualizarAntiguedad()
-        bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
-        cursor = bd.cursor()
-        ent_dni = self.getDni_Docente()
-        cursor.execute ("UPDATE Docente SET dni_Docente='%s',cod_Antiguedad='%s', cod_ObraSocial='%s', nombre_Docente='%s', apellido_Docente='%s', direccion_Docente='%s', telefono_Docente='%s', fechaIngreso='%s' WHERE dni_Docente='%s' " % (self.getDni_Docente(), self.getCod_Antiguedad(), self.getCod_ObraSocial(), self.getNombre_Docente(), self.getApellido_Docente(), self.getDireccion_Docente(),self.getTelefono_Docente(), self.getFechaIngreso(),self.getDni_Docente()))
         try:
+            bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
+            cursor = bd.cursor()
+            ent_dni = self.getDni_Docente()
+            cursor.execute ("UPDATE Docente SET dni_Docente='%s',cod_Antiguedad='%s', cod_ObraSocial='%s', nombre_Docente='%s', apellido_Docente='%s', direccion_Docente='%s', telefono_Docente='%s', fechaIngreso='%s' WHERE dni_Docente='%s' " % (self.getDni_Docente(), self.getCod_Antiguedad(), self.getCod_ObraSocial(), self.getNombre_Docente(), self.getApellido_Docente(), self.getDireccion_Docente(),self.getTelefono_Docente(), self.getFechaIngreso(),self.getDni_Docente()))
             bd.commit()
-            bd.close()
-            tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getNombre_Docente() + " ' se ha modificado con exito")
-        except:
-           print "Error: No se pudo guardar en la DB"
+            tkMessageBox.showinfo("AVISO", " El Docente '" + self.getNombre_Docente() +"' se ha modificado con exito")
+        except mysql.connector.Error as err:
+            print("Something went wrong: {}".format(err))
+        bd.close()
 
     """Funcion bajaDocente
      * @param ninguno.
@@ -267,27 +266,27 @@ class Docente(object):
      */
      """
     def bajaDocente(self):
-        bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
-        cursor = bd.cursor()
-        cursor.execute ("UPDATE Docente SET activo='%s' WHERE dni_Docente='%s' " % ('N',self.getDni_Docente()))
         try:
+            bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
+            cursor = bd.cursor()
+            cursor.execute ("UPDATE Docente SET activo='%s' WHERE dni_Docente='%s' " % ('N',self.getDni_Docente()))
             bd.commit()
-            bd.close()
-            tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getDni_Docente() + " ' se ha dado de baja con éxito")
-        except:
-           print "Error: No se pudo guardar en la DB"
+            tkMessageBox.showinfo("AVISO", " El Docente '" + self.getDni_Docente() +"' se ha dado de baja con éxito")
+        except mysql.connector.Error as err:
+            print("Something went wrong: {}".format(err))
+        bd.close()
 
     """Función altaDocente
     * @param no recibe ninguno.
     * @return da de alta el usuario que estaba dado de baja.
     """
     def altaDocente(self):
-        bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
-        cursor = bd.cursor()
-        cursor.execute("UPDATE Docente SET activo='%s' WHERE dni_Docente='%s'" % ('Y',self.getDni_Docente()))
         try:
+            bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
+            cursor = bd.cursor()
+            cursor.execute("UPDATE Docente SET activo='%s' WHERE dni_Docente='%s'" % ('Y',self.getDni_Docente()))
             bd.commit()
-            bd.close()
-            tkMessageBox.showinfo("AVISO", " El Docente'  " + self.getDni_Docente() + " ' se ha dado de baja con éxito")
-        except:
-           print "Error: No se pudo guardar en la DB"
+            tkMessageBox.showinfo("AVISO", " El Docente '" + self.getDni_Docente() +"' se ha dado de alta con éxito")
+        except mysql.connector.Error as err:
+            print("Something went wrong: {}".format(err))
+        bd.close()

@@ -52,11 +52,12 @@ def modificarDocente():
 """
 def Agregar_Docentes():
     Agregar_Docente()
+    ventana.iconify
 
 #Crea la ventana Principal
 ventana = Tk()
 ventana.title("Principal")
-ventana.geometry("1000x500+200+200")
+ventana.geometry("1000x500+20+20")
 
 
 #hago cabezera y cuerpo de la ventana(Tops = titulo, centro = botones)

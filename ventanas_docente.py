@@ -10,10 +10,15 @@ from clases.asigna import Asigna
 def alta_Docente():
     docente = Docente(entra_dni.get())
     docente.altaDocente()
+    BotonBaja = Button(medio, text="Baja Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command=baja_Docente).place(x=230, y=400)
+    BotonAlta = Button(medio, text="Alta Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= alta_Docente).place(x=500,y=400)
 
 def baja_Docente():
     docente = Docente(entra_dni.get())
     docente.bajaDocente()
+    BotonAlta = Button(medio, text="Alta Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= alta_Docente).place(x=500,y=400)
+    BotonBaja = Button(medio, text="Baja Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command=baja_Docente).place(x=230, y=400)
+
 
 def asignacionCargo():
     #Instancia el cargo y lo asigno al docente.
@@ -38,24 +43,37 @@ def asignar_Cargo():
     lblFecha= Label(medio,text=datos[6], font=("Time", 15)).place(x=200, y=330)
     BotonAgrega = Button(medio, text="Guardar", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown",command=asignacionCargo, width=19).place(x=230, y=400)
 
+"""Función buscarDocente
+* @param no recibe ningún parámetro
+* @return busca el dato del docente e instancia los botones para dar de alta y/O baja respectivamente
+"""
 def alta_bajaDocente():
-    docente= Docente(entra_dni.get())
-    datos = docente.buscarDocente()
-    #label de los nombres
-    lblNom= Label(medio,text="Nombre: ",background="gray", font=("Time", 15)).place(x=50, y=130)
-    lblApe= Label(medio,text="Apellido: ",background="gray", font=("Time", 15)).place(x=500, y=130)
-    lblDirecc= Label(medio,text="Direccion: ",background="gray", font=("Time", 15)).place(x=50, y=230)
-    lblTel= Label(medio,text="Telefono: ",background="gray", font=("Time", 15)).place(x=500, y=230)
-    lblFech= Label(medio,text="Fecha-Ingreso: ",background="gray", font=("Time", 15)).place(x=50, y=330)
-    #label de los datos
-    lblNombre= Label(medio,text=datos[2], font=("Time", 15)).place(x=140, y=130)
-    lblApellido= Label(medio,text=datos[3], font=("Time", 15)).place(x=600, y=130)
-    lblDirecciom= Label(medio,text=datos[4], font=("Time", 15)).place(x=160, y=230)
-    lblTelefono= Label(medio,text=datos[5], font=("Time", 15)).place(x=600, y=230)
-    lblFecha= Label(medio,text=datos[6], font=("Time", 15)).place(x=200, y=330)
-    #Activar el boton de docente
-    BotonBaja = Button(medio, text="Baja Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command=baja_Docente).place(x=230, y=400)
-    BotonAlta = Button(medio, text="Alta Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= alta_Docente).place(x=500,y=400)
+    if entra_dni.get().isdigit():
+        docente= Docente(entra_dni.get())
+        datos = docente.buscarDocente()
+        #label de los nombres
+        lblNom= Label(medio,text="Nombre: ",background="gray", font=("Time", 15)).place(x=50, y=130)
+        lblApe= Label(medio,text="Apellido: ",background="gray", font=("Time", 15)).place(x=500, y=130)
+        lblDirecc= Label(medio,text="Direccion: ",background="gray", font=("Time", 15)).place(x=50, y=230)
+        lblTel= Label(medio,text="Telefono: ",background="gray", font=("Time", 15)).place(x=500, y=230)
+        lblFech= Label(medio,text="Fecha-Ingreso: ",background="gray", font=("Time", 15)).place(x=50, y=330)
+        #label de los datos
+        lblNombre= Label(medio,text=datos[2], font=("Time", 15)).place(x=140, y=130)
+        lblApellido= Label(medio,text=datos[3], font=("Time", 15)).place(x=600, y=130)
+        lblDirecciom= Label(medio,text=datos[4], font=("Time", 15)).place(x=160, y=230)
+        blTelefono= Label(medio,text=datos[5], font=("Time", 15)).place(x=600, y=230)
+        lblFecha= Label(medio,text=datos[6], font=("Time", 15)).place(x=200, y=330)
+
+        #Activar el boton de docente
+        if datos[7] == 'Y':
+            BotonBaja = Button(medio, text="Baja Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command=baja_Docente).place(x=230, y=400)
+            BotonAlta = Button(medio, text="Alta Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= alta_Docente).place(x=500,y=400)
+        elif datos[7]== 'N':
+            BotonAlta = Button(medio, text="Alta Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= alta_Docente).place(x=500,y=400)
+            BotonBaja = Button(medio, text="Baja Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command=baja_Docente).place(x=230, y=400)
+    else:
+        tkMessageBox.showerror("DNI INCORRECTO", " SIN PUNTOS, ESPACIOS Y/O LETRAS")
+
 
 
 def actualizarDocente():
@@ -93,7 +111,7 @@ def funcionComprobar(*args):
     if entra_dni.get().isdigit():
         pass
     else:
-        tkMessageBox.showerror("DNI INCORRECTO", " SIN PUNTOS Y/O LETRAS")
+        tkMessageBox.showerror("DNI INCORRECTO", " SIN PUNTOS, ESPACIOS Y/O LETRAS")
         return False
 
     for en in entra_nom.get():
@@ -119,7 +137,7 @@ def funcionComprobar(*args):
     docente = Docente(entra_dni.get(), antiguedad(), obraS(), entra_nom.get(), entra_ape.get(), entra_dire.get(), entra_tel.get(), entra_fecha.get())
 
     if docente.buscarDocente():
-        tkMessageBox.showinfo("AVISO", " El DNI'  " + entra_dni.get() + " ' Se encuentra registrado")
+        tkMessageBox.showerror("AVISO", " El DNI ' " + entra_dni.get() + "' Se encuentra registrado, pruebe con otro.")
         return False
 
     tkMessageBox.showinfo("AVISO", " DATOS CORRECTOS")
@@ -342,7 +360,7 @@ def Modificar_Docente():
 VENTANA DE MODIFICAR DOCENTE
 """
 def AlBa_Docente():
-
+        #Crea la variable para la ventana
     	punto= Toplevel()
     	punto.title("DAR DE ALTA/BAJA AL DOCENTE")
     	punto.geometry("1000x500+200+200")
@@ -351,20 +369,22 @@ def AlBa_Docente():
     	medio=Frame(punto, width=1000, height=650)
     	medio.pack(side=BOTTOM)
 
+        #Imagen para fondo
     	imagen1=PhotoImage(file="imagenes/turq2.png")
     	lblImagen= Label(medio, image= imagen1).place(x=0, y=0)
 
-    	#etiquetas
+    	#Label DNI y separador
         lblDni= Label(medio,text="DNI: ",background="gray", font=("Time", 15)).place(x=150, y=30)
         lblSeparar= Label(medio,text="------------------------------------------------------------------------------------------------------------------------------------------------", font=("Time", 15)).place(x=0, y=80)
 
+        #Input para entrada de DNI
         global entra_dni
     	entra_dni=StringVar()
     	dni= Entry(medio, textvariable=entra_dni,font=("Arial", 13)).place(x=240, y=30)
         entra_dni.set("DNI A BUSCAR")
 
 
-        #Boton de comprobar los datos
+        #Boton de buscar los datos
         BotonBuscar = Button(medio, text="Buscar Docente", font=("Arial", 14), activebackground ="red", width=14, command= alta_bajaDocente).place(x=450, y=26)
 
         global BotonBaja
@@ -372,10 +392,10 @@ def AlBa_Docente():
     	BotonBaja = Button(medio, text="Baja Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19,).place(x=230, y=400)
 
         global BotonAlta
-        #Boton ALTA
+        #Boton Alta
     	BotonAlta = Button(medio, text="Alta Docente", state='disabled',font=("Arial", 14), relief=RIDGE, activebackground ="brown",  width=19).place(x=500,y=400)
 
-    	#Boton salir
+    	#Boton Salir
     	BotonSalir = Button(medio, text="SALIR", font=("Arial", 14), relief=RIDGE, activebackground ="brown", command = punto.destroy, width=19).place(x=750,y=400)
 
     	punto.mainloop()

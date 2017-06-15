@@ -292,7 +292,7 @@ class Recibo(object):
             print("Something went wrong: {}".format(err))
         bd.close()
 
-    def mostrarRecibo(self):
+    """def mostrarRecibo(self):
         print "Codigo Asignar: ",self.getCod_Asignar()
         print "Sueldo Basico: ", self.getSueldo_Basico()
         print "Monto Antiguedad ", self.getMonto_Anti()
@@ -305,7 +305,7 @@ class Recibo(object):
         print "SubTotal2: ", self.getSubTotal2()
         print "Total: ", self.getTotal()
         print "Fecha Periodo: ",self.getFechaPeriodo()
-
+"""
 
     def guardarRecibo(self):
         try:

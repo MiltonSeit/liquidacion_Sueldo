@@ -5,6 +5,7 @@ import tkMessageBox
 from datetime import *
 from clases.recibo import Recibo
 from clases.asigna import Asigna
+from clases.docente import Docente
 import MySQLdb
 import mysql.connector
 import decimal
@@ -14,10 +15,6 @@ def buscarDatos():
     asignar = Asigna(entra_dni.get())
     datos = asignar.buscarCargos()
     mostrarLabel(datos)
-
-def crearPdfs(numero_Recibo):
-    recibo = Recibo(numero_Recibo)
-    recibo.crearPdf()
 
 def crearPdf(numero_Recibo, datos):
     encuentra = 'NO'
@@ -33,6 +30,10 @@ def crearPdf(numero_Recibo, datos):
 
 
 def mostrarLabel(datos):
+    docente = Docente(entra_dni.get())
+    if not docente.buscarDocente():
+        tkMessageBox.showinfo("AVISO", " El DNI'  " + entra_dni.get() + " ' No se encuentra registrado")
+
     y = 150
     lblIdRecibo= Label(medio,text="Nº",background="#ec8a3a", font=("Time", 15)).place(x=10, y=110)
     lblNombre= Label(medio,text="Nombre/Apellido",background="#ec8a3a", font=("Time", 15)).place(x=65, y=110)
@@ -45,7 +46,6 @@ def mostrarLabel(datos):
     recibo= Entry(medio, textvariable=entra_recibo,font=("Arial", 13)).place(x=100, y=450)
     entra_recibo.set("Ingresar Nº de Recibo")
 
-    #BotonGenerarRecibo = Button(medio, text="Ver Recibo", font=("Arial", 14), relief=RIDGE, activebackground ="brown", width=19, command= lambda:crearPdf(entra_recibo.get())).place(x=350,y=450)
     BotonGenerarRecibo = Button(medio, text="Ver Recibo", font=("Arial", 14), relief=RIDGE, activebackground ="brown", width=19, command= lambda:crearPdf(entra_recibo.get(),datos)).place(x=350,y=450)
 
     for dato in datos:
@@ -55,13 +55,30 @@ def mostrarLabel(datos):
             lblCargo= Label(medio,text=dato[3],background="#f0ee5f", font=("Time", 15)).place(x=270, y=y)
             lblEscuela= Label(medio,text=dato[4],background="#f0ee5f", font=("Time", 15)).place(x=625, y=y)
             lblPeriodo= Label(medio,text=dato[5],background="#f0ee5f", font=("Time", 15)).place(x=900, y=y)
-            #BotonRecibo = Button(medio, text="Visualizar", font=("Arial", 14), activebackground ="red", width=10, command=lambda:mostrarRecibo(dato[0])).place(x=820, y=y)
+            BotonVisualizar = Button(medio, text="Visualizar", state="disabled",font=("Arial", 14), activebackground ="red", width=14).place(x=680, y=26)
+            y = y +50
+
+def limpiar():
+    y = 150
+
+    asignar = Asigna(entra_dni.get())
+    datos = asignar.buscarCargos()
+    for dato in datos:
+        if dato[5] == entra_periodo.get():
+            lblIdRecibo= Label(medio,text="     ",background="#f0ee5f", font=("Time", 15)).place(x=10, y=y)
+            lblNombre= Label(medio,text="                                ",background="#f0ee5f", font=("Time", 15)).place(x=65, y=y)
+            lblCargo= Label(medio,text="                                               ",background="#f0ee5f", font=("Time", 15)).place(x=270, y=y)
+            lblEscuela= Label(medio,text="                                  ",background="#f0ee5f", font=("Time", 15)).place(x=625, y=y)
+            lblPeriodo= Label(medio,text="          ",background="#f0ee5f", font=("Time", 15)).place(x=900, y=y)
+            BotonVisualizar = Button(medio, text="Visualizar", font=("Arial", 14), activebackground ="red", width=14,command=buscarDatos).place(x=680, y=26)
+            entra_dni.set("")
             y = y +50
 
 """
 VENTANA DE PREVISUALIZAR CARGO
 """
 def ventanaPrevisualizar():
+
 
     	punto= Toplevel()
     	punto.title("Previsualizar Cargo")
@@ -93,7 +110,8 @@ def ventanaPrevisualizar():
 
 
         #Boton de comprobar los datos
-        BotonVisualizar = Button(medio, text="Visualizar", font=("Arial", 14), activebackground ="red", width=14,command=buscarDatos).place(x=750, y=26)
+        BotonVisualizar = Button(medio, text="Visualizar", font=("Arial", 14), activebackground ="red", width=14,command=buscarDatos).place(x=680, y=26)
+        BotonLimpiar = Button(medio, text="Limpiar", font=("Arial", 14), activebackground ="red", width=10,command=limpiar).place(x=850, y=26)
 
         #Boton salir
     	BotonSalir = Button(medio, text="SALIR", font=("Arial", 14), relief=RIDGE, activebackground ="brown", command = punto.destroy, width=19).place(x=750,y=450)
