@@ -52,7 +52,6 @@ def modificarDocente():
 """
 def Agregar_Docentes():
     Agregar_Docente()
-    ventana.iconify
 
 #Crea la ventana Principal
 ventana = Tk()

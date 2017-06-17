@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 from Tkinter import *
 import time
 from datetime import datetime, date, time, timedelta
@@ -7,12 +8,20 @@ import tkMessageBox
 from clases.docente import Docente
 from clases.asigna import Asigna
 
+"""Función alta_Docente
+* @param no recibe ningún parámetro
+* @return cambia el estado del docente dejandolo como activo o de Alta
+"""
 def alta_Docente():
     docente = Docente(entra_dni.get())
     docente.altaDocente()
     BotonBaja = Button(medio, text="Baja Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command=baja_Docente).place(x=230, y=400)
     BotonAlta = Button(medio, text="Alta Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= alta_Docente).place(x=500,y=400)
 
+"""Función baja_Docente
+* @param no recibe ningún parámetro
+* @return cambia el estado del docente dejandolo como inactivo o de Baja
+"""
 def baja_Docente():
     docente = Docente(entra_dni.get())
     docente.bajaDocente()
@@ -43,7 +52,7 @@ def asignar_Cargo():
     lblFecha= Label(medio,text=datos[6], font=("Time", 15)).place(x=200, y=330)
     BotonAgrega = Button(medio, text="Guardar", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown",command=asignacionCargo, width=19).place(x=230, y=400)
 
-"""Función buscarDocente
+"""Función alta_bajaDocente
 * @param no recibe ningún parámetro
 * @return busca el dato del docente e instancia los botones para dar de alta y/O baja respectivamente
 """
@@ -77,6 +86,7 @@ def alta_bajaDocente():
 
 
 def actualizarDocente():
+
     docente= Docente(entra_dni.get(),antiguedad(), obraS(), entra_nom.get(),entra_ape.get(), entra_dire.get(), entra_tel.get(), entra_fecha.get())
     docente.modificarDocente()
     entra_dni.set("")
@@ -93,8 +103,8 @@ def actualizarDocente():
 def buscarDocente():
     docente= Docente(entra_dni.get())
     datos = docente.buscarDocente()
-    entra_nom.set(datos[2])
     entra_ape.set(datos[3])
+    entra_nom.set(datos[2])
     entra_dire.set(datos[4])
     entra_tel.set(datos[5])
     entra_fecha.set(datos[6])
@@ -341,17 +351,14 @@ def Modificar_Docente():
     	entra01 = OptionMenu (medio, respo1,*opciones, command= obraS).place(x=700,y=328)
     	respo1.set(opciones[0])
 
-        #Boton modificar cargo
-        BotonModificarCargo = Button(medio, text="Modificar Cargo", font=("Arial", 14), activebackground ="red", width=14, command= buscarDocente).place(x=450, y=26)
+        #Boton de buscar Docente
+        BotonBuscar = Button(medio, text="Buscar Docente", font=("Arial", 14), activebackground ="red", width=14, command= buscarDocente).place(x=450, y=26)
 
-        #Boton de comprobar los datos
-        BotonComprobar = Button(medio, text="Buscar Docente", font=("Arial", 14), activebackground ="red", width=14, command= buscarDocente).place(x=450, y=26)
+        global BotonActualiza
+    	#Boton Actualizar desactivado que luego de la consulta sera activado
+    	BotonActualiza = Button(medio, text="ACTUALIZAR", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19).place(x=230, y=400)
 
-        global BotonAgrega
-    	#Boton Agregar persona
-    	BotonAgrega = Button(medio, text="ACTUALIZAR", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)
-
-    	#Boton salir
+    	#Boton salir cierra la ventana
     	BotonSalir = Button(medio, text="SALIR", font=("Arial", 14), relief=RIDGE, activebackground ="brown", command = punto.destroy, width=19).place(x=500,y=400)
 
     	punto.mainloop()

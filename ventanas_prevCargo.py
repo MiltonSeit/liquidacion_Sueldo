@@ -12,9 +12,14 @@ import decimal
 import os
 
 def buscarDatos():
-    asignar = Asigna(entra_dni.get())
-    datos = asignar.buscarCargos()
-    mostrarLabel(datos)
+    if entra_dni.get().isdigit():
+        asignar = Asigna(entra_dni.get())
+        datos = asignar.buscarCargos()
+        mostrarLabel(datos)
+    else:
+        tkMessageBox.showinfo("AVISO", " El Recibo '" + entra_dni.get() +"' no es válido(Sin Puntos Y/O Letras)")
+
+
 
 def crearPdf(numero_Recibo, datos):
     encuentra = 'NO'
@@ -31,38 +36,41 @@ def crearPdf(numero_Recibo, datos):
 
 def mostrarLabel(datos):
     docente = Docente(entra_dni.get())
-    if not docente.buscarDocente():
+    if docente.buscarDocente():
+        dni= Entry(medio, textvariable=entra_dni,state="disabled",font=("Arial", 13)).place(x=440, y=30)
+
+        y = 150
+        lblIdRecibo= Label(medio,text="Nº",background="#ec8a3a", font=("Time", 15)).place(x=10, y=110)
+        lblNombre= Label(medio,text="Nombre/Apellido",background="#ec8a3a", font=("Time", 15)).place(x=65, y=110)
+        lblCargo= Label(medio,text="Cargo que ocupa",background="#ec8a3a", font=("Time", 15)).place(x=270, y=110)
+        lblEscuela= Label(medio,text="Escuela",background= "#ec8a3a", font=("Time", 15)).place(x=625, y=110)
+        lblPeriodo= Label(medio,text="Período",background="#ec8a3a", font=("Time", 15)).place(x=900, y=110)
+
+        global entra_recibo
+        entra_recibo=StringVar()
+        recibo= Entry(medio, textvariable=entra_recibo,font=("Arial", 13)).place(x=100, y=450)
+        entra_recibo.set("Ingresar Nº de Recibo")
+
+        BotonGenerarRecibo = Button(medio, text="Ver Recibo", font=("Arial", 14), relief=RIDGE, activebackground ="brown", width=19, command= lambda:crearPdf(entra_recibo.get(),datos)).place(x=350,y=450)
+
+        for dato in datos:
+            if dato[5] == entra_periodo.get():
+                lblIdRecibo= Label(medio,text=dato[0],background="#f0ee5f", font=("Time", 15)).place(x=10, y=y)
+                lblNombre= Label(medio,text=dato[1]+" "+dato[2],background="#f0ee5f", font=("Time", 15)).place(x=65, y=y)
+                lblCargo= Label(medio,text=dato[3],background="#f0ee5f", font=("Time", 15)).place(x=270, y=y)
+                lblEscuela= Label(medio,text=dato[4],background="#f0ee5f", font=("Time", 15)).place(x=625, y=y)
+                lblPeriodo= Label(medio,text=dato[5],background="#f0ee5f", font=("Time", 15)).place(x=900, y=y)
+                BotonVisualizar = Button(medio, text="Visualizar", state="disabled",font=("Arial", 14), activebackground ="red", width=14).place(x=680, y=26)
+                y = y +50
+    else:
         tkMessageBox.showinfo("AVISO", " El DNI'  " + entra_dni.get() + " ' No se encuentra registrado")
-
-    y = 150
-    lblIdRecibo= Label(medio,text="Nº",background="#ec8a3a", font=("Time", 15)).place(x=10, y=110)
-    lblNombre= Label(medio,text="Nombre/Apellido",background="#ec8a3a", font=("Time", 15)).place(x=65, y=110)
-    lblCargo= Label(medio,text="Cargo que ocupa",background="#ec8a3a", font=("Time", 15)).place(x=270, y=110)
-    lblEscuela= Label(medio,text="Escuela",background= "#ec8a3a", font=("Time", 15)).place(x=625, y=110)
-    lblPeriodo= Label(medio,text="Período",background="#ec8a3a", font=("Time", 15)).place(x=900, y=110)
-
-    global entra_recibo
-    entra_recibo=StringVar()
-    recibo= Entry(medio, textvariable=entra_recibo,font=("Arial", 13)).place(x=100, y=450)
-    entra_recibo.set("Ingresar Nº de Recibo")
-
-    BotonGenerarRecibo = Button(medio, text="Ver Recibo", font=("Arial", 14), relief=RIDGE, activebackground ="brown", width=19, command= lambda:crearPdf(entra_recibo.get(),datos)).place(x=350,y=450)
-
-    for dato in datos:
-        if dato[5] == entra_periodo.get():
-            lblIdRecibo= Label(medio,text=dato[0],background="#f0ee5f", font=("Time", 15)).place(x=10, y=y)
-            lblNombre= Label(medio,text=dato[1]+" "+dato[2],background="#f0ee5f", font=("Time", 15)).place(x=65, y=y)
-            lblCargo= Label(medio,text=dato[3],background="#f0ee5f", font=("Time", 15)).place(x=270, y=y)
-            lblEscuela= Label(medio,text=dato[4],background="#f0ee5f", font=("Time", 15)).place(x=625, y=y)
-            lblPeriodo= Label(medio,text=dato[5],background="#f0ee5f", font=("Time", 15)).place(x=900, y=y)
-            BotonVisualizar = Button(medio, text="Visualizar", state="disabled",font=("Arial", 14), activebackground ="red", width=14).place(x=680, y=26)
-            y = y +50
 
 def limpiar():
     y = 150
 
     asignar = Asigna(entra_dni.get())
     datos = asignar.buscarCargos()
+    dni= Entry(medio, textvariable=entra_dni,state="normal",font=("Arial", 13)).place(x=440, y=30)
     for dato in datos:
         if dato[5] == entra_periodo.get():
             lblIdRecibo= Label(medio,text="     ",background="#f0ee5f", font=("Time", 15)).place(x=10, y=y)

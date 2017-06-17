@@ -3,39 +3,27 @@
 import tkMessageBox
 import MySQLdb
 import mysql.connector
+
 #Definimos la clase Docente
 class Docente(object):
     __dni_Docente = None
-    __cod_Antiguedad = None
-    __cod_ObraSocial = None
-    __nombre_Docente = None
-    __apellido_Docente = None
+    __codigo_ObraSocial = None
+    __nomApe_Docente = None
     __direccion_Docente = None
     __telefono_Docente = None
-    __fechaIngreso_Docente = None
 
 
     """Constructor
-    * @param dni_Docente, cod_Antiguedad, cod_ObraSocial, nombre_Docente, apellido_Docente, direccion_Docente, telefono_Docente, fechaIngreso
+    * @param dni_Docente, codigo_ObraSocial, nomApe_Docente, direccion_Docente, telefono_Docente,
     * @return no devuelve nada
     """
-    def __init__(self, dni_Docente="", cod_Antiguedad="", cod_ObraSocial="", nombre_Docente="", apellido_Docente="", direccion_Docente="", telefono_Docente="", fechaIngreso=""):
+    def __init__(self, dni_Docente="",codigo_ObraSocial="", nomApe_Docente="",direccion_Docente="", telefono_Docente=""):
         self.__dni_Docente = dni_Docente
-        self.__cod_Antiguedad = cod_Antiguedad
-        self.__cod_ObraSocial = cod_ObraSocial
-        self.__nombre_Docente = nombre_Docente
-        self.__apellido_Docente = apellido_Docente
+        self.__codigo_ObraSocial = codigo_ObraSocial
+        self.__nomApe_Docente = nomApe_Docente
         self.__direccion_Docente = direccion_Docente
         self.__telefono_Docente = telefono_Docente
-        self.__fechaIngreso = fechaIngreso
 
-    """Constructor con un solo parametro
-    * @param dni_Docente
-    * @return no devuelve nada
-
-    def __init__(self, dni_Docente):
-        self.__dni_Docente = dni_Docente
-"""
     """Getter dni_Docente.
      * @param Ninguno.
      * @return devuelve el dni del Docente
@@ -44,39 +32,23 @@ class Docente(object):
     def getDni_Docente(self):
         return self.__dni_Docente
 
-    """Getter cod_Antiguedad.
+    """ Getter codigo_ObraSocial
      * @param Ninguno.
-     * @return devuelve el codigo de la Antiguedad
+     * @return devuelve el nombre de la obra social.
      */
     """
-    def getCod_Antiguedad(self):
-        return self.__cod_Antiguedad
+    def getCodigo_ObraSocial(self):
+        return self.__codigo_ObraSocial
 
-    """ Getter cod_ObraSocial
+    """Getter nomApe_Docente.
      * @param Ninguno.
-     * @return devuelve el codigo de la obra social.
+     * @return devuelve el nomApe del Docente
      */
     """
-    def getCod_ObraSocial(self):
-        return self.__cod_ObraSocial
+    def getNomApe_Docente(self):
+        return self.__nomApe_Docente
 
-    """Getter nombre_Docente.
-     * @param Ninguno.
-     * @return devuelve el nombre del Docente
-     */
-    """
-    def getNombre_Docente(self):
-        return self.__nombre_Docente
-
-    """Getter apellido_Docente.
-     * @param Ninguno.
-     * @return devuelve el apellido del Docente
-     */
-    """
-    def getApellido_Docente(self):
-        return self.__apellido_Docente
-
-    """Getter direccion_Docente.
+"""Getter direccion_Docente.
      * @param Ninguno.
      * @return devuelve la direccion del Docente
      */
@@ -92,15 +64,6 @@ class Docente(object):
     def getTelefono_Docente(self):
         return self.__telefono_Docente
 
-    """Getter fechaIngreso.
-     *
-     * @param Ninguno.
-     * @return devuelve la fecha de ingreso del Docente
-     */
-    """
-    def getFechaIngreso(self):
-        return self.__fechaIngreso
-
     """Setter dni_Docente
      * @param dni_Docente.
      * @return No devuelve nada.
@@ -109,37 +72,21 @@ class Docente(object):
     def setDni_Docente(self, dni_Docente):
         self.__dni_Docente = dni_Docente
 
-    """Setter cod_Antiguedad
-     * @param cod_Antiguedad.
+    """Setter codigo_ObraSocial
+     * @param codigo_ObraSocial.
      * @return No devuelve nada.
      */
      """
-    def setCod_Antiguedad(self, cod_Antiguedad):
-        self.__cod_Antiguedad = cod_Antiguedad
+    def setCodigo_ObraSocial(self, codigo_ObraSocial):
+        self.__codigo_ObraSocial = codigo_ObraSocial
 
-    """Setter cod_ObraSocial
-     * @param cod_ObraSocial.
+    """Setter nomApe_Docente
+     * @param nomApe_Docente.
      * @return No devuelve nada.
      */
      """
-    def setCod_ObraSocial(self, cod_ObraSocial):
-        self.__cod_ObraSocial = cod_ObraSocial
-
-    """Setter nombre_Docente
-     * @param nombre_Docente.
-     * @return No devuelve nada.
-     */
-     """
-    def setNombre_Docente(self, nombre_Docente):
-        self.__nombre_Docente = nombre_Docente
-
-    """Setter apellido_Docente
-     * @param apellido_Docente.
-     * @return No devuelve nada.
-     */
-     """
-    def setApellido_Docente(self, apellido_Docente):
-        self.__apellido_Docente = apellido_Docente
+    def setNomApe_Docente(self, nomApe_Docente):
+        self.__nomApe_Docente = nomApe_Docente
 
     """Setter direccion_Docente
      * @param direccion_Docente.
@@ -157,22 +104,11 @@ class Docente(object):
     def setTelefono_Docente(self, telefono_Docente):
         self.__telefono_Docente = telefono_Docente
 
-    """Setter fechaIngreso
-     * @param fechaIngreso.
-     * @return No devuelve nada.
-     */
-     """
-    def setFechaIngreso(self, fechaIngreso):
-        self.__fechaIngreso = fechaIngreso
-
     dni_Docente    = property(fget = getDni_Docente, fset = setDni_Docente)
-    cod_Antiguedad   = property(fget = getCod_Antiguedad, fset = setCod_Antiguedad)
-    cod_ObraSocial    = property(fget = getCod_ObraSocial, fset = setCod_ObraSocial)
-    nombre_Docente   = property(fget = getNombre_Docente, fset = setNombre_Docente)
-    apellido_Docente    = property(fget = getApellido_Docente, fset = setApellido_Docente)
+    codigo_ObraSocial    = property(fget = getCodigo_ObraSocial, fset = setCodigo_ObraSocial)
+    nomApe_Docente   = property(fget = getNomApe_Docente, fset = setNomApe_Docente)
     direccion_Docente    = property(fget = getDireccion_Docente, fset = setDireccion_Docente)
     telefono_Docente    = property(fget = getTelefono_Docente, fset = setTelefono_Docente)
-    fechaIngreso    = property(fget = getFechaIngreso, fset = setFechaIngreso)
 
     """Funcion buscarDocente
      * @param ninguno.
@@ -188,45 +124,27 @@ class Docente(object):
             resultados = cursor.fetchall()
             for registro in resultados:
                 dni = registro[0]
-                #el que no se envia es cod_antiguedad
-                obraSocial = registro[2]
-                nombre = registro[3]
-                apellido = registro[4]
-                direccion = registro[5]
-                telefono = registro[6]
-                fecha = registro[7]
-                activo= registro[8]
-            lista = [dni, obraSocial, nombre, apellido, direccion, telefono, fecha, activo]
+                obraSocial = registro[1]
+                nomApe = registro[2]
+                direccion = registro[3]
+                telefono = registro[4]
+                activo= registro[5]
+            lista = [dni, obraSocial, nomApe, direccion, telefono,activo]
             return lista
         except mysql.connector.Error as err:
             print("Something went wrong: {}".format(err))
         bd.close()
 
-    """Función actualizar antiguedad
-    * @param no recibe ningún parámetro
-    * @return devuelve la cantidad de años que ejerce como Docente
-    """
-    def actualizarAntiguedad(self):
-        fechActual = datetime.now()
-        fecha_ingreso = self.getCod_Antiguedad()
-        diferencia = (fechActual - fecha_ingreso)
-        resultado = (diferencia/365)
-        anios = resultado.days
-        if anios > 24:
-            self.setCod_Antiguedad(25)
-        else:
-            self.setCod_Antiguedad(anios)
-
     """Funcion agregarDocente
      * @param ninguno.
-     * @return No devuelve nada. Agrega el docente al sistema.
+     * @return No devuelve nada. Agrega el docente a la BASE DE DATOS.
      */
      """
     def agregarDocente(self):
         try:
             conn = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO Docente (dni_Docente,cod_Antiguedad, cod_ObraSocial, nombre_Docente, apellido_Docente, direccion_Docente, telefono_Docente, fechaIngreso, activo)VALUES ('%s' , '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s') " % (self.getDni_Docente(), self.getCod_Antiguedad(), self.getCod_ObraSocial(), self.getNombre_Docente(), self.getApellido_Docente(), self.getDireccion_Docente(), self.getTelefono_Docente(), self.getFechaIngreso(),'Y'))
+            cursor.execute("INSERT INTO Docente (dni_Docente, cod_ObraSocial, nomApe_Docente, direccion_Docente, telefono_Docente,activo)VALUES ('%s' , '%s', '%s', '%s', '%s', '%s') " % (self.getDni_Docente(), self.getCodigo_ObraSocial(), self.getNomApe_Docente(), self.getDireccion_Docente(), self.getTelefono_Docente(),'Y'))
             conn.commit()
             conn.close()
             tkMessageBox.showinfo("AVISO", " El Docente '" + self.getDni_Docente() +"' fue insertado con exito")
@@ -234,21 +152,12 @@ class Docente(object):
             print("Something went wrong: {}".format(err))
         bd.close()
 
-    """Funcion mostrarDocente
-     * @param ninguno.
-     * @return devuelve los datos del docente.
-     */
-     """
-    def mostrarDocente(self):
-        print self.getDni_Docente(), self.getCod_Antiguedad(), self.getCod_ObraSocial(), self.getNombre_Docente(), self.getApellido_Docente(), self.getDireccion_Docente(), self.getTelefono_Docente(), self.getFechaIngreso()
-
     """Funcion modificarDocente
      * @param ninguno.
      * @return modificar los datos del docente.
      */
      """
     def modificarDocente(self):
-        self.actualizarAntiguedad()
         try:
             bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
             cursor = bd.cursor()

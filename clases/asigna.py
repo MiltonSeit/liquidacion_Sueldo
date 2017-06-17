@@ -11,17 +11,18 @@ class Asigna(object):
 	__dni_Docente = None
 	__cod_Cargo = None
 	__cod_Escuela = None
+	__fechaIngreso = None
 
 
 	"""Constructor
-	* @param cod_Cargo, descripcion_Cargo, puntos_Cargo
+	* @param cod_Cargo, descripcion_Cargo, puntos_Cargo, fechaIngreso
 	* @return no devuelve nada
 	"""
-	def __init__(self, dni_Docente, cod_Cargo="", cod_Escuela=""):
-
+	def __init__(self, dni_Docente, cod_Cargo="", cod_Escuela="", fechaIngreso=""):
 		self.__dni_Docente = dni_Docente
 		self.__cod_Cargo = cod_Cargo
 		self.__cod_Escuela = cod_Escuela
+		self.__fechaIngreso
 
 
 	"""Setter dni_Docente
@@ -49,6 +50,15 @@ class Asigna(object):
 		self.__cod_Escuela = cod_Escuela
 
 
+	"""Setter fechaIngreso
+	* @param fechaIngreso
+	* @no devuelve nada.
+	*/
+	"""
+	def _setfechaIngreso(self, fechaIngreso):
+		self.__fechaIngreso = fechaIngreso
+
+
 	"""Getter dni_Docente.
  	* @param Ninguno.
  	* @return devuelve el dni del docente
@@ -73,6 +83,13 @@ class Asigna(object):
 	def getCod_Escuela(self):
 		return self.__cod_Escuela
 
+	"""Getter fechaIngreso.
+ 	* @param Ninguno.
+ 	* @return devuelve la fecha de ingreso del cargo del docente
+ 	*/
+	"""
+	def getFechaIngreso(self):
+		return self.__fechaIngreso
 
 	"""Funcion asignarCargo
      * @param ninguno
