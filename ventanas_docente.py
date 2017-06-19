@@ -82,13 +82,15 @@ def alta_bajaDocente():
 
 
 def actualizarDocente():
-
-    docente= Docente(entra_dni.get(), obraS(), entra_nomApe.get(), entra_dire.get(), entra_tel.get())
-    docente.modificarDocente()
-    entra_dni.set("")
-    entra_nomApe.set("")
-    entra_dire.set("")
-    entra_tel.set("")
+    if funcionComprobar():
+        docente= Docente(entra_dni.get(), obraS(), entra_nomApe.get(), entra_dire.get(), entra_tel.get())
+        docente.modificarDocente()
+        entra_dni.set("")
+        entra_nomApe.set("")
+        entra_dire.set("")
+        entra_tel.set("")
+    else:
+        pass
 
 """Función buscarDocente
 * @param no recibe ningún parámetro
@@ -109,6 +111,7 @@ def buscarDocente():
     respo1.set(opc)
 
     BotonAgrega = Button(medio, text="ACTUALIZAR", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= actualizarDocente).place(x=230, y=400)
+
 
 """Función Comprobar
 * @param no recibe ningún parámetro
@@ -135,15 +138,15 @@ def funcionComprobar(*args):
         tkMessageBox.showerror("TELEFONO INCORRECTO", "SIN PUNTOS, GUINOES Y/O LETRAS")
         return False
 
-    docente = Docente(entra_dni.get(), obraS(), entra_nomApe.get(), entra_dire.get(), entra_tel.get())
-    datos = docente.buscarDocente()
+    #docente = Docente(entra_dni.get(), obraS(), entra_nomApe.get(), entra_dire.get(), entra_tel.get())
+    #datos = docente.buscarDocente()
 
-    if not docente.buscarDocente():
-        tkMessageBox.showerror("AVISO", " El DNI ' " + entra_dni.get() + "' Se encuentra registrado, pruebe con otro.")
-        return False
+    #if not docente.buscarDocente():
+        #tkMessageBox.showerror("AVISO", " El DNI ' " + entra_dni.get() + "' Se encuentra registrado, pruebe con otro.")
+        #return False
 
     tkMessageBox.showinfo("AVISO", " DATOS CORRECTOS")
-    BotonAgrega = Button(medio, text="Guardar", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)
+    #BotonAgrega = Button(medio, text="Guardar", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)
     return True
 
 """Función antiguedad
