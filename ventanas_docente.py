@@ -70,7 +70,7 @@ def alta_bajaDocente():
         lblTelefono= Label(medio,text=datos[4], font=("Time", 15)).place(x=155, y=230)
 
         #Activar el boton de docente
-        if datos[5] == 'Y':
+        if datos[5] == 'Y': 
             BotonBaja = Button(medio, text="Baja Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command=baja_Docente).place(x=230, y=400)
             BotonAlta = Button(medio, text="Alta Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= alta_Docente).place(x=500,y=400)
         elif datos[5]== 'N':
