@@ -5,7 +5,7 @@ import time
 from datetime import datetime, date, time, timedelta
 import tkMessageBox
 from clases.docente import Docente
-from clases.asigna import Asigna
+from clases.cargo import Cargo
 from ventanas_docente import *
 from ventana_recibo import *
 from ventanas_prevCargo import *

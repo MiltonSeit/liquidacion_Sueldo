@@ -4,7 +4,7 @@ from Tkinter import *
 import tkMessageBox
 from datetime import *
 from clases.recibo import Recibo
-from clases.asigna import Asigna
+from clases.cargo import Cargo
 from clases.docente import Docente
 import MySQLdb
 import mysql.connector

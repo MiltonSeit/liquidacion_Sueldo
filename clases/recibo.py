@@ -7,7 +7,7 @@ from fpdf import FPDF
 import decimal
 from datetime import *
 import os, sys
-from clase.asigna import Asigna
+from cargo import Cargo
 
 #Definimos la clase Recibo
 class Recibo(object):
@@ -17,7 +17,7 @@ class Recibo(object):
     * @param numero_Recibo,fechaPeriodo
     * @return no devuelve nada
     """
-    def __init__(self, numero_Recibo="", fechaPeriodo=""):
+    def __init__(self, numero_Recibo=""):
         self.__numero_Recibo = numero_Recibo
 
     """Getter numero_Recibo.
@@ -28,7 +28,7 @@ class Recibo(object):
     def getNumero_Recibo(self):
         return self.__numero_Recibo
 
-"""Setter numero_Recibo.
+        """Setter numero_Recibo.
      * @param numero_Recibo.
      * @return no devuelve nada.
      */

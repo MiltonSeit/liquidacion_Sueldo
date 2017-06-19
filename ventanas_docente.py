@@ -6,7 +6,7 @@ import time
 from datetime import datetime, date, time, timedelta
 import tkMessageBox
 from clases.docente import Docente
-from clases.asigna import Asigna
+from clases.cargo import Cargo
 
 """Función alta_Docente
 * @param no recibe ningún parámetro
@@ -61,23 +61,19 @@ def alta_bajaDocente():
         docente= Docente(entra_dni.get())
         datos = docente.buscarDocente()
         #label de los nombres
-        lblNom= Label(medio,text="Nombre: ",background="gray", font=("Time", 15)).place(x=50, y=130)
-        lblApe= Label(medio,text="Apellido: ",background="gray", font=("Time", 15)).place(x=500, y=130)
-        lblDirecc= Label(medio,text="Direccion: ",background="gray", font=("Time", 15)).place(x=50, y=230)
-        lblTel= Label(medio,text="Telefono: ",background="gray", font=("Time", 15)).place(x=500, y=230)
-        lblFech= Label(medio,text="Fecha-Ingreso: ",background="gray", font=("Time", 15)).place(x=50, y=330)
+        lblNom= Label(medio,text="Nombre y Apellido: ",background="gray", font=("Time", 15)).place(x=50, y=130)
+        lblDirecc= Label(medio,text="Direccion: ",background="gray", font=("Time", 15)).place(x=500, y=130)
+        lblTel= Label(medio,text="Telefono: ",background="gray", font=("Time", 15)).place(x=50, y=230)
         #label de los datos
-        lblNombre= Label(medio,text=datos[2], font=("Time", 15)).place(x=140, y=130)
-        lblApellido= Label(medio,text=datos[3], font=("Time", 15)).place(x=600, y=130)
-        lblDirecciom= Label(medio,text=datos[4], font=("Time", 15)).place(x=160, y=230)
-        blTelefono= Label(medio,text=datos[5], font=("Time", 15)).place(x=600, y=230)
-        lblFecha= Label(medio,text=datos[6], font=("Time", 15)).place(x=200, y=330)
+        lblNomApe= Label(medio,text=datos[2], font=("Time", 15)).place(x=245, y=130)
+        lblDireccion= Label(medio,text=datos[3], font=("Time", 15)).place(x=610, y=130)
+        lblTelefono= Label(medio,text=datos[4], font=("Time", 15)).place(x=155, y=230)
 
         #Activar el boton de docente
-        if datos[7] == 'Y':
+        if datos[5] == 'Y':
             BotonBaja = Button(medio, text="Baja Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command=baja_Docente).place(x=230, y=400)
             BotonAlta = Button(medio, text="Alta Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= alta_Docente).place(x=500,y=400)
-        elif datos[7]== 'N':
+        elif datos[5]== 'N':
             BotonAlta = Button(medio, text="Alta Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= alta_Docente).place(x=500,y=400)
             BotonBaja = Button(medio, text="Baja Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command=baja_Docente).place(x=230, y=400)
     else:
@@ -124,7 +120,7 @@ def funcionComprobar(*args):
         tkMessageBox.showerror("DNI INCORRECTO", " SIN PUNTOS, ESPACIOS Y/O LETRAS")
         return False
 
-    for en in entra_nom.get():
+    for en in entra_nomApe.get():
         if en.isdigit():
             tkMessageBox.showerror("NOMBRE INCORRECTO", " SIN NÚMEROS           ")
             return False
@@ -132,21 +128,16 @@ def funcionComprobar(*args):
             tkMessageBox.showerror("NOMBRE INCORRECTO", " SIN CARACTERES ESPECIALES")
             return False
 
-    for en in entra_ape.get():
-        if en.isdigit():
-            tkMessageBox.showerror("APELLIDO INCORRECTO", "SIN NUMEROS       ")
-            return False
-        elif (en == "/") or en == "-":
-            tkMessageBox.showerror("APELLIDO INCORRECTO", "SIN CARACTERES ESPECIALES")
-            return False
     if entra_tel.get().isdigit():
         pass
     else:
         tkMessageBox.showerror("TELEFONO INCORRECTO", "SIN PUNTOS, GUINOES Y/O LETRAS")
         return False
-    docente = Docente(entra_dni.get(), antiguedad(), obraS(), entra_nom.get(), entra_ape.get(), entra_dire.get(), entra_tel.get(), entra_fecha.get())
 
-    if docente.buscarDocente():
+    docente = Docente(entra_dni.get(), obraS(), entra_nomApe.get(), entra_dire.get(), entra_tel.get())
+    datos = docente.buscarDocente()
+
+    if not docente.buscarDocente():
         tkMessageBox.showerror("AVISO", " El DNI ' " + entra_dni.get() + "' Se encuentra registrado, pruebe con otro.")
         return False
 
@@ -203,14 +194,14 @@ def cargos():
 * @return da de alta al docente y asigna el cargo
 """
 def agregar_Docente():
-    docente = Docente(entra_dni.get(), antiguedad(), obraS(), entra_nom.get(), entra_ape.get(), entra_dire.get(), entra_tel.get(), entra_fecha.get())
+    docente = Docente(entra_dni.get(), obraS(), entra_nomApe.get(), entra_dire.get(), entra_tel.get())
     docente.agregarDocente()
     entra_dni.set("")
-    entra_nom.set("")
-    entra_ape.set("")
+    entra_nomApe.set("")
     entra_dire.set("")
     entra_tel.set("")
-    entra_fecha.set("")
+    BotonAgrega = Button(medio, text="Guardar", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)
+
 
 """
 VENTANA AGREGAR DOCENTE
@@ -229,40 +220,28 @@ def Agregar_Docente():
 	lblImagen= Label(medio, image= imagen1).place(x=0, y=0)
 
 	#etiquetas
-	lblNom= Label(medio,text="Nombre", font=("Time", 15)).place(x=50, y=30)
-	lblApe= Label(medio,text="Apellido", font=("Time", 15)).place(x=500, y=30)
-	lblDni= Label(medio,text="DNI", font=("Time", 15)).place(x=50, y=130)
-	lblDirecc= Label(medio,text="Direccion", font=("Time", 15)).place(x=500, y=130)
-	lblTel= Label(medio,text="Telefono", font=("Time", 15)).place(x=50, y=230)
-	lblFech= Label(medio,text="Fecha-Ingreso", font=("Time", 15)).place(x=500, y=230)
+	lblNomApe= Label(medio,text="Nombre y Apellido:", font=("Time", 15)).place(x=50, y=30)
+	lblDni= Label(medio,text="DNI:", font=("Time", 15)).place(x=553, y=30)
+	lblDirecc= Label(medio,text="Direccion:", font=("Time", 15)).place(x=500, y=130)
+	lblTel= Label(medio,text="Telefono:", font=("Time", 15)).place(x=50, y=130)
 
-	global entra_nom
+	global entra_nomApe
 	global entra_dni
-	global entra_ape
 	global entra_dire
 	global entra_tel
-	global entra_fecha
 
 
-	entra_nom = StringVar()
-	nombre = Entry(medio, textvariable=entra_nom,font=("Arial", 13)).place(x=140, y=30)
+	entra_nomApe = StringVar()
+	nomApe = Entry(medio, textvariable=entra_nomApe,font=("Arial", 13)).place(x=248, y=30)
 
-
-	entra_ape= StringVar()
-	apellido= Entry(medio, textvariable=entra_ape,font=("Arial", 13)).place(x=600, y=30)
-
-	entra_dni=StringVar()
-	dni= Entry(medio, textvariable=entra_dni,font=("Arial", 13)).place(x=140, y=130)
+        entra_dni=StringVar()
+	dni= Entry(medio, textvariable=entra_dni,font=("Arial", 13)).place(x=604, y=30)
 
 	entra_dire=StringVar()
-	direccion= Entry(medio, textvariable=entra_dire,font=("Arial", 13)).place(x=600, y=130)
+	direccion= Entry(medio, textvariable=entra_dire,font=("Arial", 13)).place(x=608, y=130)
 
 	entra_tel=StringVar()
-	telefono= Entry(medio, textvariable=entra_tel,font=("Arial", 13)).place(x=160, y=230)
-
-	entra_fecha=StringVar()
-	fecha= Entry(medio, textvariable=entra_fecha,font=("Arial", 13)).place(x=650, y=230)
-        entra_fecha.set("DD/MM/AAAA")
+	telefono= Entry(medio, textvariable=entra_tel,font=("Arial", 13)).place(x=150, y=130)
 
 	#Conexion
 	global respo1
@@ -271,11 +250,11 @@ def Agregar_Docente():
 
 	respo1=StringVar(medio)
 	opciones = ['Seleccione obra Social','Asimira', 'Medisur', 'Sps Salud','Osecac','Ioscor']
-	entra01 = OptionMenu (medio, respo1,*opciones, command= obraS).place(x=200,y=300)
-	respo1.set(opciones[0])
+	entra01 = OptionMenu (medio, respo1,*opciones, command= obraS).place(x=200,y=250)
+	respo1.set(opciones[5])
 
         #Boton de comprobar los datos
-        BotonComprobar = Button(medio, text="Comprobar-Datos", font=("Arial", 14), activebackground ="red", width=14, command= funcionComprobar).place(x=790, y=80)
+        BotonComprobar = Button(medio, text="Comprobar-Datos", font=("Arial", 14), activebackground ="red", width=14, command= funcionComprobar).place(x=670, y=250)
 
         global BotonAgrega
 	#Boton Agregar persona
