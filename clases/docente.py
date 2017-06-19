@@ -168,10 +168,9 @@ class Docente(object):
         try:
             bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
             cursor = bd.cursor()
-            ent_dni = self.getDni_Docente()
-            cursor.execute ("UPDATE Docente SET dni_Docente='%s',cod_Antiguedad='%s', cod_ObraSocial='%s', nombre_Docente='%s', apellido_Docente='%s', direccion_Docente='%s', telefono_Docente='%s', fechaIngreso='%s' WHERE dni_Docente='%s' " % (self.getDni_Docente(), self.getCod_Antiguedad(), self.getCod_ObraSocial(), self.getNombre_Docente(), self.getApellido_Docente(), self.getDireccion_Docente(),self.getTelefono_Docente(), self.getFechaIngreso(),self.getDni_Docente()))
+            cursor.execute ("UPDATE Docente SET dni_Docente='%s', cod_ObraSocial='%s', nomApe_Docente='%s', direccion_Docente='%s', telefono_Docente='%s' WHERE dni_Docente='%s' " % (self.getDni_Docente(), self.getCodigo_ObraSocial(), self.getNomApe_Docente(), self.getDireccion_Docente(),self.getTelefono_Docente(),self.getDni_Docente()))
             bd.commit()
-            tkMessageBox.showinfo("AVISO", " El Docente '" + self.getNombre_Docente() +"' se ha modificado con exito")
+            tkMessageBox.showinfo("AVISO", " El Docente '" + self.getNomApe_Docente() +"' se ha modificado con exito")
             bd.close()
         except mysql.connector.Error as err:
             print("Something went wrong: {}".format(err))

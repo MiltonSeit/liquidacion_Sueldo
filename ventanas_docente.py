@@ -70,7 +70,7 @@ def alta_bajaDocente():
         lblTelefono= Label(medio,text=datos[4], font=("Time", 15)).place(x=155, y=230)
 
         #Activar el boton de docente
-        if datos[5] == 'Y': 
+        if datos[5] == 'Y':
             BotonBaja = Button(medio, text="Baja Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command=baja_Docente).place(x=230, y=400)
             BotonAlta = Button(medio, text="Alta Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= alta_Docente).place(x=500,y=400)
         elif datos[5]== 'N':
@@ -83,14 +83,12 @@ def alta_bajaDocente():
 
 def actualizarDocente():
 
-    docente= Docente(entra_dni.get(),antiguedad(), obraS(), entra_nom.get(),entra_ape.get(), entra_dire.get(), entra_tel.get(), entra_fecha.get())
+    docente= Docente(entra_dni.get(), obraS(), entra_nomApe.get(), entra_dire.get(), entra_tel.get())
     docente.modificarDocente()
     entra_dni.set("")
-    entra_nom.set("")
-    entra_ape.set("")
+    entra_nomApe.set("")
     entra_dire.set("")
     entra_tel.set("")
-    entra_fecha.set("")
 
 """Función buscarDocente
 * @param no recibe ningún parámetro
@@ -99,14 +97,17 @@ def actualizarDocente():
 def buscarDocente():
     docente= Docente(entra_dni.get())
     datos = docente.buscarDocente()
-    entra_ape.set(datos[3])
-    entra_nom.set(datos[2])
-    entra_dire.set(datos[4])
-    entra_tel.set(datos[5])
-    entra_fecha.set(datos[6])
+    entra_nomApe.set(datos[2])
+    entra_dire.set(datos[3])
+    entra_tel.set(datos[4])
+
     valor={1:'Asimira', 2:'Medisur',3:'Sps Salud',4:'Osecac',5:'Ioscor'}
     opc=valor[datos[1]]
-    lblObraSocial= Label(medio,text=opc, font=("Time", 15)).place(x=550, y=328)
+
+    opciones = ['Seleccione obra Social','Asimira', 'Medisur', 'Sps Salud','Osecac','Ioscor']
+    entra01 = OptionMenu (medio, respo1,*opciones, command= obraS).place(x=500,y=228)
+    respo1.set(opc)
+
     BotonAgrega = Button(medio, text="ACTUALIZAR", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= actualizarDocente).place(x=230, y=400)
 
 """Función Comprobar
@@ -282,43 +283,33 @@ def Modificar_Docente():
     	lblImagen= Label(medio, image= imagen1).place(x=0, y=0)
 
     	#etiquetas
-        lblDni= Label(medio,text="DNI", font=("Time", 15)).place(x=150, y=30)
-    	lblNom= Label(medio,text="Nombre", font=("Time", 15)).place(x=50, y=130)
-    	lblApe= Label(medio,text="Apellido", font=("Time", 15)).place(x=500, y=130)
-    	lblDirecc= Label(medio,text="Direccion", font=("Time", 15)).place(x=50, y=230)
-    	lblTel= Label(medio,text="Telefono", font=("Time", 15)).place(x=500, y=230)
-    	lblFech= Label(medio,text="Fecha-Ingreso", font=("Time", 15)).place(x=50, y=330)
-        lblSeparar= Label(medio,text="------------------------------------------------------------------------------------------------------------------------------------------------", font=("Time", 15)).place(x=0, y=80)
-    	global entra_nom
+        lblDni= Label(medio,text="DNI:", font=("Time", 15)).place(x=150, y=30)
+    	lblNom= Label(medio,text="Nombre y Apellido:", font=("Time", 15)).place(x=50, y=130)
+    	lblApe= Label(medio,text="Dirección", font=("Time", 15)).place(x=500, y=130)
+    	lblDirecc= Label(medio,text="Teléfono:", font=("Time", 15)).place(x=50, y=230)
+    	lblSeparar= Label(medio,text="------------------------------------------------------------------------------------------------------------------------------------------------", font=("Time", 15)).place(x=0, y=80)
+
+        global entra_nomApe
     	global entra_dni
-    	global entra_ape
     	global entra_dire
     	global entra_tel
     	global entra_fecha
 
 
-    	entra_nom = StringVar()
-    	nombre = Entry(medio, textvariable=entra_nom,font=("Arial", 13)).place(x=140, y=130)
-
-
-    	entra_ape= StringVar()
-    	apellido= Entry(medio, textvariable=entra_ape,font=("Arial", 13)).place(x=600, y=130)
-
+    	entra_nomApe = StringVar()
+    	nombre = Entry(medio, textvariable=entra_nomApe,font=("Arial", 13)).place(x=248, y=130)
 
     	entra_dni=StringVar()
     	dni= Entry(medio, textvariable=entra_dni,font=("Arial", 13)).place(x=240, y=30)
         entra_dni.set("DNI A BUSCAR")
 
     	entra_dire=StringVar()
-    	direccion= Entry(medio, textvariable=entra_dire,font=("Arial", 13)).place(x=160, y=230)
+    	direccion= Entry(medio, textvariable=entra_dire,font=("Arial", 13)).place(x=600, y=130)
 
 
     	entra_tel=StringVar()
-    	telefono= Entry(medio, textvariable=entra_tel,font=("Arial", 13)).place(x=600, y=230)
+    	telefono= Entry(medio, textvariable=entra_tel,font=("Arial", 13)).place(x=160, y=230)
 
-
-    	entra_fecha=StringVar()
-    	fecha= Entry(medio, textvariable=entra_fecha,font=("Arial", 13)).place(x=200, y=330)
 
     	#Conexion
     	global respo1
@@ -327,7 +318,7 @@ def Modificar_Docente():
 
     	respo1=StringVar(medio)
     	opciones = ['Seleccione obra Social','Asimira', 'Medisur', 'Sps Salud','Osecac','Ioscor']
-    	entra01 = OptionMenu (medio, respo1,*opciones, command= obraS).place(x=700,y=328)
+    	entra01 = OptionMenu (medio, respo1,*opciones, command= obraS).place(x=500,y=228)
     	respo1.set(opciones[0])
 
         #Boton de buscar Docente
@@ -343,7 +334,7 @@ def Modificar_Docente():
     	punto.mainloop()
 
 """
-VENTANA DE MODIFICAR DOCENTE
+VENTANA DE ALBA Docente
 """
 def AlBa_Docente():
         #Crea la variable para la ventana
