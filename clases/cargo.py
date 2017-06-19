@@ -21,7 +21,7 @@ class Cargo(object):
 		self.__dni_Docente = dni_Docente
 		self.__cod_Cargo = cod_Cargo
 		self.__cod_Escuela = cod_Escuela
-		self.__fechaIngreso
+		self.__fechaIngreso = fechaIngreso
 
 
 	"""Setter dni_Docente
@@ -98,7 +98,7 @@ class Cargo(object):
 	def asignarCargo(self):
 		base  = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
 		cursor = base.cursor()
-		cursor.execute("INSERT INTO Asignar(dni_Docente, cod_Cargo,numero_Escuela)VALUES ('%s','%s','%s')" %(self.getDni_Docente(), self.getCod_Cargo(),self.getCod_Escuela()))
+		cursor.execute("INSERT INTO Cargo(dni_Docente, cod_tipoCargo,numero_Escuela, fechaIngreso)VALUES ('%s','%s','%s','%s')" %(self.getDni_Docente(), self.getCod_Cargo(),self.getCod_Escuela(),self.getFechaIngreso()))
 		base.commit()
 		base.close()
 		tkMessageBox.showinfo("AVISO", " El Cargo de '  " + self.getDni_Docente() + " ' fue insertado con exito")

@@ -43,8 +43,11 @@ class Recibo(object):
         return sueldoBasico
 
     def monto_Anti(self, anios, sueldoB):
-        porcentaje= [0,0.10,0.15,0.15,0.15,0.30,0.30,0.40,0.40,0.40,0.50,0.50,0.60,0.60,0.60,0.70,0.70,0.80,0.80,0.80,1,1,1.10,1.10,1.20]
-        monto_Anti = round((porcentaje[anios] * sueldoB),2)
+        if anios > 25:
+            monto_Anti = round((1.20 * sueldoB),2)
+        else:
+            porcentaje= [0,0.10,0.15,0.15,0.15,0.30,0.30,0.40,0.40,0.40,0.50,0.50,0.60,0.60,0.60,0.70,0.70,0.80,0.80,0.80,1,1,1.10,1.10,1.20]
+            monto_Anti = round((porcentaje[anios] * sueldoB),2)
         return monto_Anti
 
     def suma_Zona(self, sueldoB, porcentajeZona):

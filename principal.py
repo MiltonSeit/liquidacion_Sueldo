@@ -8,7 +8,7 @@ from clases.docente import Docente
 from clases.cargo import Cargo
 from ventanas_docente import *
 from ventana_recibo import *
-from ventanas_prevCargo import *
+from ventanas_Cargo import *
 
 
 """Función Previsualizar cargo
