@@ -4,6 +4,7 @@ import time
 import MySQLdb
 import tkMessageBox
 import mysql.connector
+from datetime import *
 
 class Cargo(object):
 
@@ -17,7 +18,7 @@ class Cargo(object):
 	* @param cod_Cargo, descripcion_Cargo, puntos_Cargo, fechaIngreso
 	* @return no devuelve nada
 	"""
-	def __init__(self, dni_Docente, cod_Cargo="", cod_Escuela="", fechaIngreso=""):
+	def __init__(self, dni_Docente="", cod_Cargo="", cod_Escuela="", fechaIngreso=""):
 		self.__dni_Docente = dni_Docente
 		self.__cod_Cargo = cod_Cargo
 		self.__cod_Escuela = cod_Escuela
@@ -36,7 +37,7 @@ class Cargo(object):
      * @param cod_Cargo
      * @return No devuelve nada.
      */
-     """
+    """
 	def __setCod_Cargo(self, cod_Cargo):
 		self.__cod_Cargo = cod_Cargo
 
@@ -44,7 +45,7 @@ class Cargo(object):
      * @param cod_Escuela
      * @return No devuelve nada.
      */
-     """
+    """
 	def __setCod_Escuela(self, cod_Escuela):
 		self.__cod_Escuela = cod_Escuela
 
@@ -90,6 +91,22 @@ class Cargo(object):
 	def getFechaIngreso(self):
 		return self.__fechaIngreso
 
+	"""Función antiguedad
+	* @param no recibe ningún parámetro
+	* @return devuelve la cantidad de años que ejerce como Docente
+	"""
+	def antiguedad(self, fecha_ingreso):
+		fechActual = datetime.now()
+		formato = "%d/%m/%Y"
+		fecha_ingreso = datetime.strptime(fecha_ingreso, formato)
+		diferencia = (fechActual - fecha_ingreso)
+		resultado = (diferencia/365)
+		anios = resultado.days
+		if anios > 24:
+			return 25
+		else:
+			return anios
+
 	"""Funcion asignarCargo
      * @param ninguno
      * @return No devuelve nada. Asigna el cargo al docente
@@ -130,6 +147,7 @@ class Cargo(object):
 		except mysql.connector.Error as err:
 			print("Something went wrong: {}".format(err))
 		bd.close()
+
 
 	def mostrarCargo(self,idRecibo,nombreDocente, apellidoDocente, descripcionCargo, nombreEscuela, fechaPeriodo):
 		lista = [idRecibo,nombreDocente, apellidoDocente, descripcionCargo, nombreEscuela, fechaPeriodo]

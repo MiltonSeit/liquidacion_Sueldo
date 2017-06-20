@@ -55,7 +55,7 @@ class Recibo(object):
         return sumaZona
 
     def presentismo(self, sueldoB,montoAnti):
-        presentissmo = round(((sueldoB * montoAnti)* 0.75)*0.08 ,2)
+        presentissmo = round(((sueldoB + montoAnti)* 0.75)*0.08 ,2)
         return presentissmo
 
     def subTotal1(self, sueldoB, montoAnti, sumaZona, presentismo):
@@ -75,11 +75,11 @@ class Recibo(object):
 
     def subTotal2(self, jubilacion, descuento_Obra, seguro):
         subtotal2 = round((jubilacion + descuento_Obra + seguro),2)
-        return subtotal1
+        return subtotal2
 
     def total(self, subtotal1, subtotal2):
-        montoTotal = round((subtotal1 + subtoral2),2)
-        return
+        montoTotal = round((subtotal1 - subtotal2),2)
+        return montoTotal
 
     def calcularPeriodo(self):
         mes = str(datetime.today().month)
@@ -90,22 +90,29 @@ class Recibo(object):
         try:
             bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
             cursor = bd.cursor()
-            sql="SELECT distinct a.cod_Asignar, c.puntos_Cargos, zon.porcentaje_Zona ,obra.descuento_Obra FROM Docente d INNER JOIN Asignar a on d.dni_Docente = a.dni_Docente INNER JOIN ObraSocial obra on obra.cod_ObraSocial = d.cod_ObraSocial INNER JOIN Cargo c on c.cod_Cargo = a.cod_Cargo INNER JOIN Escuela esc on esc.numero_Escuela = a.numero_Escuela  INNER JOIN Zona zon on zon.cod_Zona = esc.cod_Zona;"
+            sql="SELECT c.cod_Cargo, tp.puntos_Cargos, zon.porcentaje_Zona, obra.descuento_Obra, c.fechaIngreso  FROM Docente d INNER JOIN Cargo c on d.dni_Docente = c.dni_Docente INNER JOIN ObraSocial obra on obra.cod_ObraSocial = d.cod_ObraSocial INNER JOIN Tipo_Cargo tp on tp.cod_tipoCargo = c.cod_Cargo INNER JOIN Escuela esc on esc.numero_Escuela = c.numero_Escuela INNER JOIN Zona zon on zon.cod_Zona = esc.cod_Zona;"
             cursor.execute(sql)
             resultados = cursor.fetchall()
+
             for registro in resultados:
                 sueldoBasico = self.sueldo_Basico(registro[1])
-                asigna = Asigna(registro[0])
-                montoAntiguedad = self.monto_Anti(asigna.antiguedad(), sueldoBasico)
+                cargo = Cargo(registro[0])
+                montoAntiguedad = self.monto_Anti(cargo.antiguedad(registro[4]), sueldoBasico)
                 sumaZona = self.suma_Zona(sueldoBasico, registro[2])
                 present = self.presentismo(sueldoBasico, montoAntiguedad)
                 suBTotal1 = self.subTotal1(sueldoBasico, montoAntiguedad, sumaZona, present)
                 jubi = self.jubilacion(suBTotal1)
-                obraS = self.ObraSocial(suBTotal1, registro[3])
+                obraS = self.obraSocial(suBTotal1, registro[3])
                 suBTotal2 = self.subTotal2(jubi, obraS, self.seguro())
                 tot = self.total(suBTotal1, suBTotal2)
-                sql="INSERT INTO Recibo(cod_Asignar, sueldoBasico, montoAnti, sumaZona,presentismo, subTotal1, jubilacion, desObraSoial, seguro, subTotal2, total,fechaPeriodo) VALUES ('%s', '%s', '%s', '%s', '%s', '%s','%s' , '%s', '%s', '%s', '%s', '%s')" % (registro[0], sueldoBasico, montoAntiguedad, sumaZona, present, suBTotal1, jubi, obraS, self.seguro(), suBTotal2, tot, self.calcularPeriodo())
+                fechaPeriodo= self.calcularPeriodo()
+                sql="INSERT INTO Recibo(cod_Cargo, sueldoBasico, montoAnti, sumaZona,presentismo, subTotal1, jubilacion, desObraSoial, seguro, subTotal2, total,fechaPeriodo) VALUES ('%s', '%s', '%s', '%s', '%s', '%s','%s' , '%s', '%s', '%s', '%s', '%s')" % (registro[0], sueldoBasico, montoAntiguedad, sumaZona, present, suBTotal1, jubi, obraS, self.seguro(), suBTotal2, tot, self.calcularPeriodo())
                 cursor.execute(sql)
+                bd.commit()
+            tkMessageBox.showinfo("AVISO", " Los Recibos fueron insertados con exito")
         except mysql.connector.Error as err:
             print("Something went wrong: {}".format(err))
-        bd.close()
+
+    def mostrarRecibo(self):
+        #print "Sueldo Basico:" + str(sueldoBasico) + " Antiguedad: " + str(montoAntiguedad) + " Zona: " + str(sumaZona) + " Presentismo: " + str(present) + " SUBTOTAL1: " + str(suBTotal1) + " Jubilacion: " + str(jubi) + " Obra Social: " + str(obraS) + " SUBTOAL2: " + str(suBTotal2)+ " TOTAL:" + str(tot)+ " Fecha Periodo: " + fechaPeriodo
+        print "Aca generara el recibo"

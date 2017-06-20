@@ -62,8 +62,8 @@ def asignar_Cargo():
 
 def buscarDatos():
     if entra_dni.get().isdigit():
-        asignar = Asigna(entra_dni.get())
-        datos = asignar.buscarCargos()
+        cargo = Cargo(entra_dni.get())
+        datos = cargo.buscarCargos()
         mostrarLabel(datos)
     else:
         tkMessageBox.showinfo("AVISO", " El Recibo '" + entra_dni.get() +"' no es válido(Sin Puntos Y/O Letras)")

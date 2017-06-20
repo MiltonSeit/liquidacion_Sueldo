@@ -9,11 +9,6 @@ import mysql.connector
 import decimal
 import os
 
-"""def abrirPdf():
-    titi='lasdla.pdf'
-    os.system('evince '+titi)
-"""
-
 def calcularNoseQue():
     mes = date.today().month
 
@@ -22,8 +17,8 @@ def calcularNoseQue():
     elif mes < int(entra_periodo.get()):
         tkMessageBox.showinfo("AVISO", " El periodo ingresado es incorrecto, todavia a ese mes no llegamos")
     elif mes == int(entra_periodo.get()):
-        recibo = Recibo(1)
-        recibo.obtenerDatosParaRecibo()
+        recibo = Recibo()
+        recibo.calcularRecibo()
     else:
         tkMessageBox.showinfo("AVISO", " El periodo ingresado es incorrecto, ese mes ya se paso")
 

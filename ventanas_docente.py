@@ -129,22 +129,6 @@ def funcionComprobar(*args):
     BotonAgrega = Button(medio, text="Guardar", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)
     return True
 
-"""Función antiguedad
-* @param no recibe ningún parámetro
-* @return devuelve la cantidad de años que ejerce como Docente
-"""
-def antiguedad():
-    fechActual = datetime.now()
-    formato = "%d/%m/%Y"
-    fecha_ingreso = entra_fecha.get()
-    fecha_ingreso = datetime.strptime(fecha_ingreso, formato)
-    diferencia = (fechActual - fecha_ingreso)
-    resultado = (diferencia/365)
-    anios = resultado.days
-    if anios > 24:
-        return 25
-    else:
-        return anios
 
 """Función obra social
 * @param no recibe ningún parámetro
