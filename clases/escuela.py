@@ -1,6 +1,5 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 #Definimos la clase Escuela
 class Escuela(object):
     __numero_Escuela = None

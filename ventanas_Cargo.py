@@ -14,10 +14,17 @@ import decimal
 import os
 
 def asignacionCargo():
-    fecha_ingreso = entra_fechaIngreso.get()
-    #Instancia el cargo y lo asigno al docente.
-    cargo = Cargo(entra_dni.get(), cargos(), escu(), fecha_ingreso)
-    cargo.asignarCargo()
+    if entra_fechaIngreso.get() == "DD/MM/AAAA":
+        tkMessageBox.showerror("FECHA INCORRECTA", " INGRESE UNA FECHA VÁLIDA")
+    elif respo2.get() == "Seleccione Escuela":
+        tkMessageBox.showerror("ESCUELA INCORRECTA", " INGRESE UNA ESCUELA VÁLIDA")
+    elif respo3.get() == "Seleccione Cargo":
+        tkMessageBox.showerror("CARGO INCORRECTO", " INGRESE UN CARGO VÁLIDO")
+    else:
+        fecha_ingreso = entra_fechaIngreso.get()
+        #Instancia el cargo y lo asigno al docente.
+        cargo = Cargo(entra_dni.get(), cargos(), escu(), fecha_ingreso)
+        cargo.asignarCargo()
 
 """Función escuela
 * @param no recibe ningún parámetro
@@ -38,47 +45,60 @@ def cargos():
         return opc3
 
 def asignar_Cargo():
-    docente= Docente(entra_dni.get())
-    datos = docente.buscarDocente()
-    #label de los nombres
-    lblNom= Label(medio,text="Nombre y Apellido: ",background="gray", font=("Time", 15)).place(x=50, y=130)
-    lblApe= Label(medio,text="Dirección: ",background="gray", font=("Time", 15)).place(x=500, y=130)
-    lblDirecc= Label(medio,text="Teléfono: ",background="gray", font=("Time", 15)).place(x=50, y=230)
 
-    lablFechaIngreso = Label(medio,text="Fecha Ingreso: ",background="gray", font=("Time", 15)).place(x=450, y=230)
+    if entra_dni.get().isdigit():
+        docente= Docente(entra_dni.get())
+        existeDocente = docente.buscarDni()
+        if(entra_dni.get() in existeDocente):
+            datos = docente.buscarDocente()
 
-    global entra_fechaIngreso
-    entra_fechaIngreso=StringVar()
-    fecha= Entry(medio, textvariable=entra_fechaIngreso,font=("Arial", 13)).place(x=610, y=230)
-    entra_fechaIngreso.set("DD/MM/AAAA")
+            #label de los nombres
+            lblNom= Label(medio,text="Nombre y Apellido: ",background="gray", font=("Time", 15)).place(x=50, y=130)
+            lblApe= Label(medio,text="Dirección: ",background="gray", font=("Time", 15)).place(x=500, y=130)
+            lblDirecc= Label(medio,text="Teléfono: ",background="gray", font=("Time", 15)).place(x=50, y=230)
 
-    #label de los datos
-    lblNombre= Label(medio,text=datos[2], font=("Time", 15)).place(x=250, y=130)
-    lblDireccion= Label(medio,text=datos[3], font=("Time", 15)).place(x=615, y=130)
-    lblTelefono= Label(medio,text=datos[4], font=("Time", 15)).place(x=145, y=230)
-    BotonAgrega = Button(medio, text="Guardar", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown",command=asignacionCargo, width=19).place(x=230, y=400)
+            lablFechaIngreso = Label(medio,text="Fecha Ingreso: ",background="gray", font=("Time", 15)).place(x=450, y=230)
+
+            global entra_fechaIngreso
+            entra_fechaIngreso=StringVar()
+            fecha= Entry(medio, textvariable=entra_fechaIngreso,font=("Arial", 13)).place(x=610, y=230)
+            entra_fechaIngreso.set("DD/MM/AAAA")
+
+            #label de los datos
+            lblNombre= Label(medio,text=datos[2], font=("Time", 15)).place(x=250, y=130)
+            lblDireccion= Label(medio,text=datos[3], font=("Time", 15)).place(x=615, y=130)
+            lblTelefono= Label(medio,text=datos[4], font=("Time", 15)).place(x=145, y=230)
+            BotonAgrega = Button(medio, text="Guardar", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown",command=asignacionCargo, width=19).place(x=230, y=400)
+        else:
+            tkMessageBox.showerror("AVISO", " El DNI ' " + entra_dni.get() + "' No se encuentra registrado, pruebe con otro.")
+    else:
+        tkMessageBox.showerror("DNI INCORRECTO", " SIN PUNTOS, ESPACIOS Y/O LETRAS")
 
 
 
 def buscarDatos():
-    if entra_dni.get().isdigit():
+    if entra_dni.get().isdigit() and entra_periodo.get().isdigit():
         cargo = Cargo(entra_dni.get())
         datos = cargo.buscarCargos()
         mostrarLabel(datos)
     else:
-        tkMessageBox.showinfo("AVISO", " El Recibo '" + entra_dni.get() +"' no es válido(Sin Puntos Y/O Letras)")
+        tkMessageBox.showinfo("AVISO", " El Recibo '" + entra_dni.get() +"' no es válido(Sin Puntos Y/O Letras) o Periodo Incorrecto")
 
 def crearPdf(numero_Recibo, datos):
-    encuentra = 'NO'
-    for dato in datos:
-        if dato[0]== int(numero_Recibo):
-            encuentra = 'SI'
+    if entra_recibo.get().isdigit():
+        encuentra = 'NO'
+        for dato in datos:
+            if dato[0]== int(numero_Recibo):
+                encuentra = 'SI'
 
-    if encuentra == 'SI':
-        recibo = Recibo(numero_Recibo)
-        recibo.crearPdf()
+        if encuentra == 'SI':
+            recibo = Recibo(numero_Recibo)
+            recibo.crearPdf()
+        else:
+            tkMessageBox.showinfo("AVISO", " El Recibo'  " + numero_Recibo + " ' no se encuentra")
     else:
-        tkMessageBox.showinfo("AVISO", " El Recibo'  " + numero_Recibo + " ' no se encuentra")
+        tkMessageBox.showinfo("AVISO", " El Recibo'  " + numero_Recibo + " ' no es válido")
+
 
 def mostrarLabel(datos):
     docente = Docente(entra_dni.get())
@@ -96,6 +116,7 @@ def mostrarLabel(datos):
         entra_recibo=StringVar()
         recibo= Entry(medio, textvariable=entra_recibo,font=("Arial", 13)).place(x=100, y=450)
         entra_recibo.set("Ingresar Nº de Recibo")
+
 
         BotonGenerarRecibo = Button(medio, text="Ver Recibo", font=("Arial", 14), relief=RIDGE, activebackground ="brown", width=19, command= lambda:crearPdf(entra_recibo.get(),datos)).place(x=350,y=450)
 

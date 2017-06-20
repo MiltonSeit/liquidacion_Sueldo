@@ -1,12 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 from Tkinter import *
-import time
-from datetime import datetime, date, time, timedelta
 import tkMessageBox
 from clases.docente import Docente
-from clases.cargo import Cargo
 
 """Función alta_Docente
 * @param no recibe ningún parámetro
@@ -63,46 +59,74 @@ def alta_bajaDocente():
     else:
         tkMessageBox.showerror("DNI INCORRECTO", " SIN PUNTOS, ESPACIOS Y/O LETRAS")
 
-
-
+"""Función actualizarDocente
+* @param no recibe ningún parámetro
+* @return instancia un docente y modifica los datos correspondiente
+"""
 def actualizarDocente():
-    if funcionComprobar():
-        docente= Docente(entra_dni.get(), obraS(), entra_nomApe.get(), entra_dire.get(), entra_tel.get())
-        docente.modificarDocente()
-        entra_dni.set("")
-        dni= Entry(medio, textvariable=entra_dni,  font=("Arial", 13)).place(x=240, y=30)
-
-        entra_nomApe.set("")
-        entra_dire.set("")
-        entra_tel.set("")
-    else:
-        pass
+    docente= Docente(entra_dni.get(), obraS(), entra_nomApe.get(), entra_dire.get(), entra_tel.get())
+    docente.modificarDocente()
+    entra_dni.set("")
+    dni= Entry(medio, textvariable=entra_dni,  font=("Arial", 13)).place(x=240, y=30)
+    entra_nomApe.set("")
+    entra_dire.set("")
+    entra_tel.set("")
 
 """Función buscarDocente
 * @param no recibe ningún parámetro
-* @return verifica si los datos están correctos
+* @return busca el docente e instancia los datos para poder modificarlo llamando al metodo actualizarDocente
 """
 def buscarDocente():
-    docente= Docente(entra_dni.get())
-    datos = docente.buscarDocente()
-    entra_nomApe.set(datos[2])
-    entra_dire.set(datos[3])
-    entra_tel.set(datos[4])
+    docente = Docente()
+    datos = docente.buscarDni()
 
-    valor={1:'Asimira', 2:'Medisur',3:'Sps Salud',4:'Osecac',5:'Ioscor'}
-    opc=valor[datos[1]]
+    if entra_dni.get().isdigit():
+        if(entra_dni.get() in datos):
+            docente= Docente(entra_dni.get())
+            global entra_nomApe
+            global entra_dire
+            global entra_tel
+            global entra_fecha
 
-    opciones = ['Seleccione obra Social','Asimira', 'Medisur', 'Sps Salud','Osecac','Ioscor']
-    entra01 = OptionMenu (medio, respo1,*opciones, command= obraS).place(x=500,y=228)
-    respo1.set(opc)
-    dni= Entry(medio, textvariable=entra_dni, state="disabled", font=("Arial", 13)).place(x=240, y=30)
+            """
+            * Creación de los Input y los lavel
+            """
+            lblNom= Label(medio,text="Nombre y Apellido:", font=("Time", 15)).place(x=50, y=130)
+            lblApe= Label(medio,text="Dirección", font=("Time", 15)).place(x=500, y=130)
+            lblDirecc= Label(medio,text="Teléfono:", font=("Time", 15)).place(x=50, y=230)
 
-    BotonAgrega = Button(medio, text="ACTUALIZAR", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= actualizarDocente).place(x=230, y=400)
+            entra_nomApe = StringVar()
+            nombre = Entry(medio, textvariable=entra_nomApe,font=("Arial", 13)).place(x=248, y=130)
 
+            entra_dire=StringVar()
+            direccion= Entry(medio, textvariable=entra_dire,font=("Arial", 13)).place(x=600, y=130)
+
+            entra_tel=StringVar()
+            telefono= Entry(medio, textvariable=entra_tel,font=("Arial", 13)).place(x=160, y=230)
+
+            docente= Docente(entra_dni.get())
+            datos = docente.buscarDocente()
+            entra_nomApe.set(datos[2])
+            entra_dire.set(datos[3])
+            entra_tel.set(datos[4])
+
+            valor={1:'Asimira', 2:'Medisur',3:'Sps Salud',4:'Osecac',5:'Ioscor'}
+            opc=valor[datos[1]]
+
+            opciones = ['Seleccione obra Social','Asimira', 'Medisur', 'Sps Salud','Osecac','Ioscor']
+            entra01 = OptionMenu (medio, respo1,*opciones, command= obraS).place(x=500,y=228)
+            respo1.set(opc)
+            dni= Entry(medio, textvariable=entra_dni, state="disabled", font=("Arial", 13)).place(x=240, y=30)
+
+            BotonAgrega = Button(medio, text="ACTUALIZAR", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= actualizarDocente).place(x=230, y=400)
+        else:
+            tkMessageBox.showerror("AVISO", " El DNI ' " + entra_dni.get() + "' No se encuentra registrado, pruebe con otro.")
+    else:
+        tkMessageBox.showerror("DNI INCORRECTO", " SIN PUNTOS, ESPACIOS Y/O LETRAS")
 
 """Función Comprobar
 * @param no recibe ningún parámetro
-* @return verifica si los datos están correctos
+* @return verifica si los datos están correctos y si el dni existe en la DB
 """
 def funcionComprobar(*args):
     if entra_dni.get().isdigit():
@@ -151,7 +175,7 @@ def obraS():
 
 """Función agregar_Docente
 * @param no recibe ningún parámetro
-* @return da de alta al docente y asigna el cargo
+* @return agrega un nuevo docente
 """
 def agregar_Docente():
     docente = Docente(entra_dni.get(), obraS(), entra_nomApe.get(), entra_dire.get(), entra_tel.get())
@@ -241,48 +265,22 @@ def Modificar_Docente():
 
     	#etiquetas
         lblDni= Label(medio,text="DNI:", font=("Time", 15)).place(x=150, y=30)
-    	lblNom= Label(medio,text="Nombre y Apellido:", font=("Time", 15)).place(x=50, y=130)
-    	lblApe= Label(medio,text="Dirección", font=("Time", 15)).place(x=500, y=130)
-    	lblDirecc= Label(medio,text="Teléfono:", font=("Time", 15)).place(x=50, y=230)
     	lblSeparar= Label(medio,text="------------------------------------------------------------------------------------------------------------------------------------------------", font=("Time", 15)).place(x=0, y=80)
 
-        global entra_nomApe
-    	global entra_dni
-    	global entra_dire
-    	global entra_tel
-    	global entra_fecha
 
-
-    	entra_nomApe = StringVar()
-    	nombre = Entry(medio, textvariable=entra_nomApe,font=("Arial", 13)).place(x=248, y=130)
-
-    	entra_dni=StringVar()
-    	dni= Entry(medio, textvariable=entra_dni,font=("Arial", 13)).place(x=240, y=30)
+        global entra_dni
+        entra_dni=StringVar()
+        dni= Entry(medio, textvariable=entra_dni,font=("Arial", 13)).place(x=240, y=30)
         entra_dni.set("DNI A BUSCAR")
-
-    	entra_dire=StringVar()
-    	direccion= Entry(medio, textvariable=entra_dire,font=("Arial", 13)).place(x=600, y=130)
-
-
-    	entra_tel=StringVar()
-    	telefono= Entry(medio, textvariable=entra_tel,font=("Arial", 13)).place(x=160, y=230)
-
-
-    	#Conexion
+            	#Conexion
     	global respo1
-    	global respo2
-    	global respo3
 
     	respo1=StringVar(medio)
-    	opciones = ['Seleccione obra Social','Asimira', 'Medisur', 'Sps Salud','Osecac','Ioscor']
-    	entra01 = OptionMenu (medio, respo1,*opciones, command= obraS).place(x=500,y=228)
-    	respo1.set(opciones[0])
 
         #Boton de buscar Docente
         BotonBuscar = Button(medio, text="Buscar Docente", font=("Arial", 14), activebackground ="red", width=14, command= buscarDocente).place(x=450, y=26)
 
         global BotonActualiza
-    	#Boton Actualizar desactivado que luego de la consulta sera activado
     	BotonActualiza = Button(medio, text="ACTUALIZAR", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19).place(x=230, y=400)
 
     	#Boton salir cierra la ventana

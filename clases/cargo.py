@@ -1,13 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import time
 import MySQLdb
 import tkMessageBox
 import mysql.connector
 from datetime import *
 
 class Cargo(object):
-
 	__cod_Cargo = None
 	__dni_Docente = None
 	__cod_Escuela = None
@@ -23,7 +21,6 @@ class Cargo(object):
 		self.__cod_Cargo = cod_Cargo
 		self.__cod_Escuela = cod_Escuela
 		self.__fechaIngreso = fechaIngreso
-
 
 	"""Setter dni_Docente
      * @param dni_Docente
@@ -49,7 +46,6 @@ class Cargo(object):
 	def __setCod_Escuela(self, cod_Escuela):
 		self.__cod_Escuela = cod_Escuela
 
-
 	"""Setter fechaIngreso
 	* @param fechaIngreso
 	* @no devuelve nada.
@@ -57,7 +53,6 @@ class Cargo(object):
 	"""
 	def _setfechaIngreso(self, fechaIngreso):
 		self.__fechaIngreso = fechaIngreso
-
 
 	"""Getter dni_Docente.
  	* @param Ninguno.
@@ -146,7 +141,6 @@ class Cargo(object):
 		except mysql.connector.Error as err:
 			print("Something went wrong: {}".format(err))
 		bd.close()
-
 
 	def mostrarCargo(self,idRecibo,nombreDocente, apellidoDocente, descripcionCargo, nombreEscuela, fechaPeriodo):
 		lista = [idRecibo,nombreDocente, apellidoDocente, descripcionCargo, nombreEscuela, fechaPeriodo]

@@ -12,7 +12,6 @@ class Docente(object):
     __direccion_Docente = None
     __telefono_Docente = None
 
-
     """Constructor
     * @param dni_Docente, codigo_ObraSocial, nomApe_Docente, direccion_Docente, telefono_Docente,
     * @return no devuelve nada
@@ -142,6 +141,11 @@ class Docente(object):
             print("Something went wrong: {}".format(err))
         bd.close()
 
+    """Funcion buscarDni
+     * @param ninguno.
+     * @return devuelve una lista con todos los DNI.
+     */
+     """
     def buscarDni(self):
         dni = []
         try:
@@ -172,7 +176,6 @@ class Docente(object):
             tkMessageBox.showinfo("AVISO", " El Docente '" + self.getDni_Docente() +"' fue insertado con exito")
         except mysql.connector.Error as err:
             print("Something went wrong: {}".format(err))
-
 
     """Funcion modificarDocente
      * @param ninguno.

@@ -44,7 +44,7 @@ class Tipo_Cargo(object):
      * @param cod_TipoCargo
      * @return No devuelve nada.
      */
-     """
+     """ 
     def setCod_TipoCargo(self, cod_TipoCargo):
         self.__cod_TipoCargo = cod_TipoCargo
 
