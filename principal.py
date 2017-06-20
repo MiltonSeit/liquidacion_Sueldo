@@ -9,7 +9,14 @@ from clases.cargo import Cargo
 from ventanas_docente import *
 from ventana_recibo import *
 from ventanas_Cargo import *
+from ventana_Listar import *
 
+"""Función Listar Docente
+* @param no recibe ningún parámetro
+* @return  abre una nueva ventana para previsualizar los docentes
+"""
+def listarDocentes():
+    ventanaListar()
 
 """Función Previsualizar cargo
 * @param no recibe ningún parámetro
@@ -78,7 +85,7 @@ lblImagen= Label(centro, image= imagenT).place(x=0, y=0)
 btonAlta=Button(centro, text="Nuevo Docente", font=("Time", 15), width=12, command=Agregar_Docentes).place(x=150, y=80)
 btonBaja=Button(centro, text="Alta/Baja Docente", font=("Time", 15), width=15, command=AB_Docente).place(x=425, y=80)
 btonModifica=Button(centro, text="Modificar-Datos", font=("Time", 15),command=modificarDocente, width=12).place(x=700, y=80)
-btonLista=Button(centro, text="Listar", font=("Time", 15), width=12).place(x=700, y=190)
+btonLista=Button(centro, text="Listar", font=("Time", 15), command=listarDocentes, width=12).place(x=700, y=190)
 btonCalcula=Button(centro, text="Calcular Sueldo", font=("Time", 15), command =calcularSueldo, width=12).place(x=150, y=190)
 btonVisualiza=Button(centro, text="Previsualizar Cargo", font=("Time", 15), width=14, command=preVisualizar).place(x=425, y=190)
 btonAsignar=Button(centro, text="Asignar Cargo", font=("Time", 15), command=asignarCargo,width=10).place(x=425, y=280)

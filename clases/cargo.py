@@ -142,6 +142,11 @@ class Cargo(object):
 			print("Something went wrong: {}".format(err))
 		bd.close()
 
-	def mostrarCargo(self,idRecibo,nombreDocente, apellidoDocente, descripcionCargo, nombreEscuela, fechaPeriodo):
-		lista = [idRecibo,nombreDocente, apellidoDocente, descripcionCargo, nombreEscuela, fechaPeriodo]
-		return lista
+	def listarCargo(self):
+		base = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
+		cursor = base.cursor()
+		sql= ("SELECT d.dni_Docente, d.nomApe_Docente , d.direccion_Docente , e.nombre_Escuela , c.descripcion_Cargo FROM Cargo a INNER JOIN Docente d on d.dni_Docente = a.dni_Docente INNER JOIN Escuela e on e.numero_Escuela = a.numero_Escuela INNER JOIN Tipo_Cargo c on c.cod_tipoCargo = a.cod_Cargo where d.activo like 'Y'")
+		cursor.execute(sql)
+		resul = cursor.fetchall()
+		base.close()
+		return resul
