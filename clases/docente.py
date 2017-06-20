@@ -142,6 +142,21 @@ class Docente(object):
             print("Something went wrong: {}".format(err))
         bd.close()
 
+    def buscarDni(self):
+        dni = []
+        try:
+            bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo" )
+            cursor = bd.cursor()
+            sql = "SELECT dni_Docente FROM Docente "
+            cursor.execute(sql)
+            resultados = cursor.fetchall()
+            for registro in resultados:
+                dni.append(str(registro[0]))
+            return dni
+        except mysql.connector.Error as err:
+            print("Something went wrong: {}".format(err))
+        bd.close()
+
     """Funcion agregarDocente
      * @param ninguno.
      * @return No devuelve nada. Agrega el docente a la BASE DE DATOS.

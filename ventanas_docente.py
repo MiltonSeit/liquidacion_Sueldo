@@ -34,25 +34,32 @@ def baja_Docente():
 * @return busca el dato del docente e instancia los botones para dar de alta y/O baja respectivamente
 """
 def alta_bajaDocente():
-    if entra_dni.get().isdigit():
-        docente= Docente(entra_dni.get())
-        datos = docente.buscarDocente()
-        #label de los nombres
-        lblNom= Label(medio,text="Nombre y Apellido: ",background="gray", font=("Time", 15)).place(x=50, y=130)
-        lblDirecc= Label(medio,text="Direccion: ",background="gray", font=("Time", 15)).place(x=500, y=130)
-        lblTel= Label(medio,text="Telefono: ",background="gray", font=("Time", 15)).place(x=50, y=230)
-        #label de los datos
-        lblNomApe= Label(medio,text=datos[2], font=("Time", 15)).place(x=245, y=130)
-        lblDireccion= Label(medio,text=datos[3], font=("Time", 15)).place(x=610, y=130)
-        lblTelefono= Label(medio,text=datos[4], font=("Time", 15)).place(x=155, y=230)
+    docente = Docente()
+    datos = docente.buscarDni()
 
-        #Activar el boton de docente
-        if datos[5] == 'Y':
-            BotonBaja = Button(medio, text="Baja Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command=baja_Docente).place(x=230, y=400)
-            BotonAlta = Button(medio, text="Alta Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= alta_Docente).place(x=500,y=400)
-        elif datos[5]== 'N':
-            BotonAlta = Button(medio, text="Alta Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= alta_Docente).place(x=500,y=400)
-            BotonBaja = Button(medio, text="Baja Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command=baja_Docente).place(x=230, y=400)
+
+    if entra_dni.get().isdigit():
+        if(entra_dni.get() in datos):
+            docente= Docente(entra_dni.get())
+            datos = docente.buscarDocente()
+            #label de los nombres
+            lblNom= Label(medio,text="Nombre y Apellido: ",background="gray", font=("Time", 15)).place(x=50, y=130)
+            lblDirecc= Label(medio,text="Direccion: ",background="gray", font=("Time", 15)).place(x=500, y=130)
+            lblTel= Label(medio,text="Telefono: ",background="gray", font=("Time", 15)).place(x=50, y=230)
+            #label de los datos
+            lblNomApe= Label(medio,text=datos[2], font=("Time", 15)).place(x=245, y=130)
+            lblDireccion= Label(medio,text=datos[3], font=("Time", 15)).place(x=610, y=130)
+            lblTelefono= Label(medio,text=datos[4], font=("Time", 15)).place(x=155, y=230)
+
+            #Activar el boton de docente
+            if datos[5] == 'Y':
+                BotonBaja = Button(medio, text="Baja Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command=baja_Docente).place(x=230, y=400)
+                BotonAlta = Button(medio, text="Alta Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= alta_Docente).place(x=500,y=400)
+            elif datos[5]== 'N':
+                BotonAlta = Button(medio, text="Alta Docente", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= alta_Docente).place(x=500,y=400)
+                BotonBaja = Button(medio, text="Baja Docente", state='disabled', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command=baja_Docente).place(x=230, y=400)
+        else:
+            tkMessageBox.showerror("AVISO", " El DNI ' " + entra_dni.get() + "' No se encuentra registrado, pruebe con otro.")
     else:
         tkMessageBox.showerror("DNI INCORRECTO", " SIN PUNTOS, ESPACIOS Y/O LETRAS")
 
@@ -118,12 +125,14 @@ def funcionComprobar(*args):
         tkMessageBox.showerror("TELEFONO INCORRECTO", "SIN PUNTOS, GUINOES Y/O LETRAS")
         return False
 
-    #docente = Docente(entra_dni.get(), obraS(), entra_nomApe.get(), entra_dire.get(), entra_tel.get())
-    #datos = docente.buscarDocente()
+    docente = Docente()
+    datos = docente.buscarDni()
 
-    #if not docente.buscarDocente():
-        #tkMessageBox.showerror("AVISO", " El DNI ' " + entra_dni.get() + "' Se encuentra registrado, pruebe con otro.")
-        #return False
+    if(entra_dni.get() in datos):
+        tkMessageBox.showerror("AVISO", " El DNI ' " + entra_dni.get() + "' Se encuentra registrado, pruebe con otro.")
+        return False
+    else:
+        pass
 
     tkMessageBox.showinfo("AVISO", " DATOS CORRECTOS")
     BotonAgrega = Button(medio, text="Guardar", state='normal', font=("Arial", 14), relief=RIDGE , activebackground ="brown", width=19, command= agregar_Docente).place(x=230, y=400)

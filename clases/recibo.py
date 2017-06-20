@@ -113,33 +113,9 @@ class Recibo(object):
         except mysql.connector.Error as err:
             print("Something went wrong: {}".format(err))
 
-    def mostrarRecibo(self):
-        #print "Sueldo Basico:" + str(sueldoBasico) + " Antiguedad: " + str(montoAntiguedad) + " Zona: " + str(sumaZona) + " Presentismo: " + str(present) + " SUBTOTAL1: " + str(suBTotal1) + " Jubilacion: " + str(jubi) + " Obra Social: " + str(obraS) + " SUBTOAL2: " + str(suBTotal2)+ " TOTAL:" + str(tot)+ " Fecha Periodo: " + fechaPeriodo
-        print "Aca generara el recibo"
-
     def crearPdf(self):
       periodo = "recibos"
       try:
-          escuela = " "
-          apellido =" "
-          nombre = " "
-          dni = " "
-          cargo = " "
-          ingreso = " "
-          numero_recibo = " "
-          sueldoBasico = " "
-          monto_Anti = " "
-          suma_Zona = " "
-          presentismo = " "
-          subTotal1 = " "
-          jubilacion = " "
-          desObraSocial = " "
-          seguro = " "
-          subTotal2 = " "
-          total = " "
-          fechaPeriodo = " "
-
-
           bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
           cursor = bd.cursor()
           sql = "SELECT DISTINCT e.nombre_Escuela,d.nomApe_Docente, d.dni_Docente, tp.descripcion_Cargo, r.numero_Recibo, r.sueldoBasico, r.montoAnti, r.sumaZona, r.presentismo, r.subTotal1, r.jubilacion,r.desObraSoial, r.seguro, r.subTotal2, r.Total, r.fechaPeriodo, c.fechaIngreso FROM Docente d INNER JOIN Cargo c on d.dni_Docente = c.dni_Docente INNER JOIN Tipo_Cargo tp on tp.cod_tipoCargo = c.cod_tipoCargo INNER JOIN Escuela e on e.numero_Escuela = c.numero_Escuela INNER JOIN Recibo r on r.cod_Cargo = c.cod_Cargo WHERE r.numero_Recibo ='%s'" % self.getNumero_Recibo()
