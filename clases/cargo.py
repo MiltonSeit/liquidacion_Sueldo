@@ -130,18 +130,17 @@ class Cargo(object):
 			bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
 			cursor = bd.cursor()
 			dnis = int(self.getDni_Docente())
-			sql="SELECT DISTINCT r.numero_Recibo, d.nombre_Docente, d.apellido_Docente, c.descripcion_Cargo, e.nombre_Escuela,r.fechaPeriodo from Docente d INNER JOIN Asignar a on d.dni_Docente = a.dni_Docente INNER JOIN Cargo c on c.cod_Cargo = a.cod_Cargo INNER JOIN Escuela e on e.numero_Escuela = a.numero_Escuela INNER JOIN Recibo r on r.cod_Asignar = a.cod_Asignar where a.dni_Docente = %s;" % self.getDni_Docente()
+			sql="SELECT DISTINCT r.numero_Recibo, d.nomApe_Docente, tp.descripcion_Cargo, e.nombre_Escuela,r.fechaPeriodo from Docente d INNER JOIN Cargo c on d.dni_Docente = c.dni_Docente INNER JOIN Tipo_Cargo tp on tp.cod_tipoCargo = c.cod_tipoCargo INNER JOIN Escuela e on e.numero_Escuela = c.numero_Escuela INNER JOIN Recibo r on r.cod_Cargo = c.cod_Cargo where c.dni_Docente = %s;" % self.getDni_Docente()
 			cursor.execute(sql)
 			resultados = cursor.fetchall()
 			lista = []
 			for registro in resultados:
 				idRecibo = registro[0]
-				nombreDocente = registro[1]
-				apellidoDocente = registro[2]
-				descripcionCargo = registro[3]
-				nombreEscuela = registro[4]
-				fechaPeriodo = registro[5]
-				elementos = [idRecibo,nombreDocente, apellidoDocente, descripcionCargo, nombreEscuela, fechaPeriodo]
+				nomApeDocente = registro[1]
+				descripcionCargo = registro[2]
+				nombreEscuela = registro[3]
+				fechaPeriodo = registro[4]
+				elementos = [idRecibo,nomApeDocente, descripcionCargo, nombreEscuela, fechaPeriodo]
 				lista.append(elementos)
 			return lista
 		except mysql.connector.Error as err:

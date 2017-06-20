@@ -100,12 +100,12 @@ def mostrarLabel(datos):
         BotonGenerarRecibo = Button(medio, text="Ver Recibo", font=("Arial", 14), relief=RIDGE, activebackground ="brown", width=19, command= lambda:crearPdf(entra_recibo.get(),datos)).place(x=350,y=450)
 
         for dato in datos:
-            if dato[5] == entra_periodo.get():
+            if dato[4] == entra_periodo.get():
                 lblIdRecibo= Label(medio,text=dato[0],background="#f0ee5f", font=("Time", 15)).place(x=10, y=y)
-                lblNombre= Label(medio,text=dato[1]+" "+dato[2],background="#f0ee5f", font=("Time", 15)).place(x=65, y=y)
-                lblCargo= Label(medio,text=dato[3],background="#f0ee5f", font=("Time", 15)).place(x=270, y=y)
-                lblEscuela= Label(medio,text=dato[4],background="#f0ee5f", font=("Time", 15)).place(x=625, y=y)
-                lblPeriodo= Label(medio,text=dato[5],background="#f0ee5f", font=("Time", 15)).place(x=900, y=y)
+                lblNombre= Label(medio,text=dato[1],background="#f0ee5f", font=("Time", 15)).place(x=65, y=y)
+                lblCargo= Label(medio,text=dato[2],background="#f0ee5f", font=("Time", 15)).place(x=270, y=y)
+                lblEscuela= Label(medio,text=dato[3],background="#f0ee5f", font=("Time", 15)).place(x=625, y=y)
+                lblPeriodo= Label(medio,text=dato[4],background="#f0ee5f", font=("Time", 15)).place(x=900, y=y)
                 BotonVisualizar = Button(medio, text="Visualizar", state="disabled",font=("Arial", 14), activebackground ="red", width=14).place(x=680, y=26)
                 y = y +50
     else:
@@ -114,11 +114,11 @@ def mostrarLabel(datos):
 def limpiar():
     y = 150
 
-    asignar = Asigna(entra_dni.get())
-    datos = asignar.buscarCargos()
+    cargo = Cargo(entra_dni.get())
+    datos = cargo.buscarCargos()
     dni= Entry(medio, textvariable=entra_dni,state="normal",font=("Arial", 13)).place(x=440, y=30)
     for dato in datos:
-        if dato[5] == entra_periodo.get():
+        if dato[4] == entra_periodo.get():
             lblIdRecibo= Label(medio,text="     ",background="#f0ee5f", font=("Time", 15)).place(x=10, y=y)
             lblNombre= Label(medio,text="                                ",background="#f0ee5f", font=("Time", 15)).place(x=65, y=y)
             lblCargo= Label(medio,text="                                               ",background="#f0ee5f", font=("Time", 15)).place(x=270, y=y)

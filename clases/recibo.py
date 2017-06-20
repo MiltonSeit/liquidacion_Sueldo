@@ -116,3 +116,80 @@ class Recibo(object):
     def mostrarRecibo(self):
         #print "Sueldo Basico:" + str(sueldoBasico) + " Antiguedad: " + str(montoAntiguedad) + " Zona: " + str(sumaZona) + " Presentismo: " + str(present) + " SUBTOTAL1: " + str(suBTotal1) + " Jubilacion: " + str(jubi) + " Obra Social: " + str(obraS) + " SUBTOAL2: " + str(suBTotal2)+ " TOTAL:" + str(tot)+ " Fecha Periodo: " + fechaPeriodo
         print "Aca generara el recibo"
+
+    def crearPdf(self):
+      periodo = "recibos"
+      try:
+          escuela = " "
+          apellido =" "
+          nombre = " "
+          dni = " "
+          cargo = " "
+          ingreso = " "
+          numero_recibo = " "
+          sueldoBasico = " "
+          monto_Anti = " "
+          suma_Zona = " "
+          presentismo = " "
+          subTotal1 = " "
+          jubilacion = " "
+          desObraSocial = " "
+          seguro = " "
+          subTotal2 = " "
+          total = " "
+          fechaPeriodo = " "
+
+
+          bd = MySQLdb.connect("localhost","root","gogole","Recibo_Sueldo")
+          cursor = bd.cursor()
+          sql = "SELECT DISTINCT e.nombre_Escuela,d.nomApe_Docente, d.dni_Docente, tp.descripcion_Cargo, r.numero_Recibo, r.sueldoBasico, r.montoAnti, r.sumaZona, r.presentismo, r.subTotal1, r.jubilacion,r.desObraSoial, r.seguro, r.subTotal2, r.Total, r.fechaPeriodo, c.fechaIngreso FROM Docente d INNER JOIN Cargo c on d.dni_Docente = c.dni_Docente INNER JOIN Tipo_Cargo tp on tp.cod_tipoCargo = c.cod_tipoCargo INNER JOIN Escuela e on e.numero_Escuela = c.numero_Escuela INNER JOIN Recibo r on r.cod_Cargo = c.cod_Cargo WHERE r.numero_Recibo ='%s'" % self.getNumero_Recibo()
+          cursor.execute(sql)
+          resultados = cursor.fetchall()
+          for registro in resultados:
+              escuela = str(registro[0])
+              nomApe = str(registro[1])
+              dni = str(registro[2])
+              cargo = str(registro[3])
+              numero_recibo = str(registro[4])
+              sueldoBasico = str(registro[5])
+              monto_Anti = str(registro[6])
+              suma_Zona = str(registro[7])
+              presentismo = str(registro[8])
+              subTotal1 = str(registro[9])
+              jubilacion = str(registro[10])
+              desObraSocial = str(registro[11])
+              seguro = str(registro[12])
+              subTotal2 = str(registro[13])
+              total = str(registro[14])
+              fechaPeriodo = str(registro[15])
+              ingreso = str(registro[16])
+      except mysql.connector.Error as err:
+          print("Something went wrong: {}".format(err))
+      bd.close()
+      pdf = FPDF()
+      pdf.add_page()
+      pdf.image('factura.jpg',5,2,200,290)
+      pdf.set_font('Arial', 'B', 10)
+      pdf.text(96, 72  , escuela)
+      pdf.text(161, 72 , fechaPeriodo)
+      pdf.text(28, 89 , nomApe)
+      pdf.text(69, 89 , dni)
+      pdf.text(96, 89 , cargo)
+      pdf.text(161, 89 , numero_recibo)
+      pdf.text(74, 115 , "$ "+sueldoBasico)
+      pdf.text(74, 120 , "$ "+monto_Anti)
+      pdf.text(74, 125 , "$ "+suma_Zona)
+      pdf.text(74, 130 , "$ "+presentismo)
+      pdf.text(74, 140,  "$ "+subTotal1)
+      pdf.text(155, 116, "$ "+jubilacion)
+      pdf.text(155, 121, "$ "+desObraSocial)
+      pdf.text(155, 126, "$ "+seguro)
+      pdf.text(150, 141, "$ "+subTotal2)
+      pdf.text(145, 216, "$ "+total)
+      pdf.text(29, 231 , ingreso)
+      nombre = str(self.getNumero_Recibo())
+      ext = '.pdf'
+      salida = nombre+ext
+      pdf.output(periodo+"/"+salida, 'F')
+      abrir='recibos/'+str(self.getNumero_Recibo())+'.pdf'
+      os.system('evince '+abrir)
